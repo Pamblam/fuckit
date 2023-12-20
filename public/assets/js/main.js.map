@@ -1,0 +1,1 @@
+{"version":3,"file":"main.js","mappings":"CACA,iBAECA,QAAQC,IAAI,oBAEZ,CAJD","sources":["webpack://fuckit/./src/main.js"],"sourcesContent":["\n(async function main(){\n\n\tconsole.log(\"running from main\");\n\n})();"],"names":["console","log"],"sourceRoot":""}

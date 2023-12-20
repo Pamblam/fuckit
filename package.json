@@ -1,0 +1,39 @@
+{
+    "name": "fuckit",
+    "version": "0.0.1",
+    "description": "Fuckit Simple PHP/ReactJS CMS",
+    "private": true,
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "webpack"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Pamblam/fuckit.git"
+    },
+    "keywords": [],
+    "author": "Robert Parham",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Pamblam/fuckit/issues"
+    },
+    "homepage": "https://github.com/Pamblam/fuckit#readme",
+    "devDependencies": {
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4"
+    },
+    "sideEffects": true,
+    "dependencies": {
+        "@babel/core": "^7.22.11",
+        "@babel/preset-env": "^7.22.10",
+        "@babel/preset-react": "^7.22.5",
+        "babel-loader": "^9.1.3",
+        "css-loader": "^6.8.1",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "style-loader": "^3.3.3",
+        "text-clipper": "^2.2.0",
+        "url-loader": "^4.1.1",
+        "uuidv4": "^6.2.13"
+    }
+}

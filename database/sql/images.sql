@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS `images` (
+  `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+  `orig_name` TEXT NOT NULL,
+  `sys_name` TEXT NOT NULL,
+  `upload_ts` INTEGER NOT NULL,
+  `uploader_id` INTEGER NOT NULL
+);
