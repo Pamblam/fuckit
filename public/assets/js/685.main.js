@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkfuckit=self.webpackChunkfuckit||[]).push([[685],{685:(e,s,c)=>{c.r(s),c.d(s,{Home:()=>t});c(294),c(745);var i=c(982),r=c(417),n=c(893);function t(){return(0,n.jsxs)("div",{children:[(0,n.jsxs)("h1",{children:[(0,n.jsx)(i.G,{icon:r.dT$})," Fuckit"]}),(0,n.jsx)("p",{children:"A simple PHP, SQLite, and ReactJS CMS for programmers."})]})}}}]);
+//# sourceMappingURL=685.main.js.map
