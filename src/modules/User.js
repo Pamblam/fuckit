@@ -7,7 +7,8 @@ export const User = (()=>{
     };
     return {
         isLoggedIn(){
-            
+            if(!user.id) return false;
+            APIRequest.set('');
         },
         set(prop, val){
             if(user.hasOwnProperty(prop)){
