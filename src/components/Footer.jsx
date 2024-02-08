@@ -5,9 +5,9 @@ import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 export function Footer(){
-	return (<nav class="navbar bg-light">
-		<div class="container-fluid">
-			<span class="navbar-text text-center w-100 small">
+	return (<nav className="navbar bg-light">
+		<div className="container-fluid">
+			<span className="navbar-text text-center w-100 small">
 				<FontAwesomeIcon icon={faCode} /> Fuckit CMS | <Link to="/admin">Admin</Link>
 			</span>
 		</div>

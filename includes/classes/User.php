@@ -12,4 +12,8 @@ class User extends DBModel{
 			"display_name" => null
 		];
 	}
+
+	public function validateSession($sid){
+
+	}
 }

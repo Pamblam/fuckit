@@ -32,6 +32,8 @@ export class APIRequest{
 	
 	async send(){
 		var url = this.endpoint + "?" + this.getQueryString();
+		let sid = localStorage.setItem('_sid', result.sid);
+		if(sid) url += `&_sid=${encodeURIComponent(sid)}`;
 		var result;
 		try{
 			result = await fetch(url, {
@@ -46,6 +48,7 @@ export class APIRequest{
 				};
 			});
 		}
+		if(result._sid) localStorage.setItem('_sid', result.sid);
 		return result;
 	}
 }

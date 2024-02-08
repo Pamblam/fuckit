@@ -2,5 +2,7 @@ CREATE TABLE IF NOT EXISTS `sessions` (
   `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
   `user_id` TEXT NOT NULL,
   `start_time` INTEGER NOT NULL,
-  `uuid` TEXT NOT NULL
+  `uuid` TEXT NOT NULL,
+  `user_agent` TEXT NOT NULL,
+  `ip` TEXT NOT NULL
 );
