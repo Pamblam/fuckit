@@ -2,12 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router';
 
 export function Navbar(){
-
+	const navigate = useNavigate();
+	const onLogoClick = e => {
+		e.preventDefault();
+		navigate('/');
+	};
 	return (<nav className="navbar navbar-expand-lg bg-light mb-4">
 		<div className="container-fluid">
-			<a className="navbar-brand" href="#">
+			<a className="navbar-brand" href="#" onClick={onLogoClick}>
 				<FontAwesomeIcon icon={faCode} /> Fuckit
 			</a>
 			<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">

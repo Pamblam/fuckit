@@ -38,6 +38,7 @@
         "style-loader": "^3.3.3",
         "text-clipper": "^2.2.0",
         "url-loader": "^4.1.1",
-        "uuidv4": "^6.2.13"
+        "uuidv4": "^6.2.13",
+        "react-router-dom": "^6.3.0"
     }
 }
