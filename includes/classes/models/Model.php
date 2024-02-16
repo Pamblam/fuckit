@@ -1,6 +1,6 @@
 <?php
 
-class DBModel{
+class Model{
 	
 	protected static $table_name;
 	protected $pdo;

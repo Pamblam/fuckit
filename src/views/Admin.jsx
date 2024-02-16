@@ -20,8 +20,11 @@ export function Admin(){
 		<FontAwesomeIcon icon={faSpinner} pulse size="3x" />
 	</div>);
 
-	if(loggedIn === true) cmp = (<AdminPostsTable />);
-	if(loggedIn === false) cmp = (<LoginForm />);
+	if(loggedIn === true){
+		cmp = (<AdminPostsTable />);
+	}else{
+		cmp = (<LoginForm onSuccess={()=>setloggedIn(true)} />);
+	}
 
 	return (<div>
 		<h1><FontAwesomeIcon icon={faCode} /> Admin Area</h1>

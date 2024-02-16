@@ -1,6 +1,6 @@
 <?php
 
-class User extends DBModel{
+class User extends Model{
 	protected static $table_name = "users";
 	
 	public function __construct($pdo) {
@@ -12,8 +12,5 @@ class User extends DBModel{
 			"display_name" => null
 		];
 	}
-
-	public function validateSession($sid){
-
-	}
+	
 }

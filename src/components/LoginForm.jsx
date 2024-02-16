@@ -2,7 +2,7 @@
 import React from 'react';
 import { APIRequest } from '../modules/APIRequest';
 
-export function LoginForm(){
+export function LoginForm({onSuccess}){
 	let username_input = React.useRef();
 	let password_input = React.useRef();
 	let form = React.useRef();
@@ -16,7 +16,7 @@ export function LoginForm(){
 		request.set('login', 'username', username);
 		request.set('login', 'password', password);
 		let res = (await request.send()).login;
-		if(res.success)
+		if(res.success) onSuccess();
 	};
 
 	return (<div className="card mx-auto mb-3" style={{maxWidth: '18rem'}}>
