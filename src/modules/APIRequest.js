@@ -1,54 +1,70 @@
 export class APIRequest{
-	
-	constructor(){
-		this.endpoint = "./api/";
-		this.method_params = {};
+		
+	constructor(path){
+		this.endpoint = "http://localhost/fuckit/public/api/";
+		this.path = path;
+		this.params = {};
+		this.abortController = new AbortController();
 	}
 	
-	set(method, param_name=null, param_value=null){
-		if(!this.method_params[method]){
-			this.method_params[method] = {};
-		}
-		if(param_name !== null && param_value !== null){
-			this.method_params[method][param_name] = param_value;
+	get(params){
+		if(params) this.params = params;
+		this.method = 'GET';
+		return this.send();
+	}
+	
+	post(params){
+		if(params) this.params = params;
+		this.method = 'POST';
+		return this.send();
+	}
+
+	put(params){
+		if(params) this.params = params;
+		this.method = 'PUT';
+		return this.send();
+	}
+
+	delete(params){
+		if(params) this.params = params;
+		this.method = 'DELETE';
+		return this.send();
+	}
+
+	patch(params){
+		if(params) this.params = params;
+		this.method = 'PATCH';
+		return this.send();
+	}
+
+	abort(){
+		this.abortController.abort();
+	}
+
+	async send(){
+		let opts = {
+				method: this.method,
+				signal: this.abortController.signal,
+			};
+		let endpoint = `${this.endpoint}${this.path}`;
+			let headers = {};
+			let token = localStorage.getItem('x-auth-token');
+			if(token) headers.Authorization = token;
+		opts.headers = headers;
+		
+		if(this.method === 'GET'){
+			let params = new URLSearchParams(this.params);
+			endpoint += `?${params.toString()}`;
+		}else{
+			let fd = new FormData();
+			Object.keys(this.params).forEach(key=>{
+			fd.append(key, this.params[key])
+			});
+			opts.body = fd; 
 		}
 		
-		return this;
-	}
-	
-	getQueryString(){
-		return Object.keys(this.method_params).map(method => {
-			const enc_method = encodeURIComponent(method);
-			const method_keys = Object.keys(this.method_params[method]);
-			if(!method_keys.length) return enc_method;
-			return method_keys.map(param_name => {
-				var param_value = this.method_params[method][param_name];
-				const enc_param_name = encodeURIComponent(param_name);
-				const enc_param_value = encodeURIComponent(param_value);
-				return `${enc_method}[${enc_param_name}]=${enc_param_value}`;
-			}).join('&');
-		}).join('&');
-	}
-	
-	async send(){
-		var url = this.endpoint + "?" + this.getQueryString();
-		let sid = localStorage.setItem('_sid', result.sid);
-		if(sid) url += `&_sid=${encodeURIComponent(sid)}`;
-		var result;
-		try{
-			result = await fetch(url, {
-				method: "POST"
-			}).then(resp=>resp.json());
-		}catch(e){
-			console.error(e);
-			result = {};
-			Object.keys(this.method_params).forEach(method=>{
-				result[method] = {
-					errors: [e.message]
-				};
-			});
-		}
-		if(result._sid) localStorage.setItem('_sid', result.sid);
-		return result;
+		let response = await fetch(endpoint, opts);
+		let token_header = response.headers.get('x-auth-token');
+		return await response.json();
 	}
 }
