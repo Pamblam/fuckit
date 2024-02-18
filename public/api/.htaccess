@@ -3,5 +3,7 @@ RewriteEngine On
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
+# Expose the Authorization header to $_SERVER['HTTP_AUTHORIZATION']
+RewriteRule .* - [e=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 # Rewrite everything else to index.html to allow html5 state links
 RewriteRule ^ index.php [L]

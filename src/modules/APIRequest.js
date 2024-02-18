@@ -1,70 +1,71 @@
-export class APIRequest{
-		
-	constructor(path){
-		this.endpoint = "http://localhost/fuckit/public/api/";
+export class APIRequest {
+
+	constructor(path) {
+		this.endpoint = "./api/";
 		this.path = path;
 		this.params = {};
 		this.abortController = new AbortController();
 	}
-	
-	get(params){
-		if(params) this.params = params;
+
+	get(params) {
+		if (params) this.params = params;
 		this.method = 'GET';
 		return this.send();
 	}
-	
-	post(params){
-		if(params) this.params = params;
+
+	post(params) {
+		if (params) this.params = params;
 		this.method = 'POST';
 		return this.send();
 	}
 
-	put(params){
-		if(params) this.params = params;
+	put(params) {
+		if (params) this.params = params;
 		this.method = 'PUT';
 		return this.send();
 	}
 
-	delete(params){
-		if(params) this.params = params;
+	delete(params) {
+		if (params) this.params = params;
 		this.method = 'DELETE';
 		return this.send();
 	}
 
-	patch(params){
-		if(params) this.params = params;
+	patch(params) {
+		if (params) this.params = params;
 		this.method = 'PATCH';
 		return this.send();
 	}
 
-	abort(){
+	abort() {
 		this.abortController.abort();
 	}
 
-	async send(){
+	async send() {
 		let opts = {
-				method: this.method,
-				signal: this.abortController.signal,
-			};
+			method: this.method,
+			signal: this.abortController.signal,
+		};
 		let endpoint = `${this.endpoint}${this.path}`;
-			let headers = {};
-			let token = localStorage.getItem('x-auth-token');
-			if(token) headers.Authorization = token;
+		let headers = {};
+		let token = localStorage.getItem('x-auth-token');
+		if (token) headers.Authorization = token;
 		opts.headers = headers;
-		
-		if(this.method === 'GET'){
+
+		if (this.method === 'GET') {
 			let params = new URLSearchParams(this.params);
 			endpoint += `?${params.toString()}`;
-		}else{
+		} else {
 			let fd = new FormData();
-			Object.keys(this.params).forEach(key=>{
-			fd.append(key, this.params[key])
+			Object.keys(this.params).forEach(key => {
+				fd.append(key, this.params[key])
 			});
-			opts.body = fd; 
+			opts.body = fd;
 		}
-		
+
 		let response = await fetch(endpoint, opts);
 		let token_header = response.headers.get('x-auth-token');
+		if (token_header) localStorage.setItem('x-auth-token', token_header);
 		return await response.json();
 	}
 }

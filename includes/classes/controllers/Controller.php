@@ -7,6 +7,7 @@ class Controller{
 	protected $id;
 	protected $model_name;
 	protected $model_instance;
+	private $authorized = false;
 
 	public function __construct($pdo, $response, $id=null){
 		$this->pdo = $pdo;
@@ -21,26 +22,69 @@ class Controller{
 		}else{
 			$this->model_instance = new $this->model_name($pdo);
 		}
+		if(false === $this->model_instance){
+			$this->response->setError("Object not found", 404)->send();
+		}
+
+		$this->checkAuthorization();
+	}
+
+	public function isAuthorized(){
+		return $this->authorized;
+	}
+
+	private static function checkAuthorization(){
+		$token = null;
+		if(!empty($_SERVER['HTTP_AUTHORIZATION'])) $token = $_SERVER['HTTP_AUTHORIZATION'];
+		else if(!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
+
+		// If there isn't a token in the header, not authorized
+		if(empty($token)) return false;
+
+		// If the token doesn't match an active session, not authorized
+		$session = Session::fromID($this->pdo, $token);
+		if(false === $session) return false;
+
+		// If the IP doesn't match or is hidden, not authorized
+		$ip = Session::getIP();
+		if(empty($ip) || $ip !== $session->get('ip')) return false;
+
+		// If the session is older than 6 hours, not authorized
+		if(intval($session->get('start_time')) < time() - (60*60*6)) return false;
+
+		// If the user agent doesn't match, not authorized, low priority so allow empty string
+		$ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+		if($ua !== $session->get('user_agent')) return false;
+
+		// Everything seems to be in order, let's update the user's session token for increased security
+		$new_token = Session::generateToken();
+		$session->set('id', $new_token);
+		$session->set('start_time', time());
+		$session->save();
+		$this->response->setHeader("Authorization: $new_token");
+		return true;
 	}
 
 	public function get(){
-		$this->response->setError("Method not allowed", 405);
+		$this->isAuthorized();
+
+		$this->response->setError("Method not allowed", 405)->send();
 	}
 
 	public function post(){
-		$this->response->setError("Method not allowed", 405);
+		$this->response->setError("Method not allowed", 405)->send();
 	}
 
 	public function put(){
-		$this->response->setError("Method not allowed", 405);
+		$this->response->setError("Method not allowed", 405)->send();
 	}
 
 	public function patch(){
-		$this->response->setError("Method not allowed", 405);
+		$this->response->setError("Method not allowed", 405)->send();
 	}
 
 	public function delete(){
-		$this->response->setError("Method not allowed", 405);
+		$this->response->setError("Method not allowed", 405)->send();
 	}
 
 	public function send(){

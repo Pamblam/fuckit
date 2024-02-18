@@ -7,6 +7,7 @@ class Response{
 	private $data = null;
 	private $message = 'OK';
 	private $has_error = false;
+	private $headers = [];
 
 	public function __construct() {}
 
@@ -104,8 +105,13 @@ class Response{
 		return $this;
 	}
 
+	public function setHeader($header){
+		$this->headers[] = $header;
+	}
+
 	public function send(){
 		header("HTTP/1.0 ".$this->code_num." ".$this->code_message);
+		foreach($this->headers as $h) header($h);
 		$response_object = [
 			'has_error' => $this->has_error,
 			'data' => $this->data,
