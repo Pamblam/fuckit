@@ -2,11 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import {User} from '../modules/User.js';
 import { AdminPostsTable } from '../components/AdminPostsTable.jsx';
 import { LoginForm } from '../components/LoginForm.jsx';
 
-export function Admin(){
+export function Admin({User}){
 	let [loggedIn, setloggedIn] = React.useState(null);
 
 	React.useEffect(()=>{
@@ -23,7 +22,7 @@ export function Admin(){
 	if(loggedIn === true){
 		cmp = (<AdminPostsTable />);
 	}else{
-		cmp = (<LoginForm onSuccess={()=>setloggedIn(true)} />);
+		cmp = (<LoginForm onSuccess={()=>setloggedIn(true)} User={User} />);
 	}
 
 	return (<div>

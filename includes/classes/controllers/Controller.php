@@ -7,7 +7,7 @@ class Controller{
 	protected $id;
 	protected $model_name;
 	protected $model_instance;
-	private $authorized = false;
+	private $user = false;
 
 	public function __construct($pdo, $response, $id=null){
 		$this->pdo = $pdo;
@@ -29,11 +29,11 @@ class Controller{
 		$this->checkAuthorization();
 	}
 
-	public function isAuthorized(){
-		return $this->authorized;
+	public function getUser(){
+		return $this->user;
 	}
 
-	private static function checkAuthorization(){
+	private function checkAuthorization(){
 		$token = null;
 		if(!empty($_SERVER['HTTP_AUTHORIZATION'])) $token = $_SERVER['HTTP_AUTHORIZATION'];
 		else if(!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
@@ -56,18 +56,12 @@ class Controller{
 		$ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 		if($ua !== $session->get('user_agent')) return false;
 
-		// Everything seems to be in order, let's update the user's session token for increased security
-		$new_token = Session::generateToken();
-		$session->set('id', $new_token);
-		$session->set('start_time', time());
-		$session->save();
-		$this->response->setHeader("Authorization: $new_token");
-		return true;
+		// Get the user
+		$this->user = User::fromID($this->pdo, $session->get('user_id'));
 	}
 
 	public function get(){
 		$this->isAuthorized();
-
 		$this->response->setError("Method not allowed", 405)->send();
 	}
 
@@ -88,6 +82,6 @@ class Controller{
 	}
 
 	public function send(){
-		$this->response->setData($this->model_instance->getColumns())->send();
+		$this->response->send();
 	}
 }

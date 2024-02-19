@@ -2,21 +2,22 @@
 import React from 'react';
 import { APIRequest } from '../modules/APIRequest';
 
-export function LoginForm({onSuccess}){
+export function LoginForm({onSuccess, User}){
 	let username_input = React.useRef();
 	let password_input = React.useRef();
 	let form = React.useRef();
 
-	const doLogin = async () => {
+	const doLogin = async e => {
+		e.preventDefault();
 		if(form.current.dataset.pending == '1') return;
 		form.current.dataset.pending = '1';
-		let password = password_input.current.value;
 		let username = username_input.current.value;
-		let request = new APIRequest();
-		request.set('login', 'username', username);
-		request.set('login', 'password', password);
-		let res = (await request.send()).login;
-		if(res.success) onSuccess();
+		let password = password_input.current.value;
+		let success = User.login(username, password);
+		if(success) onSuccess();
+		else{
+			alert('Invlid Login');
+		}
 	};
 
 	return (<div className="card mx-auto mb-3" style={{maxWidth: '18rem'}}>

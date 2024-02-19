@@ -6,13 +6,14 @@ class Router{
 		$response = new Response();
 		$path_parts = self::parsePath();
 
-		// Path must have at least one, but not more than 2 parts
-		if(count($path_parts) > 2 || empty($path_parts)){
+		// Path must have at least one, but not more than 3 parts
+		if(count($path_parts) > 3 || empty($path_parts)){
 			$response->setError("Invalid request", 400)->send();
 		}
 
 		// Determine the controller for this request
-		$controller_name = $path_parts[0]."Controller";
+		$controller_name = array_shift($path_parts);
+		$controller_name = $controller_name."Controller";
 		$controller_path = realpath(dirname(__FILE__))."/controllers/".$controller_name.".php";
 		if(!file_exists($controller_path)){
 			$response->setError("Endpoint not found.", 404)->send();
@@ -20,21 +21,32 @@ class Router{
 
 		// Get the id if there is one
 		$id = null;
-		if(count($path_parts) > 1){
-			if(!is_numeric($path_parts[1])){
-				$response->setError("Invalid request", 400)->send();
+		if(!empty($path_parts)){
+			if(is_numeric($path_parts[0])){
+				$id = array_shift($path_parts);
 			}
-			$id = intval($path_parts[1]);
+		}
+
+		// Get the method name
+		$method = null;
+		if(empty($path_parts)){
+			$method = strtolower($_SERVER['REQUEST_METHOD']);
+			if(!in_array($method , ['get', 'post', 'put', 'patch', 'delete'])){
+				$response->setError("Method not allowed", 405)->send();
+			}
+		}else{
+			$method = array_shift($path_parts);
 		}
 
 		// Fire off the controller
-		$controller = new $controller_name($pdo, $response, $id);
-		$method = strtolower($_SERVER['REQUEST_METHOD']);
-		if(!in_array($method , ['get', 'post', 'put', 'patch', 'delete'])){
-			$response->setError("Method not allowed", 405)->send();
+		if(method_exists($controller_name, $method)){
+			$controller = new $controller_name($pdo, $response, $id);
+			$controller->$method();
+			$controller->send();
+		}else{
+			$response->setError("Method not found.", 404)->send();
 		}
-		$controller->$method();
-		$controller->send();
+		
 	}
 
 	private static function parsePath(){
