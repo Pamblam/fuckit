@@ -68,7 +68,21 @@ class SessionController extends Controller{
 	}
 
 	public function delete(){
-		
+		$user = $this->getUser();
+		if(false == $user){
+			$this->response->setData([
+				'LoggedIn' => false
+			]);
+			$this->response->setError("Not logged in", 401)->send();
+		}else{
+			$success = $this->getSession()->delete();
+			$this->response->setData([
+				'LoggedIn' => true
+			]);
+			if(false === $success){
+				$this->response->setError("Could not log out", 401)->send();
+			}
+		}
 	}
 
 }

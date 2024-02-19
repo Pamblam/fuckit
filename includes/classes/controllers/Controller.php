@@ -8,6 +8,7 @@ class Controller{
 	protected $model_name;
 	protected $model_instance;
 	private $user = false;
+	private $session = false;
 
 	public function __construct($pdo, $response, $id=null){
 		$this->pdo = $pdo;
@@ -31,6 +32,10 @@ class Controller{
 
 	public function getUser(){
 		return $this->user;
+	}
+
+	public function getSession(){
+		return $this->session;
 	}
 
 	private function checkAuthorization(){
@@ -58,6 +63,7 @@ class Controller{
 
 		// Get the user
 		$this->user = User::fromID($this->pdo, $session->get('user_id'));
+		$this->session = $session;
 	}
 
 	public function get(){

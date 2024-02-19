@@ -19,10 +19,25 @@ export const User = (()=>{
 		if(val) user[k] = val;
 	});
 
+    let loginPromise = null;
+
     const USER = {
 
         onChange(fn){
             change_callbacks.push(fn);
+        },
+
+        async logout(){
+            let res = await new APIRequest('Session').delete();
+            if(!res.has_error){
+                USER.set('display_name', null);
+                USER.set('username', null);
+                USER.set('id', null);
+                change_callbacks.forEach(fn=>fn());
+                localStorage.removeItem('x-auth-token');
+                return true;
+            }
+            return false;
         },
 
         async login(username, password){

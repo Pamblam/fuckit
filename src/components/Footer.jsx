@@ -6,11 +6,19 @@ import { Link } from 'react-router-dom';
 
 export function Footer({User}){
 
+	const [, updateState] = React.useState();
+	const forceUpdate = React.useCallback(() => updateState({}), []);
+	User.onChange(()=>forceUpdate());
+
 	let footer_link;
-	if(User.get('id')){
+	if(undefined === User.get('id')){
 		footer_link = <Link to="/admin">Admin</Link>
 	}else{
-		footer_link = <a href='#' onclick={footer_link_ref}>Logout</a>
+		let doLogout = (e)=>{
+			e.preventDefault();
+			User.logout();
+		};
+		footer_link = <a href='#' onClick={doLogout}>Logout</a>
 	}
 
 	return (<nav className="navbar bg-light">

@@ -8,11 +8,6 @@ const Home = React.lazy(()=>import('./views/Home.jsx').then(module => ({ default
 
 export function App({User}){
 
-	let [renderCnt, setRenderCnt] = React.useState(0);
-	User.onChange(()=>{
-		setRenderCnt(renderCnt+1);
-	});
-
 	return (<div className="container">
 		<Navbar />
 		<Outlet />
