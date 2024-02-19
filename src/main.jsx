@@ -6,6 +6,7 @@ import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 import {Home} from './views/Home.jsx';
 import {config} from './config.js';
 import { Admin } from './views/Admin.jsx';
+import { Login } from './views/Login.jsx';
 import { User } from './modules/User.js';
 
 (async function main(){
@@ -18,6 +19,7 @@ import { User } from './modules/User.js';
 					<Route path="/" element={<App User={User} />}>
 						<Route path="/" element={<Home User={User} />} />
 						<Route path="/admin" element={<Admin User={User} />} />
+						<Route path="/login" element={<Login User={User} />} />
 					</Route>
 				</Routes>
 			</Router>

@@ -29,15 +29,11 @@ export const User = (()=>{
 
         async logout(){
             let res = await new APIRequest('Session').delete();
-            if(!res.has_error){
-                USER.set('display_name', null);
-                USER.set('username', null);
-                USER.set('id', null);
-                change_callbacks.forEach(fn=>fn());
-                localStorage.removeItem('x-auth-token');
-                return true;
-            }
-            return false;
+			USER.set('display_name', null);
+			USER.set('username', null);
+			USER.set('id', null);
+			change_callbacks.forEach(fn=>fn());
+			localStorage.removeItem('x-auth-token');
         },
 
         async login(username, password){

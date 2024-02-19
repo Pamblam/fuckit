@@ -2,16 +2,17 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faSpinner } from '@fortawesome/free-solid-svg-icons';
-import { AdminPostsTable } from '../components/AdminPostsTable.jsx';
 import { LoginForm } from '../components/LoginForm.jsx';
+import { useNavigate } from "react-router-dom";
 
-export function Admin({User}){
+export function Login({User}){
+	const navigate = useNavigate();
+
 	let [loggedIn, setloggedIn] = React.useState(null);
 
 	React.useEffect(()=>{
 		(async ()=>{
 			let valid = await User.validateSession();
-			console.log('valid', valid);
 			setloggedIn(valid);
 		})();
 	}, []);
@@ -21,13 +22,13 @@ export function Admin({User}){
 	</div>);
 
 	if(loggedIn === true){
-		cmp = (<AdminPostsTable />);
+		navigate('/admin');
 	}else{
 		cmp = (<LoginForm onSuccess={()=>setloggedIn(true)} User={User} />);
 	}
 
 	return (<div>
-		<h1><FontAwesomeIcon icon={faCode} /> Admin Area</h1>
+		<h1><FontAwesomeIcon icon={faCode} /> Login</h1>
 		{cmp}
 	</div>);
 } 
