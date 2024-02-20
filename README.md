@@ -1,6 +1,6 @@
-# fuckit
+# Fuckit
 
-Wanted to set up a simple blog, Wordpress is too heavy, Pico is too light. Fuckit. Rolling my own.
+I wanted to set up a simple blog, Wordpress is too heavy, Pico is too light. Fuck it. Rolling my own.
 
 Fuckit is a simple CMS designed for programmers. It's built for Apache, uses PHP and SQLite on the back side and the included front-end is a ReactJS and Bootstrap 5 SPA.
 
