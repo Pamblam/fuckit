@@ -6,3 +6,4 @@ Fuckit is a simple PHP, SQLite, and ReactJS CMS for programmers. You theme it by
 
 ## Set up notes
 - Set the app's base URL in `src/config.js`
+- Ensure PHP User has read/write permissions on the db file `database/fuckit.db`
