@@ -124,7 +124,7 @@ if($rebuilding_config){
 	}
 }
 
-echo "All set. Give it a try.\n";
+echo "All set.\n";
 exit(0);
 
 function getNewUsername(){
