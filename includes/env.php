@@ -2,7 +2,19 @@
 
 define('APP_ROOT', realpath(dirname(dirname(__FILE__))));
 
-$pdo = new PDO('sqlite:'.APP_ROOT.'/database/fuckit.db');
+$config = null;
+$pdo = null;
+
+$config_file = APP_ROOT."/config/config.json";
+$db_file = APP_ROOT.'/database/fuckit.db';
+
+if(file_exists($config_file)){
+	$config = json_decode(file_get_contents($config_file));
+}
+
+if(file_exists($db_file)){
+	$pdo = new PDO('sqlite:'.$db_file);
+}
 
 spl_autoload_register(function ($class) {
 	$class_paths = [

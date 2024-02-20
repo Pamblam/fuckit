@@ -5,7 +5,9 @@
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack"
+        "build": "webpack",
+		"setup": "npm i && php -q ./scripts/setup.php",
+		"create_user": "php -q ./scripts/create_user.php"
     },
     "repository": {
         "type": "git",

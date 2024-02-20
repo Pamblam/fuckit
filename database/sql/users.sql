@@ -5,4 +5,3 @@ CREATE TABLE IF NOT EXISTS `users` (
   `display_name` TEXT NOT NULL
 );
 INSERT INTO `users` (`username`, `password`, `display_name`) VALUES ('system', '-', 'System');
-INSERT INTO `users` (`username`, `password`, `display_name`) VALUES ('user', '5f4dcc3b5aa765d61d8327deb882cf99', 'Default User');
