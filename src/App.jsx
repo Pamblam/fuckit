@@ -3,15 +3,26 @@ import ReactDOM from 'react-dom/client';
 import {Navbar} from './components/Navbar.jsx';
 import {Footer} from './components/Footer.jsx';
 import {Outlet} from 'react-router';
+import {userSession} from './modules/UserSession.js';
 
-const Home = React.lazy(()=>import('./views/Home.jsx').then(module => ({ default: module.Home })));
+export const AppStateContext = React.createContext();
 
-export function App({User}){
-
-	return (<div className="container">
-		<Navbar />
-		<Outlet />
-		<Footer User={User} />
-	</div>);
+export function App(){
+	const [sessionState, setSessionState] = React.useState(null);
+	React.useEffect(()=>{
+		(async ()=>{
+			await userSession.validateSession();
+			if(userSession.isLoggedIn()) setSessionState(true);
+		})();
+	}, []);
+	
+	let appStateContextValue = {session:[sessionState, setSessionState], userSession};
+	return (<AppStateContext.Provider value={appStateContextValue}>
+		<div className="container">
+			<Navbar />
+			<Outlet />
+			<Footer />
+		</div>
+	</AppStateContext.Provider>);
 
 }

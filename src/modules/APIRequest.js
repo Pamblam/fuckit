@@ -1,10 +1,11 @@
 export class APIRequest {
 
-	constructor(path) {
+	constructor(path, session=null) {
 		this.endpoint = "./api/";
 		this.path = path;
 		this.params = {};
 		this.abortController = new AbortController();
+		this.session = session;
 	}
 
 	get(params) {
@@ -42,30 +43,41 @@ export class APIRequest {
 	}
 
 	async send() {
+
+		let endpoint = `${this.endpoint}${this.path}`;
+
 		let opts = {
 			method: this.method,
 			signal: this.abortController.signal,
 		};
-		let endpoint = `${this.endpoint}${this.path}`;
-		let headers = {};
-		let token = localStorage.getItem('x-auth-token');
-		if (token) headers.Authorization = token;
-		opts.headers = headers;
 
-		if (this.method === 'GET') {
-			let params = new URLSearchParams(this.params);
-			endpoint += `?${params.toString()}`;
-		} else {
-			let fd = new FormData();
-			Object.keys(this.params).forEach(key => {
-				fd.append(key, this.params[key])
-			});
-			opts.body = fd;
+		if(this.session && this.session.get('token')){
+			let headers = {};
+			headers.Authorization = this.session.get('token');
+			opts.headers = headers;
 		}
 
+		if(Object.keys(this.params).length){
+			if (this.method === 'GET') {
+				let params = new URLSearchParams(this.params);
+				endpoint += `?${params.toString()}`;
+			} else {
+				let fd = new FormData();
+				Object.keys(this.params).forEach(key => {
+					fd.append(key, this.params[key])
+				});
+				opts.body = fd;
+			}
+		}
+		
+
 		let response = await fetch(endpoint, opts);
-		let token_header = response.headers.get('x-auth-token');
-		if (token_header) localStorage.setItem('x-auth-token', token_header);
+
+		if(this.session){
+			let token_header = response.headers.get('x-auth-token');
+			if (token_header) this.session.set('token', token_header);
+		}
+		
 		return await response.json();
 	}
 }
