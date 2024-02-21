@@ -1,6 +1,6 @@
 <?php
 
-class SessionController extends Controller{
+class SessionController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {
 		parent::__construct($pdo, $response, $id);
@@ -31,7 +31,7 @@ class SessionController extends Controller{
 			if(empty($_POST['username'])) $this->response->setError("Missing parameter: username", 400)->send();
 			if(empty($_POST['password'])) $this->response->setError("Missing parameter: password", 400)->send();
 			$user = User::fromColumn($this->pdo, 'username', $_POST['username']);
-			if(!$user || $user->get('password') !== md5($_POST['password']))  $this->response->setError("Invalid login", 400)->send();
+			if(!$user || $user->get('password') !== md5($_POST['password'])) $this->response->setError("Invalid login", 400)->send();
 			// do something to create a new session here...
 			$new_token = Session::generateToken();
 			$this->model_instance->set('ip', Session::getIP());

@@ -1,6 +1,6 @@
 <?php
 
-class ImageController extends Controller{
+class ImageController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {
 		parent::__construct($pdo, $response, $id);

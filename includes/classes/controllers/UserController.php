@@ -1,6 +1,6 @@
 <?php
 
-class UserController extends Controller{
+class UserController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {
 		parent::__construct($pdo, $response, $id);

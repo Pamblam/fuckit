@@ -1,6 +1,6 @@
 <?php
 
-class PostController extends Controller{
+class PostController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {
 		parent::__construct($pdo, $response, $id);
