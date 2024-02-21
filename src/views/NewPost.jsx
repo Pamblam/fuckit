@@ -18,12 +18,39 @@ export function NewPost(){
 	const img_btn_ref = React.useRef();
 	const fi_instance_ref = React.useRef();
 	const graph_img_ref = React.useRef();
+	const post_id_ref = React.useRef();
+	const submitting_ref = React.useRef(false);
 
 	let crumbs = [{title:"Home", path:"/"},{title:"Admin",path:'/admin'},{title:"New Post",path:'/new_post'}];
 
-	const onSumbit = e=>{
+	const onSumbit = async e=>{
 		e.preventDefult();
-		console.log('caught form submission');
+		if(submitting_ref.current) return;
+		submitting_ref.current = true;
+		const title = document.getElementById('new_post_title');
+		const summary = document.getElementById('new_post_title');
+		const body = document.getElementById('new_post_title');
+		const publish = document.getElementById('new_post_title');
+		const graph_img = graph_img_ref.current;
+		const post_id = post_id_ref.current;
+
+		if(post_id){
+			console.log('update post');
+		}else{
+			let res = await new APIRequest('Post').post({
+				title,
+				summary,
+				body,
+				publish,
+				graph_img
+			});
+			if(res.has_error){
+				setErrorMessage(res.message);
+			}
+		}
+		
+
+		submitting_ref.current = false;
 	};
 
 	const set_img_btn_ref = React.useCallback(node=>{
@@ -100,7 +127,7 @@ export function NewPost(){
 		if (set_preview_tab_ref.current) {
 			preview_tab_ref.current.removeEventListener('show.bs.tab', getMDPreview);
 		}
-		if (node) {
+		if(node) {
 			preview_tab_ref.current = node;
 			preview_tab_ref.current.addEventListener('show.bs.tab', getMDPreview);
 		}
@@ -157,7 +184,7 @@ export function NewPost(){
 				</div>
 			</div>
 
-			<button className="mb-3 btn btn-primary" type='submit'><FontAwesomeIcon icon={faCircleCheck} /> Save</button>
+			<button className="mb-3 btn btn-primary" type='submit' id='new_post_submit_btn'><FontAwesomeIcon icon={faCircleCheck} /> Save</button>
 		</form>
 	</AdminPage>);
 } 

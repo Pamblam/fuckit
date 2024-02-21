@@ -9,5 +9,5 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `summary` TEXT NULL,
   `slug` TEXT NULL,
   `graph_img` TEXT NULL,
-  `published` INTEGER NOT NULL,
+  `published` INTEGER NOT NULL
 );

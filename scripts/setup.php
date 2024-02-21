@@ -117,7 +117,7 @@ if($rebuilding_config){
 	if(empty($base_url)) $base_url = '/';
 	$config_obj['base_url'] = $base_url;
 
-	$max_upload_size = promptUser("Enter the app's max image upload size (default ):");
+	$max_upload_size = promptUser("Enter the app's max image upload size (default 8000000):");
 	if(empty($max_upload_size)) $max_upload_size = '8000000';
 	$config_obj['max_upload_size'] = $max_upload_size;
 
@@ -128,7 +128,6 @@ if($rebuilding_config){
 	}
 }
 
-echo "All set.\n";
 exit(0);
 
 function getNewUsername(){

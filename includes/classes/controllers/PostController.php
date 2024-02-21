@@ -19,6 +19,13 @@ class PostController extends ModelController{
 	}
 
 	public function post(){
+		$user = $this->getUser();
+
+		// Validate the request
+		if(empty($user)){
+			$this->response->setError("Not logged in", 401)->send();
+		}
+
 		
 	}
 
