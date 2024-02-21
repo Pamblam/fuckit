@@ -5,3 +5,5 @@ database/database.db
 config/config.json
 public/assets/js/*
 !public/assets/js/bootstrap.bundle.min.js
+public/assets/images/*
+!public/assets/images/.gitkeep

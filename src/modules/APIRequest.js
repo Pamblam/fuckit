@@ -64,7 +64,11 @@ export class APIRequest {
 			} else {
 				let fd = new FormData();
 				Object.keys(this.params).forEach(key => {
-					fd.append(key, this.params[key])
+					if(this.params[key] instanceof File){
+						fd.append(key, this.params[key], this.params[key].name);
+					}else{
+						fd.append(key, this.params[key]);
+					}
 				});
 				opts.body = fd;
 			}

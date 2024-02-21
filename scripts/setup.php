@@ -117,6 +117,10 @@ if($rebuilding_config){
 	if(empty($base_url)) $base_url = '/';
 	$config_obj['base_url'] = $base_url;
 
+	$max_upload_size = promptUser("Enter the app's max image upload size (default ):");
+	if(empty($max_upload_size)) $max_upload_size = '8000000';
+	$config_obj['max_upload_size'] = $max_upload_size;
+
 	$res = @file_put_contents($config_file, json_encode($config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 	if(false === $res){
 		echo "Can't create config file. Ensure PHP has correct permissions and ownership.\n";
