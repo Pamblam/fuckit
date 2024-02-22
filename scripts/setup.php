@@ -98,7 +98,7 @@ if(file_exists($config_file)){
 
 	if($rebuilding_config){
 		echo "Truncating config.\n";
-		$fp = fopen($db_file, "w");
+		$fp = fopen($config_file, "w");
 		if(false === $fp){
 			echo "Can't open config file. Ensure PHP has correct permissions and ownership.\n";
 			exit(1);

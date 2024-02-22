@@ -24,29 +24,37 @@ export function NewPost(){
 	let crumbs = [{title:"Home", path:"/"},{title:"Admin",path:'/admin'},{title:"New Post",path:'/new_post'}];
 
 	const onSumbit = async e=>{
-		e.preventDefult();
+		e.preventDefault();
 		if(submitting_ref.current) return;
 		submitting_ref.current = true;
-		const title = document.getElementById('new_post_title');
-		const summary = document.getElementById('new_post_title');
-		const body = document.getElementById('new_post_title');
-		const publish = document.getElementById('new_post_title');
+		const title = document.getElementById('new_post_title').value.trim();
+		const summary = document.getElementById('new_post_title').value.trim();
+		const body = document.getElementById('new_post_title').value.trim();
+		const publish = document.getElementById('new_post_title').checked ? 1 : 0;
 		const graph_img = graph_img_ref.current;
 		const post_id = post_id_ref.current;
 
+		let props = {
+			title,
+			summary,
+			body,
+			publish,
+			graph_img
+		};
+
+		if(graph_img) props.graph_img = graph_img;
+
 		if(post_id){
-			console.log('update post');
-		}else{
-			let res = await new APIRequest('Post').post({
-				title,
-				summary,
-				body,
-				publish,
-				graph_img
-			});
+			let res = await new APIRequest(`Post/${post_id}`, userSession).patch(props);
 			if(res.has_error){
 				setErrorMessage(res.message);
 			}
+		}else{
+			let res = await new APIRequest('Post', userSession).post(props);
+			if(res.has_error){
+				setErrorMessage(res.message);
+			}
+			post_id_ref.current = res.data.Post.id;
 		}
 		
 
