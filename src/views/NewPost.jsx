@@ -11,6 +11,7 @@ export function NewPost(){
 	const {userSession} = React.useContext(AppStateContext);
 	const navigate = useNavigate();
 	const [errorMessage, setErrorMessage] = React.useState();
+	const [successMessage, setSuccessMessage] = React.useState();
 
 	const textarea_ref = React.useRef();
 	const preview_tab_ref = React.useRef();
@@ -28,9 +29,9 @@ export function NewPost(){
 		if(submitting_ref.current) return;
 		submitting_ref.current = true;
 		const title = document.getElementById('new_post_title').value.trim();
-		const summary = document.getElementById('new_post_title').value.trim();
-		const body = document.getElementById('new_post_title').value.trim();
-		const publish = document.getElementById('new_post_title').checked ? 1 : 0;
+		const summary = document.getElementById('new_post_summary').value.trim();
+		const body = document.getElementById('new_post_textarea').value.trim();
+		const publish = document.getElementById('new_post_publish').checked ? 1 : 0;
 		const graph_img = graph_img_ref.current;
 		const post_id = post_id_ref.current;
 
@@ -48,11 +49,15 @@ export function NewPost(){
 			let res = await new APIRequest(`Post/${post_id}`, userSession).patch(props);
 			if(res.has_error){
 				setErrorMessage(res.message);
+			}else{
+				setSuccessMessage(`Post updated at ${new Date().toLocaleTimeString()}`);
 			}
 		}else{
 			let res = await new APIRequest('Post', userSession).post(props);
 			if(res.has_error){
 				setErrorMessage(res.message);
+			}else{
+				setSuccessMessage(`Post saved at ${new Date().toLocaleTimeString()}`);
 			}
 			post_id_ref.current = res.data.Post.id;
 		}
@@ -148,7 +153,8 @@ export function NewPost(){
 	return (<AdminPage crumbs={crumbs}>
 		<form onSubmit={onSumbit}>
 
-			{errorMessage && (<div className='alert alert-danger'>{errorMessage}</div>)}
+			{successMessage && (<div className='alert alert-success alert-dismissible'>{successMessage}<button type="button" className="btn-close" aria-label="Close" onClick={e=>{e.preventDefault(); setSuccessMessage(null);}}></button></div>)}
+			{errorMessage && (<div className='alert alert-danger alert-dismissible'>{errorMessage}<button type="button" className="btn-close" aria-label="Close" onClick={e=>{e.preventDefault(); setErrorMessage(null);}}></button></div>)}
 
 			<div className="mb-3">
 				<label htmlFor="new_post_title" className="form-label">Post Title</label>

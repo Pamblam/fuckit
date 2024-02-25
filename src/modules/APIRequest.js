@@ -1,7 +1,9 @@
+import {base_url} from '../../config/config.json';
+
 export class APIRequest {
 
 	constructor(path, session=null) {
-		this.endpoint = "./api/";
+		this.endpoint = `${base_url}api/`;
 		this.path = path;
 		this.params = {};
 		this.abortController = new AbortController();
