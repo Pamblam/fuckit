@@ -7,6 +7,10 @@ class Model{
 	protected $columns;
 	protected $in_db = false;
 	
+	public function isInDB(){
+		return $this->in_db;
+	}
+
 	public function __construct($pdo) {
 		$this->pdo = $pdo;
 	}

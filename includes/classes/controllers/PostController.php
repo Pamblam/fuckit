@@ -16,11 +16,39 @@ class PostController extends ModelController{
 
 	public function get(){
 		// we can get it by either slug or id
-		$post = false;
-		if(false !== $this->model_instance) {
-			$post = $this->model_instance->getColumns();
+		if(!$this->model_instance->isInDB() && !empty($_GET['slug'])) {
+			$this->model_instance = Post::fromColumn($this->pdo, 'slug', $_GET['slug']);
 		}
+		if(false == $this->model_instance){
+			$this->response->setError("Post not found", 404)->send();
+		}
+		$author = User::fromId($this->pdo, $this->model_instance->get('id'));
+		$edited_by = false;
+		if(!empty($this->model_instance->get('editor_id'))) $edited_by = User::fromID($this->pdo, $this->model_instance->get('editor_id'));
+		
+		if(false !== $author){
+			$author = [
+				'id' => $author->get('id'),
+				'username' => $author->get('username'),
+				'display_name' => $author->get('display_name'),
+			];
+		}
+
+		if(false !== $edited_by){
+			$edited_by = [
+				'id' => $edited_by->get('id'),
+				'username' => $edited_by->get('username'),
+				'display_name' => $edited_by->get('display_name'),
+			];
+		}
+
+		$post = $this->model_instance->getColumns();
+		$Parsedown = new Parsedown();
+		$post['body'] = $Parsedown->text($post['body']);
+
 		$this->response->setData([
+			'author' => $author,
+			'edited_by' => $edited_by,
 			'post' => $post
 		]);
 	}
