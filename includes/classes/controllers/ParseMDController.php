@@ -2,8 +2,8 @@
 
 class ParseMDController extends Controller{
 
-	public function __construct($pdo, $response, $id=null) {
-		parent::__construct($pdo, $response, $id);
+	public function __construct($pdo, $response) {
+		parent::__construct($pdo, $response);
 	}
 
 	public function get(){
