@@ -22,18 +22,19 @@ export function Post(){
             if(res.has_error){
                 navigate('/404')
             }
-            console.log("setting post", res.data);
             setPost(res.data);
         })();
-    }, [slugOrId]);
+    }, []);
 
     let component = (<p>Loading</p>);
 
     if(post){
         component = (<>
             <h3>{post.post.title}</h3>
+            <small>by {post.author.display_name} on {new Date(post.post.create_ts * 1000).toLocaleDateString()}</small>
+            <hr />
             <div dangerouslySetInnerHTML={{__html: post.post.body}}></div>
-            <small>by {post.author.display_name}</small>
+            <br/>
         </>);
         if(post.post.publish !== '1'){
             component = (<AuthPage>{component}</AuthPage>);

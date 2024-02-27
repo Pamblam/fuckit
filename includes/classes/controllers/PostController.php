@@ -69,6 +69,9 @@ class PostController extends ModelController{
 			$this->response->setError("Missing body", 400)->send();
 		}
 
+		$slug = Post::generateSlug($_POST["title"]);
+		$slug_exists = Post::fromColumn($this->pdo, 'slug', $slug) !== false;
+
 		$published = isset($_POST["publish"]) && $_POST["publish"] == 1 ? 1 : 0;
 		$this->model_instance->set('create_ts', time());
 		$this->model_instance->set('author_id', $user->get('id'));
@@ -76,7 +79,12 @@ class PostController extends ModelController{
 		$this->model_instance->set('body', $_POST['body']);
 		if(!empty($_POST['summary'])) $this->model_instance->set('summary', $_POST['summary']);
 		if(!empty($_POST['graph_img'])) $this->model_instance->set('graph_img', $_POST['graph_img']);
+		if(!$slug_exists && !is_numeric($slug)) $this->model_instance->set('slug', $slug);
 		$this->model_instance->set('published', $published);
+		$this->model_instance->save();
+
+		// if the slug wasn't unique, prepend the id and set it again
+		if($slug_exists) $this->model_instance->set('slug', $this->model_instance->get('id')."_".$slug);
 		$this->model_instance->save();
 
 		$this->response->setData([
@@ -115,22 +123,14 @@ class PostController extends ModelController{
 			$this->response->setError("Missing body", 400)->send();
 		}
 
-		$slug = Post::generateSlug($_PATCH["title"]);
-		$slug_exists = Post::fromColumn($this->pdo, 'slug', $slug) !== false;
-
 		$published = isset($_PATCH["publish"]) && $_PATCH["publish"] == 1 ? 1 : 0;
 		$this->model_instance->set('edit_ts', time());
 		$this->model_instance->set('editor_id', $user->get('id'));
 		$this->model_instance->set('title', $_PATCH['title']);
 		$this->model_instance->set('body', $_PATCH['body']);
 		if(!empty($_PATCH['summary'])) $this->model_instance->set('summary', $_PATCH['summary']);
-		if(!$slug_exists && !is_numeric($slug)) $this->model_instance->set('slug', $slug);
 		if(!empty($_PATCH['graph_img'])) $this->model_instance->set('graph_img', $_PATCH['graph_img']);
 		$this->model_instance->set('published', $published);
-		$this->model_instance->save();
-
-		// Make sure the slug is unique
-		if($slug_exists) $this->model_instance->set('slug', $this->model_instance->get('id')."_".$slug);
 		$this->model_instance->save();
 
 		$this->response->setData([

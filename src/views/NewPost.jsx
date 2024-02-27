@@ -39,25 +39,33 @@ export function NewPost(){
 			title,
 			summary,
 			body,
-			publish,
-			graph_img
+			publish
 		};
 
 		if(graph_img) props.graph_img = graph_img;
+
+		let verbiage1 = publish == 1 ? 'Post' : 'Draft'
+		let verbiage2 = post_id ? 'updated' : 'saved'
+		let verbiage3 = publish == 1 ? 'published' : 'preview'
+		let time = new Date().toLocaleTimeString();
 
 		if(post_id){
 			let res = await new APIRequest(`Post/${post_id}`, userSession).patch(props);
 			if(res.has_error){
 				setErrorMessage(res.message);
 			}else{
-				setSuccessMessage(`Post updated at ${new Date().toLocaleTimeString()}`);
+				let link = location.href.replace(/\/new_post\/?/, `/post/${res.data.Post.slug}`);
+				let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
+				setSuccessMessage(message);
 			}
 		}else{
 			let res = await new APIRequest('Post', userSession).post(props);
 			if(res.has_error){
 				setErrorMessage(res.message);
 			}else{
-				setSuccessMessage(`Post saved at ${new Date().toLocaleTimeString()}`);
+				let link = location.href.replace(/\/new_post\/?/, `/post/${res.data.Post.slug}`);
+				let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
+				setSuccessMessage(message);
 			}
 			post_id_ref.current = res.data.Post.id;
 		}
@@ -153,7 +161,7 @@ export function NewPost(){
 	return (<AdminPage crumbs={crumbs}>
 		<form onSubmit={onSumbit}>
 
-			{successMessage && (<div className='alert alert-success alert-dismissible'>{successMessage}<button type="button" className="btn-close" aria-label="Close" onClick={e=>{e.preventDefault(); setSuccessMessage(null);}}></button></div>)}
+			{successMessage && (<div className='alert alert-success alert-dismissible'><span dangerouslySetInnerHTML={{__html: successMessage}}></span><button type="button" className="btn-close" aria-label="Close" onClick={e=>{e.preventDefault(); setSuccessMessage(null);}}></button></div>)}
 			{errorMessage && (<div className='alert alert-danger alert-dismissible'>{errorMessage}<button type="button" className="btn-close" aria-label="Close" onClick={e=>{e.preventDefault(); setErrorMessage(null);}}></button></div>)}
 
 			<div className="mb-3">
