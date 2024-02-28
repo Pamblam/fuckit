@@ -1,6 +1,6 @@
 <?php
 
-class ServerTableController extends Controller{
+class PaginationController extends Controller{
 
 	public function __construct($pdo, $response) {
 		parent::__construct($pdo, $response);
@@ -44,11 +44,22 @@ class ServerTableController extends Controller{
 		$record_count = intval($this->pdo->query("select count(1) from ($base_query) `q`")->fetchColumn());
 		$total_pages = ceil($record_count / $page_size);
 
+		$where_clause = '';
+		$params = [];
+		if(!empty($_GET['search_term'])){
+			foreach($query_params['searchable_cols'] as $idx=>$col){
+				$where_clause .= ($idx == 0 ? 'where ' : ' or ') . "lower(`q`.`$col`) like ?";
+				$params[] = "%".strtolower($_GET['search_term'])."%";
+			}
+		}
+
 		$offset = ($page - 1) * $page_size;
-		$results = $this->pdo->query("select * from ($base_query) `q` order by `q`.`$order_by` $order_dir limit $page_size offset $offset");
+		$sql = "select * from ($base_query) `q` $where_clause order by lower(`q`.`$order_by`) $order_dir limit $page_size offset $offset";
+		$stmt = $this->pdo->prepare($sql);
+		$stmt->execute($params);
 
 		$this->response->setData([
-			'results' => $results->fetchAll(PDO::FETCH_ASSOC),
+			'results' => $stmt->fetchAll(PDO::FETCH_ASSOC),
 			'total_records' => $record_count,
 			'total_pages' => $total_pages,
 			'page' => $page,
@@ -62,6 +73,7 @@ class ServerTableController extends Controller{
 		switch($name){
 			case "admin_posts":
 				return [
+					'searchable_cols' => ['author_name', 'title', 'slug'],
 					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'title', 'slug', 'action'],
 					'sql' => "
 						select 

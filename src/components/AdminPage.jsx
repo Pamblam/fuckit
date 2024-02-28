@@ -15,7 +15,7 @@ export function AdminPage({children, crumbs}){
 
 	let activePage = crumbs.at(-1);
 	let adminLinks = [
-		{title: "Admin Dashboard", path: "/admin"},
+		{title: "All Posts", path: "/admin"},
 		{title: "New Post", path: "/new_post"}
 	];
 
