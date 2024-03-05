@@ -2,7 +2,7 @@ import React from 'react';
 import { ServerTable } from '../components/ServerTable.jsx';
 import { AdminPage } from '../components/AdminPage.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faXmark, faLink } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faLink, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 export function AllPosts(){
@@ -20,7 +20,11 @@ export function AllPosts(){
 			return v == '1' ? (<span style={{color:"green"}}><FontAwesomeIcon icon={faCheck} /></span>) : (<span style={{color:"red"}}><FontAwesomeIcon icon={faXmark} /></span>);
 		}},
 		{col: 'action', display: 'Action', render(v, r){ 
-			return <Link to={`/post/${r.slug || r.id}`}><FontAwesomeIcon icon={faLink} /></Link>
+			return <>
+				<Link to={`/post/${r.slug || r.id}`}><FontAwesomeIcon icon={faLink} /></Link>
+				<span style={{margin:'.25em'}}></span>
+				<Link to={`/edit_post/${r.slug || r.id}`}><FontAwesomeIcon icon={faPenToSquare} /></Link>
+			</>
 		}}
 	];
 

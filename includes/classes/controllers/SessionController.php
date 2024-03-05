@@ -42,7 +42,14 @@ class SessionController extends ModelController{
 			$this->model_instance->set('user_agent', $ua);
 			$this->model_instance->save();
 			$this->response->setHeader("x-auth-token: $new_token");
-			$page_size = empty($_GET['page_size']) ? 10 : intval($_GET['page_size']);
+			$this->response->setData([
+				'LoggedIn' => false,
+				'User' => [
+					"id" => $user->get('id'),
+					"username" => $user->get('username'),
+					"display_name" => $user->get('display_name')
+				]
+			]);
 		}else{
 			$this->response->setData([
 				'LoggedIn' => true,

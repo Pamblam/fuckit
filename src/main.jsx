@@ -7,6 +7,7 @@ import {base_url} from '../config/config.json';
 import {Home} from './views/Home.jsx';
 import {AllPosts} from './views/AllPosts.jsx';
 import {NewPost} from './views/NewPost.jsx';
+import {EditPost} from './views/EditPost.jsx';
 import {NotFound} from './views/NotFound.jsx';
 import {Post} from './views/Post.jsx';
 
@@ -21,6 +22,7 @@ import {Post} from './views/Post.jsx';
 						<Route path="/admin" element={<AllPosts />} />
 						<Route path="/new_post" element={<NewPost />} />
 						<Route path="/post/:slugOrId" element={<Post />} />
+						<Route path="/edit_post/:slugOrId" element={<EditPost />} />
 						<Route path="*" element={<NotFound />}  />
 					</Route>
 				</Routes>
