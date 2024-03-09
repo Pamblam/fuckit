@@ -17,8 +17,39 @@ class ImageController extends ModelController{
 		if(empty($user)){
 			$this->response->setError("Not logged in", 401)->send();
 		}
+
 		if(empty($_FILES) || empty($_FILES["img"])){
 			$this->response->setError("No file provided", 400)->send();
+		}
+
+		if($_FILES['img']['error'] !== UPLOAD_ERR_OK){
+			switch ($_FILES['img']['error']) {
+				case UPLOAD_ERR_INI_SIZE:
+					$message = "The uploaded file exceeds the max file size.";
+					break;
+				case UPLOAD_ERR_FORM_SIZE:
+					$message = "The uploaded file exceeds the MAX_FILE_SIZE directive that was specified in the HTML form.";
+					break;
+				case UPLOAD_ERR_PARTIAL:
+					$message = "The uploaded file was only partially uploaded.";
+					break;
+				case UPLOAD_ERR_NO_FILE:
+					$message = "No file was uploaded.";
+					break;
+				case UPLOAD_ERR_NO_TMP_DIR:
+					$message = "Missing a temporary folder.";
+					break;
+				case UPLOAD_ERR_CANT_WRITE:
+					$message = "Failed to write file to disk.";
+					break;
+				case UPLOAD_ERR_EXTENSION:
+					$message = "File upload stopped by extension.";
+					break;
+				default:
+					$message = "Unknown upload error.";
+					break;
+			}
+			$this->response->setError($message, 400)->send();
 		}
 
 		// Set some variables

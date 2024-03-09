@@ -5,6 +5,7 @@
  */
 
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
+require APP_ROOT."/includes/functions/file_upload_max_size.php";
 
 echo "\n\nInstalling Fuckit\n";
 echo "=================\n";
@@ -12,6 +13,8 @@ echo "Setting up database\n";
 
 $rebuilding_database = true;
 $rebuilding_config = true;
+$config_default_base_url = '/';
+$config_defualt_max_file_size = 8000000;
 
 // Opening the file in 'w' mode truncates it, 
 // resetting the exiting database, if there is one
@@ -97,6 +100,14 @@ if(file_exists($config_file)){
 	if($rebuild_resp === 'n') $rebuilding_config = false;
 
 	if($rebuilding_config){
+
+		try{
+			$cfg = @file_get_contents($config_file);
+			$cfg = @json_decode($cfg);
+			if(!empty($cfg) && !empty($cfg->base_url)) $config_default_base_url = $cfg->base_url;
+			if(!empty($cfg) && !empty($cfg->max_upload_size)) $config_defualt_max_file_size = $cfg->max_upload_size;
+		}catch(Exception $e){}
+
 		echo "Truncating config.\n";
 		$fp = fopen($config_file, "w");
 		if(false === $fp){
@@ -113,14 +124,10 @@ if($rebuilding_config){
 	// Set the base URL
 	echo "Setting the relative URL to the `public` directory of the app.\n";
 	echo "If the app is hosted in a subdirectory (eg: localhost/fuckit/public/) then the relative URL would be anything after your domain (eg: /fuckit/public/).\n";
-	$base_url = promptUser("Enter the app's base URL (default /):");
-	if(empty($base_url)) $base_url = '/';
+	$base_url = promptUser("Enter the app's base URL (default $config_default_base_url):");
+	if(empty($base_url)) $base_url = $config_default_base_url;
 	$config_obj['base_url'] = $base_url;
-
-	$max_upload_size = promptUser("Enter the app's max image upload size (default 8000000):");
-	if(empty($max_upload_size)) $max_upload_size = '8000000';
-	$config_obj['max_upload_size'] = $max_upload_size;
-
+	$config_obj['max_upload_size'] = getMaxFileSize($config_defualt_max_file_size);
 	$res = @file_put_contents($config_file, json_encode($config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 	if(false === $res){
 		echo "Can't create config file. Ensure PHP has correct permissions and ownership.\n";
@@ -129,6 +136,28 @@ if($rebuilding_config){
 }
 
 exit(0);
+
+function getMaxFileSize($config_defualt_max_file_size){
+
+	$ini_max_file_size = file_upload_max_size();
+	if($config_defualt_max_file_size > $ini_max_file_size){
+		$config_defualt_max_file_size = $ini_max_file_size;
+	}
+
+	$max_upload_size = promptUser("Enter the app's max image upload size (default $config_defualt_max_file_size):");
+	if(empty($max_upload_size)) $max_upload_size = $config_defualt_max_file_size;
+	if(!is_numeric($max_upload_size)){
+		echo "Invalid input. Enter the max upload size, in numbers.\n";
+		return getMaxFileSize($config_defualt_max_file_size);
+	}
+
+	$max_upload_size = intval($max_upload_size);
+	if($max_upload_size > $ini_max_file_size){
+		echo "Invalid input. That was greater than PHP's max upload size of $ini_max_file_size.\n";
+		return getMaxFileSize($config_defualt_max_file_size);
+	}
+	return $max_upload_size;
+}
 
 function getNewUsername(){
 	global $pdo;

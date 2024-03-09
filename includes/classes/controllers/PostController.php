@@ -14,15 +14,22 @@ class PostController extends ModelController{
 		$this->response->setData(['slug' => $slug]);
 	}
 
+	public function recent(){
+		// return recent posts for the sidebar...
+	}
+
 	public function get(){
 		// we can get it by either slug or id
 		if(!$this->model_instance->isInDB() && !empty($_GET['slug'])) {
 			$this->model_instance = Post::fromColumn($this->pdo, 'slug', $_GET['slug']);
 		}
+
+		$return_raw_md = isset($_GET['raw']) && $_GET['raw'] == '1';
+
 		if(false == $this->model_instance){
 			$this->response->setError("Post not found", 404)->send();
 		}
-		$author = User::fromId($this->pdo, $this->model_instance->get('id'));
+		$author = User::fromId($this->pdo, $this->model_instance->get('author_id'));
 		$edited_by = false;
 		if(!empty($this->model_instance->get('editor_id'))) $edited_by = User::fromID($this->pdo, $this->model_instance->get('editor_id'));
 		
@@ -43,8 +50,11 @@ class PostController extends ModelController{
 		}
 
 		$post = $this->model_instance->getColumns();
-		$Parsedown = new Parsedown();
-		$post['body'] = $Parsedown->text($post['body']);
+		if(!$return_raw_md){
+			$Parsedown = new Parsedown();
+			$post['body'] = $Parsedown->text($post['body']);
+		}
+		
 
 		$this->response->setData([
 			'author' => $author,
