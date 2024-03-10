@@ -71,7 +71,7 @@ class PaginationController extends Controller{
 
 	private static function getQuery($name){
 		switch($name){
-			case "admin_posts":
+			case "all_posts":
 				return [
 					'searchable_cols' => ['author_name', 'title', 'slug'],
 					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'title', 'slug', 'action'],
@@ -89,6 +89,26 @@ class PaginationController extends Controller{
 							`posts` `p` 
 							left join 
 								`users` `u` on `u`.`id` = `p`.`author_id`"
+				];
+			case "all_posts_summary":
+				return [
+					'searchable_cols' => ['title', 'summary'],
+					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'graph_img', 'title', 'summary', 'slug'],
+					'sql' => "
+						select 
+							`p`.`id`
+							,`p`.`create_ts`
+							,`p`.`author_id` 
+							,`u`.`display_name` as `author_name` 
+							,`p`.`graph_img`
+							,`p`.`title`
+							,`p`.`summary`
+							,`p`.`slug`
+						from 
+							`posts` `p` 
+							left join 
+								`users` `u` on `u`.`id` = `p`.`author_id`
+						where `p`.`published` = 1"
 				];
 		}
 		return false;

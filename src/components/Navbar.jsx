@@ -5,10 +5,24 @@ import { useNavigate } from 'react-router';
 
 export function Navbar(){
 	const navigate = useNavigate();
+	let inputRef = React.useRef();
+
+	let setInputRef = React.useCallback(node=>{
+		if(node){
+			inputRef.current = node;
+		}
+	});
+
+	let submitSearch = e => {
+		e.preventDefault();
+		navigate('/search/'+encodeURIComponent(inputRef.current.value.trim()));
+	};
+
 	const onLogoClick = e => {
 		e.preventDefault();
 		navigate('/');
 	};
+
 	return (<nav className="navbar navbar-expand-lg bg-light mb-4">
 		<div className="container-fluid">
 			<a className="navbar-brand" href="#" onClick={onLogoClick}>
@@ -18,9 +32,9 @@ export function Navbar(){
 				<span className="navbar-toggler-icon" />
 			</button>
 			<div className="collapse navbar-collapse" id="navbarSupportedContent">
-				<form className="d-flex ms-auto" role="search">
+				<form className="d-flex ms-auto" role="search" onSubmit={submitSearch}>
 					<div className="input-group">
-						<input type="search" className="form-control" placeholder="Search" aria-label="Search" />
+						<input type="search" className="form-control" placeholder="Search" ref={setInputRef} />
 						<button className="btn btn-secondary" type="submit">
 							<FontAwesomeIcon icon={faMagnifyingGlass} />
 						</button>

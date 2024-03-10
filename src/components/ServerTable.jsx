@@ -71,11 +71,13 @@ export function ServerTable({columns, order_col, order_dir, query}){
 			}
 		}
 
-		pagination = (<nav aria-label="Page navigation example" className='float-end'>
-			<ul className="pagination">
-				{p_btns}
-			</ul>
-		</nav>);
+		pagination = (<div className='clearfix'>
+			<nav className='float-end'>
+				<ul className="pagination">
+					{p_btns}
+				</ul>
+			</nav>
+		</div>);
 	}
 
 	let caption = `Page ${page} of ${totalPages}`;

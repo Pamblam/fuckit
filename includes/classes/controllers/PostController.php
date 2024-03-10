@@ -14,10 +14,6 @@ class PostController extends ModelController{
 		$this->response->setData(['slug' => $slug]);
 	}
 
-	public function recent(){
-		// return recent posts for the sidebar...
-	}
-
 	public function get(){
 		// we can get it by either slug or id
 		if(!$this->model_instance->isInDB() && !empty($_GET['slug'])) {

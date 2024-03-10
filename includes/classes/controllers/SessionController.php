@@ -25,6 +25,44 @@ class SessionController extends ModelController{
 		}
 	}
 
+	public function updateToken(){
+		
+		// Get the (possibly expired) session
+		$session = $this->getSessionFromToken();
+		if(empty($session)) $this->response->setError("Invalid session", 400)->send();
+
+		// Get the user from the session
+		$user = User::fromID($this->pdo, $session->get('user_id'));
+
+		// Make sure the session matches the client's IP and UA
+		$ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
+		if($session->get('ip') !== Session::getIP()) $this->response->setError("Invalid IP", 400)->send();
+		if($session->get('user_agent') !== $ua) $this->response->setError("Invalid UA", 400)->send();
+
+		// Generate a new Session, with a new Token
+		$new_token = Session::generateToken();
+		$new_session = new Session($this->pdo);
+		$new_session->set('ip', Session::getIP());
+		$new_session->set('id', $new_token);
+		$new_session->set('start_time', time());
+		$new_session->set('user_id', $user->get('id'));
+		$new_session->set('user_agent', $ua);
+		$new_session->save();
+
+		// Delete the old session
+		$session->delete();
+
+		$this->response->setHeader("x-auth-token: $new_token");
+		$this->response->setData([
+			'LoggedIn' => true,
+			'User' => [
+				"id" => $user->get('id'),
+				"username" => $user->get('username'),
+				"display_name" => $user->get('display_name')
+			]
+		]);
+	}
+
 	public function post(){
 		$user = $this->getUser();
 		if($user === false){

@@ -29,6 +29,6 @@ export function AllPosts(){
 	];
 
 	return (<AdminPage crumbs={crumbs}>
-		<ServerTable columns={columns} query='admin_posts' />
+		<ServerTable columns={columns} query='all_posts' />
 	</AdminPage>);
 } 

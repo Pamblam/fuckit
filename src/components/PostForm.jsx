@@ -51,6 +51,17 @@ export function PostForm({slugOrId}){
         })();
     }, []);
 
+	const autoExpandTextarea = function(e){
+		if(e) e.stopPropagation();
+		this.setAttribute('rows', 1);
+		var cs = getComputedStyle(this);
+		var paddingTop = +cs.paddingTop.substr(0, cs.paddingTop.length-2);
+		var paddingBottom = +cs.paddingBottom.substr(0, cs.paddingBottom.length-2);
+		var lineHeight = +cs.lineHeight.substr(0, cs.lineHeight.length-2);
+		var rows = (this.scrollHeight - (paddingTop + paddingBottom)) / lineHeight;
+		this.setAttribute('rows', rows);
+	};
+
 	const onSumbit = async e=>{
 		e.preventDefault();
 		if(submitting_ref.current) return;
@@ -145,6 +156,7 @@ export function PostForm({slugOrId}){
 				if(!files || !files.length) return;
 				let file = files[0];
 				fi_instance_ref.current.clear_files();
+				console.log('userSession', userSession);
 				let res = await new APIRequest('Image', userSession).post({img: file});
 				if(res.has_error){
 					setErrorMessage(res.message);
@@ -159,6 +171,7 @@ export function PostForm({slugOrId}){
 				if(!lines.at(-1).trim()) lines[lines.length-1] = img_md;
 				else lines.push(img_md);
 				textarea_ref.current.value = lines.join("\n");
+				autoExpandTextarea.call(textarea_ref.current);
 
 				let text = textarea_ref.current.value;
 				new_post_preview_ref.current.innerHTML = '<p>Loading...</p>';
@@ -168,17 +181,6 @@ export function PostForm({slugOrId}){
 			});
 		}
 	});
-
-	const autoExpandTextarea = function(e){
-		if(e) e.stopPropagation();
-		this.setAttribute('rows', 1);
-		var cs = getComputedStyle(this);
-		var paddingTop = +cs.paddingTop.substr(0, cs.paddingTop.length-2);
-		var paddingBottom = +cs.paddingBottom.substr(0, cs.paddingBottom.length-2);
-		var lineHeight = +cs.lineHeight.substr(0, cs.lineHeight.length-2);
-		var rows = (this.scrollHeight - (paddingTop + paddingBottom)) / lineHeight;
-		this.setAttribute('rows', rows);
-	};
 
 	const set_textarea_ref = React.useCallback(node=>{
 		if (textarea_ref.current) {

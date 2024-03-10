@@ -8,6 +8,7 @@ import {Home} from './views/Home.jsx';
 import {AllPosts} from './views/AllPosts.jsx';
 import {NewPost} from './views/NewPost.jsx';
 import {EditPost} from './views/EditPost.jsx';
+import {Search} from './views/Search.jsx';
 import {NotFound} from './views/NotFound.jsx';
 import {Post} from './views/Post.jsx';
 
@@ -23,6 +24,7 @@ import {Post} from './views/Post.jsx';
 						<Route path="/new_post" element={<NewPost />} />
 						<Route path="/post/:slugOrId" element={<Post />} />
 						<Route path="/edit_post/:slugOrId" element={<EditPost />} />
+						<Route path="/search/:query" element={<Search />} />
 						<Route path="*" element={<NotFound />}  />
 					</Route>
 				</Routes>

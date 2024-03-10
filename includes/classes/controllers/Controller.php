@@ -21,16 +21,18 @@ class Controller{
 		return $this->session;
 	}
 
-	private function checkAuthorization(){
+	protected function getSessionFromToken(){
 		$token = null;
 		if(!empty($_SERVER['HTTP_AUTHORIZATION'])) $token = $_SERVER['HTTP_AUTHORIZATION'];
 		else if(!empty($_SERVER['REDIRECT_HTTP_AUTHORIZATION'])) $token = $_SERVER['REDIRECT_HTTP_AUTHORIZATION'];
-
-		// If there isn't a token in the header, not authorized
 		if(empty($token)) return false;
+		return Session::fromID($this->pdo, $token);
+	}
 
+	private function checkAuthorization(){
+		
 		// If the token doesn't match an active session, not authorized
-		$session = Session::fromID($this->pdo, $token);
+		$session = $this->getSessionFromToken();
 		if(false === $session) return false;
 
 		// If the IP doesn't match or is hidden, not authorized

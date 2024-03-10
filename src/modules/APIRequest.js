@@ -46,6 +46,10 @@ export class APIRequest {
 
 	async send() {
 
+		if(this.session && this.session.isExpired() && this.path !== 'Session/updateToken'){
+			await this.session.updateToken();
+		}
+
 		let endpoint = `${this.endpoint}${this.path}`;
 
 		let opts = {

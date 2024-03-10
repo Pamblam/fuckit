@@ -19,11 +19,29 @@ class UserSession{
 		this.loadFromStorage();
 	}
 
+	async isExpired(){
+		// token is valid for only six hours
+		let now = new Date().getTime();
+		return !this.props.last_checked || this.props.last_checked >= now - (1000 * 60 * 60 * 6);
+	}
+
 	async logout(){
 		let res = await new APIRequest('Session', this).delete();
 		Object.keys(this.props).forEach(key=>{
 			this.set(key, null);
 		});
+	}
+
+	async updateToken(){
+		let res = await new APIRequest('Session/updateToken', this).patch();
+		if(!res.has_error && res.data.User && res.data.User.id){
+			this.set('display_name', res.data.User.display_name);
+			this.set('username', res.data.User.username);
+			this.set('id', res.data.User.id);
+			//this.set('last_checked', now);
+			return true;
+		}
+		return false;
 	}
 
 	// Log in to start a session
