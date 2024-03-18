@@ -1,7 +1,7 @@
 node_modules
 package-lock.json
 **/.DS_Store
-database/database.db
+database/fuckit.db
 config/config.json
 public/assets/js/*
 !public/assets/js/bootstrap.bundle.min.js
