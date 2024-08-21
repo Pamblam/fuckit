@@ -10,8 +10,7 @@ export function App(){
 	const [sessionState, setSessionState] = React.useState(null);
 	React.useEffect(()=>{
 		(async ()=>{
-			await userSession.validateSession();
-			if(userSession.isLoggedIn()) setSessionState(true);
+			setSessionState(await userSession.validateSession());
 		})();
 	}, []);
 	

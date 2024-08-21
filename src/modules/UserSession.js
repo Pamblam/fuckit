@@ -67,7 +67,8 @@ class UserSession{
 		this.validateServerPromise = new Promise(async done=>{
 			if(this.props.token){
 				let now = new Date().getTime();
-				if(this.props.last_checked && this.props.last_checked < now - (1000 * 60 * 5)){
+				let five_minutes_ago = now - (1000 * 60 * 5);	
+				if(this.props.last_checked && (this.props.last_checked > five_minutes_ago)){
 					done(true);
 				}else{
 					let res = await new APIRequest('Session', this).get();
@@ -97,6 +98,8 @@ class UserSession{
 			let val = localStorage.getItem(`session.${prop}`);
 			this.set(prop, val || null);
 		});
+		this.props.id = +this.props.id;
+		this.props.last_checked = +this.props.last_checked;
 	}
 
 	set(prop, val){

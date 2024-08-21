@@ -156,7 +156,6 @@ export function PostForm({slugOrId}){
 				if(!files || !files.length) return;
 				let file = files[0];
 				fi_instance_ref.current.clear_files();
-				console.log('userSession', userSession);
 				let res = await new APIRequest('Image', userSession).post({img: file});
 				if(res.has_error){
 					setErrorMessage(res.message);
