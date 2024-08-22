@@ -7,7 +7,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {App} from './App.jsx';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import {base_url} from '../../config/config.json';
+import config from '../../config/config.json';
 
 import {Home} from './views/Home.jsx';
 import {AllPosts} from './views/AllPosts.jsx';
@@ -21,7 +21,7 @@ import {Post} from './views/Post.jsx';
 	const rootDiv = document.getElementById('app_container');
 	const reactRoot = ReactDOM.createRoot(rootDiv);
 	reactRoot.render(<React.StrictMode>
-			<Router basename={base_url}>
+			<Router basename={config.base_url}>
 				<Routes>
 					<Route path="/" element={<App />}>
 						<Route path="/" element={<Home />} />

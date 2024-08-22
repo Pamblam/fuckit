@@ -3,12 +3,12 @@
  * Class to handle all AJAX requests.
  */
 
-import {base_url} from '../../../config/config.json';
+import config from '../../../config/config.json';
 
 export class APIRequest {
 
 	constructor(path, session=null) {
-		this.endpoint = `${base_url}api/`;
+		this.endpoint = `${config.base_url}api/`;
 		this.path = path;
 		this.params = {};
 		this.abortController = new AbortController();
