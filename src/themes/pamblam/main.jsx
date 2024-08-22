@@ -16,6 +16,7 @@ import {EditPost} from '#views/EditPost';
 import {Search} from '#views/Search';
 import {NotFound} from '#views/NotFound';
 import {Post} from '#views/Post';
+import {CustomPage} from '#views/CustomPage';
 
 (async function main(){
 	const rootDiv = document.getElementById('app_container');
@@ -25,6 +26,7 @@ import {Post} from '#views/Post';
 				<Routes>
 					<Route path="/" element={<App />}>
 						<Route path="/" element={<Home />} />
+						<Route path="/custom_page" element={<CustomPage />} />
 						<Route path="/admin" element={<AllPosts />} />
 						<Route path="/new_post" element={<NewPost />} />
 						<Route path="/post/:slugOrId" element={<Post />} />

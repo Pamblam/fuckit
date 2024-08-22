@@ -5,11 +5,12 @@
 
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { APIRequest } from '../modules/APIRequest.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { FI } from '../modules/FI.js';
-import { AppStateContext } from '../App.jsx';
+
+import { APIRequest } from '#modules/APIRequest';
+import { FI } from '#modules/FI';
+import { AppStateContext } from '#App';
 
 export function PostForm({slugOrId}){
 	const {userSession} = React.useContext(AppStateContext);

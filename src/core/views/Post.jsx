@@ -4,13 +4,12 @@
  */
 
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCode } from '@fortawesome/free-solid-svg-icons';
-import { useParams } from "react-router-dom";
-import { APIRequest } from '../modules/APIRequest.js';
 import { useNavigate } from "react-router-dom";
-import { AuthPage } from '../components/AuthPage.jsx';
-import { SidebarPosts } from '../components/SidebarPosts.jsx';
+import { useParams } from "react-router-dom";
+
+import { APIRequest } from '#modules/APIRequest';
+import { AuthPage } from '#components/AuthPage';
+import { SidebarPosts } from '#components/SidebarPosts';
 
 export function Post(){
     const navigate = useNavigate();
@@ -52,7 +51,8 @@ export function Post(){
 			</div>
 
 		</>);
-        if(post.post.publish !== '1'){
+
+        if(post.post.published != '1'){
             component = (<AuthPage>{component}</AuthPage>);
         }
     }

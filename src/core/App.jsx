@@ -4,10 +4,11 @@
  */
 
 import React from 'react';
-import {Navbar} from './components/Navbar.jsx';
-import {Footer} from './components/Footer.jsx';
 import {Outlet} from 'react-router';
-import {userSession} from './modules/UserSession.js';
+
+import {Navbar} from '#components/Navbar';
+import {Footer} from '#components/Footer';
+import {userSession} from '#modules/UserSession';
 
 export const AppStateContext = React.createContext();
 

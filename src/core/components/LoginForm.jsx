@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { AppStateContext } from '../App.jsx';
+
+import { AppStateContext } from '#App';
 
 export function LoginForm(){
 	const {session, userSession} = React.useContext(AppStateContext);

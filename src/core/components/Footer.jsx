@@ -8,7 +8,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { useNavigate } from "react-router-dom";
-import { AppStateContext } from '../App.jsx';
+
+import { AppStateContext } from '#App';
 
 export function Footer(){
 	const navigate = useNavigate();

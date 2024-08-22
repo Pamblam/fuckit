@@ -4,8 +4,9 @@
  */
 
 import React from 'react';
-import { LoginForm } from './LoginForm.jsx';
-import { AppStateContext } from '../App.jsx';
+
+import { LoginForm } from '#components/LoginForm';
+import { AppStateContext } from '#App';
 
 export function AuthPage({children}){
 	const {session} = React.useContext(AppStateContext);

@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { APIRequest } from '../modules/APIRequest.js';
+
+import { APIRequest } from '#modules/APIRequest';
 
 export function PostsSummary({searchQuery='', noResultsText=''}){
 
