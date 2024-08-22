@@ -1,3 +1,8 @@
+/**
+ * NewPost.jsx
+ * The page to create a new post.
+ */
+
 import { AdminPage } from '../components/AdminPage.jsx';
 import { PostForm } from '../components/PostForm.jsx';
 

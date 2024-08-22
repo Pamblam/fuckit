@@ -1,3 +1,8 @@
+/**
+ * Navbar.jsx
+ * The navigation bar at the top of the page, with branding.
+ */
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';

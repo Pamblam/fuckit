@@ -1,10 +1,15 @@
 
+/**
+ * AdminPage.jsx 
+ * The wrapper component for all the administration pages, includes sidebar, breadcrumbs
+ */
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";
 import { Breadcrumbs } from './Breadcrumbs.jsx';
-import { AuthPage } from '../components/AuthPage.jsx';
+import { AuthPage } from './AuthPage.jsx';
 
 export function AdminPage({children, crumbs}){
 	const navigate = useNavigate();

@@ -1,3 +1,8 @@
+/**
+ * ServerTable.jsx
+ * A paginated, AJAX sourced data table component.
+ */
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';

@@ -1,3 +1,7 @@
+/**
+ * LoginForm.jsx
+ * Login form component. 
+ */
 
 import React from 'react';
 import { AppStateContext } from '../App.jsx';

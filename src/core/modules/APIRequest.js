@@ -1,4 +1,9 @@
-import {base_url} from '../../config/config.json';
+/**
+ * APIRequest.js
+ * Class to handle all AJAX requests.
+ */
+
+import {base_url} from '../../../config/config.json';
 
 export class APIRequest {
 

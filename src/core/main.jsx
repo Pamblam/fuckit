@@ -1,8 +1,13 @@
+/**
+ * main.jsx
+ * The entry point for the app.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {App} from './App.jsx';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import {base_url} from '../config/config.json';
+import {base_url} from '../../config/config.json';
 
 import {Home} from './views/Home.jsx';
 import {AllPosts} from './views/AllPosts.jsx';
@@ -30,5 +35,4 @@ import {Post} from './views/Post.jsx';
 				</Routes>
 			</Router>
 		</React.StrictMode>);
-
 })();

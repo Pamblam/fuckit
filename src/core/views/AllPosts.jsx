@@ -1,3 +1,8 @@
+/**
+ * AllPosts.jsx
+ * The admin page that displays all the posts.
+ */
+
 import React from 'react';
 import { ServerTable } from '../components/ServerTable.jsx';
 import { AdminPage } from '../components/AdminPage.jsx';

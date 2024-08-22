@@ -1,3 +1,8 @@
+/**
+ * PostsSummary.jsx
+ * Shows a paginated list of post summaries.
+ */
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';

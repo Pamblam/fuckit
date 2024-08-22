@@ -1,3 +1,8 @@
+/**
+ * UserSession.js
+ * Class to handle the user's session on the client side.
+ */
+
 import { APIRequest } from "./APIRequest.js";
 
 class UserSession{

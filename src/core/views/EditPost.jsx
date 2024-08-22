@@ -1,3 +1,7 @@
+/**
+ * EditPost.jsx
+ * The admin page for editing posts. 
+ */
 
 import { AdminPage } from '../components/AdminPage.jsx';
 import { useParams } from "react-router-dom";

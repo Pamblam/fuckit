@@ -1,3 +1,8 @@
+/**
+ * SidebarPosts.jsx
+ * A card component that shows a paginated list of posts.
+ */
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';

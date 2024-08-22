@@ -1,3 +1,8 @@
+/**
+ * Search.jsx
+ * Page that shows the search results.
+ */
+
 import React from 'react';
 import { PostsSummary } from '../components/PostsSummary.jsx';
 import { useParams } from "react-router-dom";

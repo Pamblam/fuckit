@@ -1,3 +1,8 @@
+/**
+ * PostForm.jsx
+ * The form that is used to edit or create a new post.
+ */
+
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import { APIRequest } from '../modules/APIRequest.js';
