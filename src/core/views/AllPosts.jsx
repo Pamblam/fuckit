@@ -1,9 +1,15 @@
+/**
+ * AllPosts.jsx
+ * The admin page that displays all the posts.
+ */
+
 import React from 'react';
-import { ServerTable } from '../components/ServerTable.jsx';
-import { AdminPage } from '../components/AdminPage.jsx';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faLink, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
+
+import { ServerTable } from '#components/ServerTable';
+import { AdminPage } from '#components/AdminPage';
 
 export function AllPosts(){
 	let crumbs = [{title:"Home", path:"/"},{title:"All Posts",path:'/admin'}];

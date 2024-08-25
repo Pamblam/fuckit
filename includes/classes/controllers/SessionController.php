@@ -78,7 +78,11 @@ class SessionController extends ModelController{
 			$this->model_instance->set('user_id', $user->get('id'));
 			$ua = empty($_SERVER['HTTP_USER_AGENT']) ? '' : $_SERVER['HTTP_USER_AGENT'];
 			$this->model_instance->set('user_agent', $ua);
-			$this->model_instance->save();
+			$res = $this->model_instance->save();
+			if(!$res){
+				$this->response->setError("Unable to save session. Is DB Writable?", 400)->send();
+			}
+
 			$this->response->setHeader("x-auth-token: $new_token");
 			$this->response->setData([
 				'LoggedIn' => false,

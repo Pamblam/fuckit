@@ -1,7 +1,12 @@
+/**
+ * EditPost.jsx
+ * The admin page for editing posts. 
+ */
 
-import { AdminPage } from '../components/AdminPage.jsx';
 import { useParams } from "react-router-dom";
-import { PostForm } from '../components/PostForm.jsx';
+
+import { AdminPage } from '#components/AdminPage';
+import { PostForm } from '#components/PostForm';
 
 export function EditPost(){
 	const { slugOrId } = useParams();

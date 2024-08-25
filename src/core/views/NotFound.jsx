@@ -1,3 +1,7 @@
+/**
+ * NotFound.jsx
+ * The 404/page not found page. 
+ */
 
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

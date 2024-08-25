@@ -1,22 +1,27 @@
+/**
+ * main.jsx
+ * The entry point for the app.
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import {App} from './App.jsx';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
-import {base_url} from '../config/config.json';
 
-import {Home} from './views/Home.jsx';
-import {AllPosts} from './views/AllPosts.jsx';
-import {NewPost} from './views/NewPost.jsx';
-import {EditPost} from './views/EditPost.jsx';
-import {Search} from './views/Search.jsx';
-import {NotFound} from './views/NotFound.jsx';
-import {Post} from './views/Post.jsx';
+import {App} from '#App';
+import config from '#config';
+import {Home} from '#views/Home';
+import {AllPosts} from '#views/AllPosts';
+import {NewPost} from '#views/NewPost';
+import {EditPost} from '#views/EditPost';
+import {Search} from '#views/Search';
+import {NotFound} from '#views/NotFound';
+import {Post} from '#views/Post';
 
 (async function main(){
 	const rootDiv = document.getElementById('app_container');
 	const reactRoot = ReactDOM.createRoot(rootDiv);
 	reactRoot.render(<React.StrictMode>
-			<Router basename={base_url}>
+			<Router basename={config.base_url}>
 				<Routes>
 					<Route path="/" element={<App />}>
 						<Route path="/" element={<Home />} />
@@ -30,5 +35,4 @@ import {Post} from './views/Post.jsx';
 				</Routes>
 			</Router>
 		</React.StrictMode>);
-
 })();

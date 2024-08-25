@@ -1,13 +1,14 @@
 {
     "name": "fuckit",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "description": "Fuckit Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "build": "webpack",
-		"setup": "npm i && php -q ./scripts/setup.php && webpack",
-		"create_user": "php -q ./scripts/create_user.php"
+        "build": "php -q ./scripts/map_imports.php && webpack",
+        "setup": "npm i && php -q ./scripts/setup.php && npm run build",
+        "create_user": "php -q ./scripts/create_user.php",
+        "set_theme": "php -q ./scripts/set_theme.php"
     },
     "repository": {
         "type": "git",
@@ -42,5 +43,30 @@
         "url-loader": "^4.1.1",
         "uuidv4": "^6.2.13",
         "react-router-dom": "^6.3.0"
+    },
+    "imports": {
+        "#config": "./config/config.json",
+        "#App": "./src/core/App.jsx",
+        "#components/AdminPage": "./src/core/components/AdminPage.jsx",
+        "#components/AuthPage": "./src/core/components/AuthPage.jsx",
+        "#components/Breadcrumbs": "./src/core/components/Breadcrumbs.jsx",
+        "#components/Footer": "./src/core/components/Footer.jsx",
+        "#components/LoginForm": "./src/core/components/LoginForm.jsx",
+        "#components/Navbar": "./src/core/components/Navbar.jsx",
+        "#components/PostForm": "./src/core/components/PostForm.jsx",
+        "#components/PostsSummary": "./src/core/components/PostsSummary.jsx",
+        "#components/ServerTable": "./src/core/components/ServerTable.jsx",
+        "#components/SidebarPosts": "./src/core/components/SidebarPosts.jsx",
+        "#main": "./src/core/main.jsx",
+        "#modules/APIRequest": "./src/core/modules/APIRequest.js",
+        "#modules/FI": "./src/core/modules/FI.js",
+        "#modules/UserSession": "./src/core/modules/UserSession.js",
+        "#views/AllPosts": "./src/core/views/AllPosts.jsx",
+        "#views/EditPost": "./src/core/views/EditPost.jsx",
+        "#views/Home": "./src/core/views/Home.jsx",
+        "#views/NewPost": "./src/core/views/NewPost.jsx",
+        "#views/NotFound": "./src/core/views/NotFound.jsx",
+        "#views/Post": "./src/core/views/Post.jsx",
+        "#views/Search": "./src/core/views/Search.jsx"
     }
 }

@@ -1,10 +1,16 @@
+/**
+ * PostForm.jsx
+ * The form that is used to edit or create a new post.
+ */
+
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { APIRequest } from '../modules/APIRequest.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
-import { FI } from '../modules/FI.js';
-import { AppStateContext } from '../App.jsx';
+
+import { APIRequest } from '#modules/APIRequest';
+import { FI } from '#modules/FI';
+import { AppStateContext } from '#App';
 
 export function PostForm({slugOrId}){
 	const {userSession} = React.useContext(AppStateContext);
@@ -15,6 +21,7 @@ export function PostForm({slugOrId}){
 
 	const new_post_title_ref = React.useRef();
 	const new_post_summary_ref = React.useRef();
+	const new_post_tags_ref = React.useRef();
 	const textarea_ref = React.useRef();
 	const preview_tab_ref = React.useRef();
 	const new_post_preview_ref = React.useRef();
@@ -32,7 +39,8 @@ export function PostForm({slugOrId}){
 			if(new_post_title_ref.current) new_post_title_ref.current.value = postData.post.title;
 			if(new_post_summary_ref.current) new_post_summary_ref.current.value = postData.post.summary;
 			if(textarea_ref.current) textarea_ref.current.value = postData.post.body;
-			if(new_post_publish_ref.current) new_post_publish_ref.current.checked = postData.post.published === 1;
+			if(new_post_publish_ref.current) new_post_publish_ref.current.checked = postData.post.published == 1;
+			if(new_post_tags_ref.current) new_post_tags_ref.current.value = postData.tags.map(tag=>tag.tag).join(', ');
 		}
 	}, [postData]);
 
@@ -72,12 +80,14 @@ export function PostForm({slugOrId}){
 		const publish = new_post_publish_ref.current.checked ? 1 : 0;
 		const graph_img = graph_img_ref.current;
 		const post_id = post_id_ref.current;
+		const tags = new_post_tags_ref.current.value.trim();
 
 		let props = {
 			title,
 			summary,
 			body,
-			publish
+			publish,
+			tags
 		};
 
 		if(graph_img) props.graph_img = graph_img;
@@ -99,6 +109,7 @@ export function PostForm({slugOrId}){
 
 			let pd = Object.assign({}, postData);
 			pd.post = res.data.Post;
+			pd.tags = res.data.Tags;
 			setPostData(pd);
 		}else{
 			let res = await new APIRequest('Post', userSession).post(props);
@@ -113,6 +124,7 @@ export function PostForm({slugOrId}){
 
 			let pd = Object.assign({}, postData);
 			pd.post = res.data.Post;
+			pd.tags = res.data.Tags;
 			setPostData(pd);
 		}
 
@@ -130,6 +142,13 @@ export function PostForm({slugOrId}){
 		if (node){
 			new_post_summary_ref.current = node; 
 			if(postData.post) new_post_summary_ref.current.value = postData.post.summary;
+		} 
+	});
+
+	const set_new_post_tags_ref = React.useCallback(node=>{
+		if (node){
+			new_post_tags_ref.current = node; 
+			if(postData.post) new_post_tags_ref.current.value = postData.post.tags;
 		} 
 	});
 
@@ -254,6 +273,12 @@ export function PostForm({slugOrId}){
 				<div className="tab-pane container fade px-0 pt-3" id="new_post_preview" ref={set_new_post_preview_ref}>
 					<p>preview</p>
 				</div>
+			</div>
+
+			<div className="mb-3">
+				<label className="form-label">Tags</label>
+				<input data-lpignore="true" type="text" className="form-control" ref={set_new_post_tags_ref} />
+				<div className="form-text">A comma-separated list of tags.</div>
 			</div>
 
 			<div className="mb-3">

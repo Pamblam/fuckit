@@ -45,17 +45,19 @@ class PostController extends ModelController{
 			];
 		}
 
+		$tags = Tag::allFromColumn($this->pdo, 'post_id', $this->model_instance->get('id'), true);
+
 		$post = $this->model_instance->getColumns();
 		if(!$return_raw_md){
 			$Parsedown = new Parsedown();
 			$post['body'] = $Parsedown->text($post['body']);
 		}
-		
 
 		$this->response->setData([
 			'author' => $author,
 			'edited_by' => $edited_by,
-			'post' => $post
+			'post' => $post,
+			'tags' => $tags
 		]);
 	}
 
@@ -93,8 +95,21 @@ class PostController extends ModelController{
 		if($slug_exists) $this->model_instance->set('slug', $this->model_instance->get('id')."_".$slug);
 		$this->model_instance->save();
 
+		$tag_objs = [];
+		$tags = explode(',', $_POST['tags']);
+		foreach($tags as $tag){
+			$tag = trim(strtolower($tag));
+			$tag_obj = Tag::fromColumns($this->pdo, [
+				'tag' => $tag,
+				'post_id' => $this->model_instance->get('id')
+			]);
+			$tag_obj->save();
+			$tag_objs[] = $tag_obj->getColumns();
+		}
+
 		$this->response->setData([
 			'Post' => $this->model_instance->getColumns(),
+			'Tags' => $tag_objs,
 			'User' => [
 				"id" => $user->get('id'),
 				"username" => $user->get('username'),
@@ -139,8 +154,26 @@ class PostController extends ModelController{
 		$this->model_instance->set('published', $published);
 		$this->model_instance->save();
 
+		// Delete all existing tags
+		$existing_tags = Tag::allFromColumn($this->pdo, 'post_id', $this->model_instance->get('id'));
+		foreach($existing_tags as $tag) $tag->delete();
+
+		// Save new tags
+		$tag_objs = [];
+		$tags = explode(',', $_PATCH['tags']);
+		foreach($tags as $tag){
+			$tag = trim(strtolower($tag));
+			$tag_obj = Tag::fromColumns($this->pdo, [
+				'tag' => $tag,
+				'post_id' => $this->model_instance->get('id')
+			]);
+			$tag_obj->save();
+			$tag_objs[] = $tag_obj->getColumns();
+		}
+
 		$this->response->setData([
 			'Post' => $this->model_instance->getColumns(),
+			'Tags' => $tag_objs,
 			'User' => [
 				"id" => $user->get('id'),
 				"username" => $user->get('username'),

@@ -1,7 +1,13 @@
+/**
+ * ServerTable.jsx
+ * A paginated, AJAX sourced data table component.
+ */
+
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
-import { APIRequest } from '../modules/APIRequest';
+
+import { APIRequest } from '#modules/APIRequest';
 
 export function ServerTable({columns, order_col, order_dir, query}){
 
