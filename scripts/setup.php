@@ -4,17 +4,34 @@
  * Create the database file and the table structure
  */
 
+clearstatcache();
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
 require APP_ROOT."/includes/functions/file_upload_max_size.php";
+require APP_ROOT."/includes/functions/checkAppFilePerms.php";
 
 echo "\n\nInstalling Fuckit\n";
 echo "=================\n";
+
+echo "Checking file permissions...\n";
+$missing_perms = checkAppFilePerms();
+if(!empty($missing_perms)){
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+	echo "!! Unable to access required system files. Please run the following: !!\n";
+	foreach($missing_perms as $err) echo $err['solution']."\n";
+	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
+	exit(1);
+}
+
+echo "Permissions OK!\n";
+
 echo "Setting up database\n";
 
 $rebuilding_database = true;
 $rebuilding_config = true;
 $config_default_base_url = '/';
 $config_defualt_max_file_size = 8000000;
+
+$db_directory = realpath(dirname($db_file));
 
 // Opening the file in 'w' mode truncates it, 
 // resetting the exiting database, if there is one
@@ -31,7 +48,7 @@ if(file_exists($db_file)){
 		echo "Truncating database.\n";
 		$fp = fopen($db_file, "w");
 		if(false === $fp){
-			echo "Can't open DB file. Ensure PHP has correct permissions and ownership.\n";
+			echo "Can't open DB file. Ensure you has correct permissions and ownership.\n";
 			exit(1);
 		}
 		fclose($fp);
@@ -40,14 +57,13 @@ if(file_exists($db_file)){
 	echo "Database file does not exist. Creating it.\n";
 	try{
 		$pdo = new PDO('sqlite:'.$db_file);
+		if(empty($pdo)) throw Exception("Couldn't create database file.");
 	}catch(Exception $e){
 		echo "Error: ".$e->getMessage()."\n";
 		echo "Can't create the database file. Ensure PHP has proper permissions to read it.\n";
 		exit(1);
 	}
 }
-
-$pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 if($rebuilding_database){
 	// Iterate thru all the sql files and run them
@@ -135,6 +151,7 @@ if($rebuilding_config){
 	}
 }
 
+clearstatcache();
 exit(0);
 
 function getMaxFileSize($config_defualt_max_file_size){
@@ -221,8 +238,6 @@ function createUser(){
 	}
 	echo "Created user: $username\n";
 }
-
-
 
 function promptUser($prompt){
 	echo "$prompt ";
