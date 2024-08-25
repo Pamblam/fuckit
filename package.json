@@ -6,8 +6,9 @@
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
         "build": "php -q ./scripts/map_imports.php && webpack",
-        "setup": "npm i && php -q ./scripts/setup.php && webpack",
-        "create_user": "php -q ./scripts/create_user.php"
+        "setup": "npm i && php -q ./scripts/setup.php && npm run build",
+        "create_user": "php -q ./scripts/create_user.php",
+        "set_theme": "php -q ./scripts/set_theme.php"
     },
     "repository": {
         "type": "git",
@@ -56,16 +57,17 @@
         "#components/PostsSummary": "./src/core/components/PostsSummary.jsx",
         "#components/ServerTable": "./src/core/components/ServerTable.jsx",
         "#components/SidebarPosts": "./src/core/components/SidebarPosts.jsx",
-        "#main": "./src/core/main.jsx",
+        "#main": "./src/themes/pamblam/main.jsx",
         "#modules/APIRequest": "./src/core/modules/APIRequest.js",
         "#modules/FI": "./src/core/modules/FI.js",
         "#modules/UserSession": "./src/core/modules/UserSession.js",
         "#views/AllPosts": "./src/core/views/AllPosts.jsx",
         "#views/EditPost": "./src/core/views/EditPost.jsx",
-        "#views/Home": "./src/core/views/Home.jsx",
+        "#views/Home": "./src/themes/pamblam/views/Home.jsx",
         "#views/NewPost": "./src/core/views/NewPost.jsx",
         "#views/NotFound": "./src/core/views/NotFound.jsx",
         "#views/Post": "./src/core/views/Post.jsx",
-        "#views/Search": "./src/core/views/Search.jsx"
+        "#views/Search": "./src/core/views/Search.jsx",
+        "#views/CustomPage": "./src/themes/pamblam/views/CustomPage.jsx"
     }
 }

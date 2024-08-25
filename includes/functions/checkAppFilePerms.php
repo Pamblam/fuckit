@@ -24,5 +24,19 @@ function checkAppFilePerms(){
 		$config_file_perms = ensurePermissions(APP_ROOT."/config/config.json", ['r','w']);
 	}
 
-	return array_merge($sql_path_perms, $db_path_perms, $db_file_perms, $config_path_perms, $config_file_perms);
+	// Ensure we have write access to the config directory
+	$src_path_perms = ensurePermissions(APP_ROOT."/src", ['e', 'r']);
+
+	// Themes
+	$theme_path_perms = ensurePermissions(APP_ROOT."/src/themes", ['e', 'r']);
+
+	return array_merge(
+		$sql_path_perms, 
+		$db_path_perms, 
+		$db_file_perms, 
+		$config_path_perms, 
+		$config_file_perms, 
+		$src_path_perms, 
+		$theme_path_perms
+	);
 }

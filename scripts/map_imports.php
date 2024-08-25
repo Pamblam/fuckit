@@ -9,21 +9,13 @@ require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
 echo "\n\nMapping theme imports\n";
 echo "=================\n";
 
-if(empty($config) || empty($config->theme)){
-	echo "No theme indicated.\n";
+if(empty($config)){
+	echo "Config not found. Run `npm run setup`.\n";
 	exit;
 }
 
-echo "Setting theme to: \"{$config->theme}\"\n\n";
-
 $src_dir = APP_ROOT."/src/";
 $core_dir = $src_dir."core/";
-$theme_dir = $src_dir."themes/{$config->theme}/";
-
-if(!is_dir($theme_dir)){
-	echo "Theme file is missing!\n";
-	exit(1);
-}
 
 $imports = ['#config'=>'./config/config.json'];
 
@@ -38,16 +30,26 @@ for($i=0; $i<count((array) $core_files); $i++){
 	$imports[$import_alias] = $import_path;
 }
 
-$theme_files = recursiveScandir($theme_dir);
-for($i=0; $i<count((array) $theme_files); $i++){
-	$theme_files[$i] = substr($theme_files[$i], strlen($theme_dir)+1);
-	$import_path = "./src/themes/{$config->theme}/".$theme_files[$i];
-	$path_parts = explode(".", $theme_files[$i]);
-	array_pop($path_parts);
-	$core_files[$i] = implode(".", $path_parts);
-	$theme_files = "#".$core_files[$i];
-	$imports[$theme_files] = $import_path;
+if(!empty($config->theme)){
+	$theme_dir = $src_dir."themes/{$config->theme}/";
+	if(!is_dir($theme_dir)){
+		echo "Theme file is missing!\n";
+		exit(1);
+	}
+	echo "Setting theme to: \"{$config->theme}\"\n\n";
+	$theme_files = recursiveScandir($theme_dir);
+
+	for($i=0; $i<count((array) $theme_files); $i++){
+		$theme_files[$i] = substr($theme_files[$i], strlen($theme_dir)+1);
+		$import_path = "./src/themes/{$config->theme}/".$theme_files[$i];
+		$path_parts = explode(".", $theme_files[$i]);
+		array_pop($path_parts);
+		$core_files[$i] = implode(".", $path_parts);
+		$theme_alias = "#".$core_files[$i];
+		$imports[$theme_alias] = $import_path;
+	}
 }
+echo "Done!\n\n";
 
 $package = json_decode(file_get_contents(APP_ROOT."/package.json"), true);
 $package['imports'] = $imports;
