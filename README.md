@@ -27,7 +27,7 @@ Mama said cookies are the devil, so Fuckit avoids those, too. Authentication is 
 
 From the browser, navigate to the `/admin` directory of your app and log in with the user and password you created in the setup script. You can create, preview, edit, delete, publish and unpublish all your posts here.
 
-### Anatomy of a Post
+#### Anatomy of a Post
 
 Here' what you need to know when creating a new post
 
@@ -51,10 +51,10 @@ Aside from content management, Fuckit uses CLI scripts for all administration ta
 
 There are two folders in the `src` directory. The `core` folder, which should never be altered, and the `themes` folder, which can contain subfolders for themes, eg, a theme called `mytheme` would live in `src/themes/mytheme`. The theme folder should have the same directory structure as the `src/core` directory. Files in the theme directory superscede files in the core directory. This means you theme can change as little or as much of the core theme as you want. If you only want to change the navbar component, your theme file only needs to contain a `components/Navbar.jsx` file.
 
-### Adding custom pages
+#### Adding custom pages
 
 Copy the `main.jsx` file from the `core` directory to the root of your theme. Create a new page in your theme's `views` directory and add a route for it in the `main.jsx` page.
 
 ## License
 
-Version 1.0.0 includes a WTF Public License. The *Do What The Fuck You Want To* Public License ([WTFPL](http://www.wtfpl.net/about/)) is a free software license.
+The current version of Fuckit includes a WTF Public License. The *Do What The Fuck You Want To* Public License ([WTFPL](http://www.wtfpl.net/about/)) is a free software license.
