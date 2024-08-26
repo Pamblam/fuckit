@@ -78,7 +78,7 @@ To version control your website with Git:
    - config/config.json
    - public/assets/images/*
    - !public/assets/images/.gitkeep
- - Create your repo on github and add/commit/push.
+ - Create your repo and add/commit/push.
 
 ## License
 
