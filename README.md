@@ -60,11 +60,11 @@ Copy the `main.jsx` file from the `core` directory to the root of your theme. Cr
 
 These steps will update your Fuckit install while maintaining all content and themes.
  
-	1. Clone the new software alongside your existing install, eg, if you're in the parent directory that contains your existing Fuckit instance Run: `git clone git@github.com:Pamblam/fuckit.git ./fuckit_update` - Now you should have a `fuckit` and a `fuckit_new` directory in your working directory.
-	2. It's a good idea to make a backup of your existing copy: `cp -R fuckit fuckit_backup`
-	3. Move into the existing copy that you want to update and run the install script, passing it the path to the updated copy as the first argument, eg: `cd fuckit && npm run update ../fuckit_update`
-	4. If all went as planned, you can now run the build script: `npm run build`
-	5. Check it out in the browser to make sure it all looks good. If so, go ahead and delete your updated copy: `rm -rf ../fuckit_update`
+  1. Clone the new software alongside your existing install, eg, if you're in the parent directory that contains your existing Fuckit instance Run: `git clone git@github.com:Pamblam/fuckit.git ./fuckit_update` - Now you should have a `fuckit` and a `fuckit_new` directory in your working directory.
+  2. It's a good idea to make a backup of your existing copy: `cp -R fuckit fuckit_backup`
+  3. Move into the existing copy that you want to update and run the install script, passing it the path to the updated copy as the first argument, eg: `cd fuckit && npm run update ../fuckit_update`
+  4. If all went as planned, you can now run the build script: `npm run build`
+  5. Check it out in the browser to make sure it all looks good. If so, go ahead and delete your updated copy: `rm -rf ../fuckit_update`
 
 ## Version Controlling
 
