@@ -144,6 +144,11 @@ if($rebuilding_config){
 	if(empty($base_url)) $base_url = $config_default_base_url;
 	$config_obj['base_url'] = $base_url;
 	$config_obj['max_upload_size'] = getMaxFileSize($config_defualt_max_file_size);
+
+	$app_title = promptUser("Enter the app's title (default Fuckit):");
+	if(empty($app_title)) $app_title = "Title";
+	$config_obj['title'] = $app_title;
+
 	$res = @file_put_contents($config_file, json_encode($config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 	if(false === $res){
 		echo "Can't create config file. Ensure PHP has correct permissions and ownership.\n";

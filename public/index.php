@@ -31,7 +31,7 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title>Fuckit</title>
+		<title><?php echo empty($config) || empty($config->title) ? "Fuckit" : $config->title; ?></title>
 		<?php if(empty($missing_perms) && !empty($config) && !empty($pdo)): ?>
 			<link href="<?php echo $config->base_url; ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<?php endif; ?>

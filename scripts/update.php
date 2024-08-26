@@ -55,7 +55,8 @@ $system_files = array_filter($system_files, function($path){
 		'config',
 		'database',
 		'node_modules',
-		'package-lock.json'
+		'package-lock.json',
+		'package.json'
 	];
 	foreach($ignore_files_like as $ig){
 		if(0 === strpos($path, $ig)) return false;
@@ -187,6 +188,30 @@ for($i=0; $i<count((array) $db_files); $i++){
 
 		echo " - Imported DB file: {$db_files[$i]}\n";
 	}
+}
+
+// Merge the package.json dependencies
+$new_config = json_decode(file_get_contents($NEW_VERSION_BASE."/package.json"), true);
+$old_config = json_decode(file_get_contents(APP_ROOT."/package.json"), true);
+
+foreach($new_config['devDependencies'] as $dep=>$ver){
+	$old_config['devDependencies'][$dep] = $ver;
+}
+
+foreach($new_config['dependencies'] as $dep=>$ver){
+	$old_config['dependencies'][$dep] = $ver;
+}
+
+$old_config['fuckit-version'] = $new_config['version'];
+
+$result = file_put_contents(
+	APP_ROOT."/package.json", 
+	json_encode($old_config, JSON_PRETTY_PRINT)
+);
+
+if(false === $result){
+	echo "Unable to write new package.json file.\n";
+	exit(1);
 }
 
 function recursiveScandir($dir){
