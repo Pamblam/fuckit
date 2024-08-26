@@ -46,6 +46,7 @@ Aside from content management, Fuckit uses CLI scripts for all administration ta
  - `npm run setup`: This creates the database file and config file if they're missing, and gives you the option to update/reset them if not.
  - `npm run create_user`: If you want to have multiple users creating content, you can add another one with this script.
  - `npm run set_theme <theme directory>`: This sets the theme in the config file after running some checks. After running this successfully, you'll still need to rebuild the app with `npm run build`.
+ - `npm run update`: Update the existing Fuckit instance to a new version whie retaining all content and themes. See the *Updating Fuckit* section below.
 
 ## Themeing and customizing
 
@@ -54,6 +55,30 @@ There are two folders in the `src` directory. The `core` folder, which should ne
 #### Adding custom pages
 
 Copy the `main.jsx` file from the `core` directory to the root of your theme. Create a new page in your theme's `views` directory and add a route for it in the `main.jsx` page.
+
+## Updating Fuckit
+
+These steps will update your Fuckit install while maintaining all content and themes.
+ 
+	1. Clone the new software alongside your existing install, eg, if you're in the parent directory that contains your existing Fuckit instance Run: `git clone git@github.com:Pamblam/fuckit.git ./fuckit_update` - Now you should have a `fuckit` and a `fuckit_new` directory in your working directory.
+	2. It's a good idea to make a backup of your existing copy: `cp -R fuckit fuckit_backup`
+	3. Move into the existing copy that you want to update and run the install script, passing it the path to the updated copy as the first argument, eg: `cd fuckit && npm run update ../fuckit_update`
+	4. If all went as planned, you can now run the build script: `npm run build`
+	5. Check it out in the browser to make sure it all looks good. If so, go ahead and delete your updated copy: `rm -rf ../fuckit_update`
+
+## Version Controlling
+
+Since Fuckit uses SQLite and is fully self-contained, you can use Git to backup and version control your Fuckit website, as long as your database file doesn't exceed your Git server's max file size.
+
+To version control your website with Git:
+
+ - Remove the `.git` directory: `rm -rf .git`
+ - Remove the following lines from the `.gitignore` file:
+   - database/fuckit.db
+   - config/config.json
+   - public/assets/images/*
+   - !public/assets/images/.gitkeep
+ - Create your repo on github and add/commit/push.
 
 ## License
 
