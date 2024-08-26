@@ -9,7 +9,7 @@
         "setup": "npm i && php -q ./scripts/setup.php && npm run build",
         "create_user": "php -q ./scripts/create_user.php",
         "set_theme": "php -q ./scripts/set_theme.php",
-		"update": "php -q ./scripts/update.php"
+        "update": "php -q ./scripts/update.php"
     },
     "repository": {
         "type": "git",
