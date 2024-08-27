@@ -97,35 +97,23 @@ export function PostForm({slugOrId}){
 		let verbiage3 = publish == 1 ? 'published' : 'preview'
 		let time = new Date().toLocaleTimeString();
 
-		if(post_id){
-			let res = await new APIRequest(`Post/${post_id}`, userSession).patch(props);
-			if(res.has_error){
-				setErrorMessage(res.message);
-			}else{
-				let link = location.href.replace(/(\/new_post|\/edit_post\/[^\/]*)\/?/, `/post/${res.data.Post.slug}`);
-				let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
-				setSuccessMessage(message);
-			}
+		let res = post_id ?
+			await new APIRequest(`Post/${post_id}`, userSession).patch(props):
+			await new APIRequest('Post', userSession).post(props);
 
-			let pd = Object.assign({}, postData);
-			pd.post = res.data.Post;
-			pd.tags = res.data.Tags;
-			setPostData(pd);
+		if(res.has_error){
+			setSuccessMessage(null);
+			setErrorMessage(res.message);
 		}else{
-			let res = await new APIRequest('Post', userSession).post(props);
-			if(res.has_error){
-				setErrorMessage(res.message);
-			}else{
-				let link = location.href.replace(/(\/new_post|\/edit_post\/[^\/]*)\/?/, `/post/${res.data.Post.slug}`);
-				let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
-				setSuccessMessage(message);
-			}
-			post_id_ref.current = res.data.Post.id;
-
+			if(res?.data?.Post?.id) post_id_ref.current = res.data.Post.id;
+			let link = location.href.replace(/(\/new_post|\/edit_post\/[^\/]*)\/?/, `/post/${res.data.Post.slug}`);
+			let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
 			let pd = Object.assign({}, postData);
 			pd.post = res.data.Post;
 			pd.tags = res.data.Tags;
 			setPostData(pd);
+			setErrorMessage(null);
+			setSuccessMessage(message);
 		}
 
 		submitting_ref.current = false;
@@ -175,11 +163,24 @@ export function PostForm({slugOrId}){
 				if(!files || !files.length) return;
 				let file = files[0];
 				fi_instance_ref.current.clear_files();
-				let res = await new APIRequest('Image', userSession).post({img: file});
+				
+				let res = {};
+				try{
+					res = await new APIRequest('Image', userSession).post({img: file});
+				}catch(e){
+					res = {
+						has_error: true,
+						message: "Unable to upload file. Please check that it does not exceed the size restrictions."
+					};
+				}
+				
 				if(res.has_error){
 					setErrorMessage(res.message);
 					return;
+				}else{
+					setErrorMessage(null);
 				}
+
 				if(!graph_img_ref.current){
 					graph_img_ref.current = res.data.path;
 				}

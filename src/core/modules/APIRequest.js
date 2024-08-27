@@ -87,7 +87,7 @@ export class APIRequest {
 		
 
 		let response = await fetch(endpoint, opts);
-
+		
 		if(this.session){
 			let token_header = response.headers.get('x-auth-token');
 			if (token_header) this.session.set('token', token_header);

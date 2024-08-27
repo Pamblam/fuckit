@@ -5,13 +5,26 @@
 
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faXmark, faLink, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faXmark, faLink, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 
 import { ServerTable } from '#components/ServerTable';
 import { AdminPage } from '#components/AdminPage';
+import { APIRequest } from '#modules/APIRequest';
+import { AppStateContext } from '#App';
 
 export function AllPosts(){
+	const {userSession} = React.useContext(AppStateContext);
+	const [loading, setLoading] = React.useState(false);
+
+	const confirmAndDeletePost = async record => {
+		if(confirm(`Are you sure you want to delete post #${record.id}? (${record.title})`)){
+			setLoading(true);
+			await new APIRequest(`Post/${record.id}`, userSession).delete({id:record.title});
+			setLoading(false);
+		}
+	};
+
 	let crumbs = [{title:"Home", path:"/"},{title:"All Posts",path:'/admin'}];
 
 	let columns = [
@@ -30,11 +43,17 @@ export function AllPosts(){
 				<Link to={`/post/${r.slug || r.id}`}><FontAwesomeIcon icon={faLink} /></Link>
 				<span style={{margin:'.25em'}}></span>
 				<Link to={`/edit_post/${r.slug || r.id}`}><FontAwesomeIcon icon={faPenToSquare} /></Link>
+				<span style={{margin:'.25em'}}></span>
+				<a href='#' style={{color:'red'}} onClick={e=>{e.preventDefault(); confirmAndDeletePost(r);}}><FontAwesomeIcon icon={faTrash} /></a>
 			</>
 		}}
 	];
 
+	const table = loading ?
+		<p>Loading...</p>:
+		<ServerTable columns={columns} query='all_posts' />;
+
 	return (<AdminPage crumbs={crumbs}>
-		<ServerTable columns={columns} query='all_posts' />
+		{table}
 	</AdminPage>);
 } 

@@ -183,6 +183,26 @@ class PostController extends ModelController{
 	}
 
 	public function delete(){
+
+		$user = $this->getUser();
+
+		// Validate the request
+		if(empty($user)){
+			$this->response->setError("Not logged in", 401)->send();
+		}
+
+		if(empty($this->model_instance)){
+			$this->response->setError("Post not found", 401)->send();
+		}
+
+		$columns = $this->model_instance->getColumns();
+		$success = $this->model_instance->delete();
+
+		if(empty($success)){
+			$this->response->setError("Unable to delete post", 401)->send();
+		}
+
+		$this->response->setData(['Deleted' => $columns]);
 		
 	}
 
