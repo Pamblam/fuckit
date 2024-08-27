@@ -28,7 +28,9 @@ class PaginationController extends Controller{
 		$order_dir = empty($_GET['order_dir']) ? 'desc' : strtolower($_GET['order_dir']);
 		$page_size = empty($_GET['page_size']) ? 10 : intval($_GET['page_size']);
 		$page = empty($_GET['page']) ? 1 : intval($_GET['page']);
-		$query_params = self::getQuery($_GET['query']);
+
+		$sql_params = empty($_GET['params']) ? [] : json_decode($_GET['params'], true);
+		$query_params = self::getQuery($_GET['query'], $sql_params);
 
 		if(false === $query_params){
 			$this->response->setError("Invalid query name", 400)->send();
@@ -69,8 +71,30 @@ class PaginationController extends Controller{
 		]);
 	}
 
-	private static function getQuery($name){
+	private static function getQuery($name, $params){
 		switch($name){
+			case "all_posts_of_tag":
+				return [
+					'searchable_cols' => [],
+					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'title', 'slug', 'body'],
+					'sql' => "
+						select 
+							`p`.`id`
+							,`p`.`create_ts`
+							,`p`.`author_id` 
+							,`u`.`display_name` as `author_name` 
+							,`p`.`title` 
+							,`p`.`slug` 
+							,`p`.`body` 
+						from 
+							`posts` `p` 
+							left join `users` `u` on `u`.`id` = `p`.`author_id`
+							left join (
+								select distinct `post_id` from `tags` where `tag` in ('".implode("', '", $params['tags'])."')
+							) `q` on `q`.`post_id` = `p`.`id`
+						where `p`.`published` = 1 and `q`.`post_id` is not null"
+				];
+
 			case "all_posts":
 				return [
 					'searchable_cols' => ['author_name', 'title', 'slug'],

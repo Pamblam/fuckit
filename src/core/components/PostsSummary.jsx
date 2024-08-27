@@ -10,7 +10,7 @@ import { useNavigate } from "react-router-dom";
 
 import { APIRequest } from '#modules/APIRequest';
 
-export function PostsSummary({searchQuery='', noResultsText=''}){
+export function PostsSummary({searchQuery='', noResultsText='', tags=[]}){
 
 	const navigate = useNavigate();
 	let [results, setResults] = React.useState([]);
@@ -18,7 +18,12 @@ export function PostsSummary({searchQuery='', noResultsText=''}){
 	let [totalPages, setTotalPages] = React.useState(0);
 
 	const getRows = async ()=>{
-		let res = await new APIRequest('Pagination').get({query:'all_posts_summary', page, order_by_col:'create_ts', order_dir:'desc', page_size:15, search_term:searchQuery});
+		let res;
+		if(tags.length){
+			res = await new APIRequest('Pagination').get({query:'all_posts_of_tag', params: JSON.stringify({tags}), page, order_by_col:'create_ts', order_dir:'desc', page_size:15, search_term:searchQuery});
+		}else{
+			res = await new APIRequest('Pagination').get({query:'all_posts_summary', page, order_by_col:'create_ts', order_dir:'desc', page_size:15, search_term:searchQuery});
+		}
 		if(!res.has_error){
 			setTotalPages(res.data.total_pages);
 			setResults(res.data.results);
