@@ -202,6 +202,10 @@ foreach($new_config['dependencies'] as $dep=>$ver){
 	$old_config['dependencies'][$dep] = $ver;
 }
 
+foreach($new_config['scripts'] as $dep=>$ver){
+	$old_config['scripts'][$dep] = $ver;
+}
+
 $old_config['fuckit-version'] = $new_config['version'];
 
 $result = file_put_contents(
