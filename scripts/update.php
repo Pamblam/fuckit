@@ -52,6 +52,7 @@ $system_files = array_filter($system_files, function($path){
 	$ignore_files_like = [
 		'.git',
 		'src/themes',
+		'public/assets/js/main.js',
 		'config',
 		'database',
 		'node_modules',
