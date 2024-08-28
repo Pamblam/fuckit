@@ -3,7 +3,7 @@ package-lock.json
 **/.DS_Store
 database/fuckit.db
 config/config.json
-public/assets/js/*
-!public/assets/js/bootstrap.bundle.min.js
+public/assets/js/main.js
+public/assets/js/main.js.map
 public/assets/images/*
 !public/assets/images/.gitkeep
