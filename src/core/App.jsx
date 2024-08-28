@@ -14,10 +14,12 @@ export const AppStateContext = React.createContext();
 
 export function App(){
 	const [sessionState, setSessionState] = React.useState(null);
+
 	React.useEffect(()=>{
-		(async ()=>{
-			setSessionState(await userSession.validateSession());
-		})();
+		const checkSession = async () => setSessionState(await userSession.validateSession());
+		checkSession();
+		const timer = setInterval(checkSession, 60000);
+		return ()=>clearInterval(timer);
 	}, []);
 	
 	let appStateContextValue = {session:[sessionState, setSessionState], userSession};

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Create the database file and the table structure
+ * Create a new user in the database
  */
 
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
@@ -10,8 +10,6 @@ $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 echo "\n\nCreating users\n";
 echo "=================\n";
 echo "Creating a new user.";
-
-$rebuilding_database = true;
 
 // Opening the file in 'w' mode truncates it, 
 // resetting the exiting database, if there is one

@@ -45,8 +45,9 @@ Aside from content management, Fuckit uses CLI scripts for all administration ta
  - `npm run build`: Changes the import aliases to point to files in your theme directoy (if any) and runs Webpack to build the Javascript and transpile the React.
  - `npm run setup`: This creates the database file and config file if they're missing, and gives you the option to update/reset them if not.
  - `npm run create_user`: If you want to have multiple users creating content, you can add another one with this script.
+ - `npm run edit_user <username or id>`: Conveiniencce script to edit a user based on their ID or username.
  - `npm run set_theme <theme directory>`: This sets the theme in the config file after running some checks. After running this successfully, you'll still need to rebuild the app with `npm run build`.
- - `npm run update`: Update the existing Fuckit instance to a new version whie retaining all content and themes. See the *Updating Fuckit* section below.
+ - `npm run update <path to new version>`: Update the existing Fuckit instance to a new version whie retaining all content and themes. See the *Updating Fuckit* section below.
 
 ## Themeing and customizing
 

@@ -9,7 +9,7 @@ import { LoginForm } from '#components/LoginForm';
 import { AppStateContext } from '#App';
 
 export function AuthPage({children}){
-	const {session} = React.useContext(AppStateContext);
+	const {session, userSession} = React.useContext(AppStateContext);
 	const [sessionState] = session;
 
 	let component;

@@ -1,6 +1,6 @@
 {
     "name": "fuckit",
-    "version": "1.2.2",
+    "version": "1.2.3",
     "description": "Fuckit Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
@@ -8,6 +8,7 @@
         "build": "php -q ./scripts/map_imports.php && webpack",
         "setup": "npm i && php -q ./scripts/setup.php && npm run build",
         "create_user": "php -q ./scripts/create_user.php",
+		"edit_user": "php -q ./scripts/edit_user.php",
         "set_theme": "php -q ./scripts/set_theme.php",
         "update": "php -q ./scripts/update.php"
     },
@@ -55,7 +56,7 @@
         "#components/LoginForm": "./src/core/components/LoginForm.jsx",
         "#components/Navbar": "./src/themes/pamblam/components/Navbar.jsx",
         "#components/PostForm": "./src/core/components/PostForm.jsx",
-        "#components/PostsSummary": "./src/themes/pamblam/components/PostsSummary.jsx",
+        "#components/PostsSummary": "./src/core/components/PostsSummary.jsx",
         "#components/ServerTable": "./src/core/components/ServerTable.jsx",
         "#components/SidebarPosts": "./src/core/components/SidebarPosts.jsx",
         "#main": "./src/themes/pamblam/main.jsx",
