@@ -50,11 +50,11 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 			<link href="<?php echo $config->base_url; ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<?php endif; ?>
 		<?php if(!empty($post_title)): ?>
-			<meta property="og:title" content="<?php echo addslashes($post_title); ?>" />
+			<meta property="og:title" content="<?php echo addcslashes($post_title, '"\\/'); ?>" />
 		<?php endif; ?>
 		<?php if(!empty($post_summary)): ?>
-			<meta name="description" content="<?php echo addslashes($post_summary); ?>" />
-			<meta property="og:description" content="<?php echo addslashes($post_summary); ?>" />
+			<meta name="description" content="<?php echo addcslashes($post_summary, '"\\/'); ?>" />
+			<meta property="og:description" content="<?php echo addcslashes($post_summary, '"\\/'); ?>" />
 		<?php endif; ?>
 		<?php if(!empty($post_image)): ?>
 			<meta property="og:image" content="<?php echo $post_image; ?>" />
