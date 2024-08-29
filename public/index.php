@@ -7,6 +7,10 @@ require APP_ROOT."/includes/functions/mdToHTML.php";
 $missing_perms = checkAppFilePerms();
 
 if(empty($missing_perms) && !empty($config) && !empty($pdo)){
+	$post_image = @$GLOBALS['config']->img;
+	$post_title = @$GLOBALS['config']->title;
+	$post_summary = @$GLOBALS['config']->desc;
+
 	$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
 	$index = strpos($url, $config->base_url);
 	$relative_url = substr($url, $index + strlen($config->base_url));

@@ -149,6 +149,13 @@ if($rebuilding_config){
 	if(empty($app_title)) $app_title = "Title";
 	$config_obj['title'] = $app_title;
 
+	$app_desc = promptUser("Enter a short description for the app:");
+	if(!empty($app_desc)) $config_obj['desc'] = $app_desc;
+
+	$app_img = promptUser("Enter an image URL for your app's SEO:");
+	if(!empty($app_img) && filter_var($app_img, FILTER_VALIDATE_URL)) $config_obj['img'] = $app_img;
+
+
 	$res = @file_put_contents($config_file, json_encode($config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 	if(false === $res){
 		echo "Can't create config file. Ensure PHP has correct permissions and ownership.\n";
