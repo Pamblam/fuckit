@@ -2,6 +2,7 @@
 
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
 require APP_ROOT."/includes/functions/checkAppFilePerms.php";
+require APP_ROOT."/includes/functions/mdToHTML.php";
 
 $missing_perms = checkAppFilePerms();
 
@@ -18,11 +19,20 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 			$post = Post::fromColumn($pdo, 'slug', $slugOrId);
 		}
 		if(!empty($post)){
-			$Parsedown = new Parsedown();
-			$html = $Parsedown->text($post->get('body'));
+			$html = mdToHTML($post->get('body'));
 			$post_title = $post->get('title');
 			$post_summary = $post->get('summary');
 			$post_image = $post->get('graph_img');
+
+			if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+				$protocol = 'https://';
+			}else {
+				$protocol = 'http://';
+			}
+
+			if(!empty($post_image) && strpos($post_image, 'assets/') === 0){
+				$post_image = $protocol . $_SERVER['HTTP_HOST'] . $GLOBALS['config']->base_url . $post_image;
+			}
 		}
 	}
 }
@@ -43,7 +53,7 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 			<meta property="og:description" content="<?php echo addslashes($post_summary); ?>" />
 		<?php endif; ?>
 		<?php if(!empty($post_image)): ?>
-			<meta property="og:image" content="<?php echo $_SERVER['HTTP_HOST'].$config->base_url.$post_image; ?>" />
+			<meta property="og:image" content="<?php echo $post_image; ?>" />
 		<?php endif; ?>
 	</head>
 	<body>

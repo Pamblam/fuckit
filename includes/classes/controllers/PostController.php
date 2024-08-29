@@ -1,5 +1,7 @@
 <?php
 
+require APP_ROOT."/includes/functions/mdToHTML.php";
+
 class PostController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {
@@ -49,12 +51,7 @@ class PostController extends ModelController{
 
 		$post = $this->model_instance->getColumns();
 		if(!$return_raw_md){
-
-			// Images with src that start with `assets/` need the base_url prepended.
-			$post['body'] = preg_replace('/!\[[^\]]*\]\((assets\/[^\)]+)\)/', '![]('.$GLOBALS['config']->base_url.'$1)', $post['body']);
-
-			$Parsedown = new Parsedown();
-			$post['body'] = $Parsedown->text($post['body']);
+			$post['body'] = mdToHTML($post['body']);
 
 			if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
 				$protocol = 'https://';
