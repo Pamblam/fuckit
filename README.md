@@ -57,6 +57,11 @@ There are two folders in the `src` directory. The `core` folder, which should ne
 
 Copy the `main.jsx` file from the `core` directory to the root of your theme. Create a new page in your theme's `views` directory and add a route for it in the `main.jsx` page.
 
+## Deploying
+
+ - Upload the files and run the setup script. The script will tell you if you need to make changes to file permissions.
+ - Configure Apache to allow .htaccess changes in the web root, including mod_rewrite.
+
 ## Updating Fuckit
 
 These steps will update your Fuckit install while maintaining all content and themes.
@@ -76,7 +81,6 @@ To version control your website with Git:
  - Remove the `.git` directory: `rm -rf .git`
  - Remove the following lines from the `.gitignore` file:
    - database/fuckit.db
-   - config/config.json
    - public/assets/images/*
    - !public/assets/images/.gitkeep
  - Create your repo and add/commit/push.

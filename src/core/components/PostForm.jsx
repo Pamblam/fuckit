@@ -90,7 +90,9 @@ export function PostForm({slugOrId}){
 			tags
 		};
 
-		if(graph_img) props.graph_img = graph_img;
+		const graph_img_match = body.match(/!\[[^\]]*\]\((assets\/[^\)]+)\)/);
+		if(graph_img_match) props.graph_img = graph_img_match[1];
+		else if(graph_img) props.graph_img = graph_img;
 
 		let verbiage1 = publish == 1 ? 'Post' : 'Draft'
 		let verbiage2 = post_id ? 'updated' : 'saved'

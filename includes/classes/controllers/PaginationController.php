@@ -60,8 +60,16 @@ class PaginationController extends Controller{
 		$stmt = $this->pdo->prepare($sql);
 		$stmt->execute($params);
 
+		$results = [];
+		while($res = $stmt->fetch(PDO::FETCH_ASSOC)){
+			if(!empty($res['graph_img']) && strpos($res['graph_img'], 'assets/') === 0){
+				$res['graph_img'] = $res['graph_img'] = $GLOBALS['config']->base_url . $res['graph_img'];
+			}
+			$results[] = $res;
+		}
+
 		$this->response->setData([
-			'results' => $stmt->fetchAll(PDO::FETCH_ASSOC),
+			'results' => $results,
 			'total_records' => $record_count,
 			'total_pages' => $total_pages,
 			'page' => $page,
@@ -76,16 +84,17 @@ class PaginationController extends Controller{
 			case "all_posts_of_tag":
 				return [
 					'searchable_cols' => [],
-					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'title', 'slug', 'body'],
+					'cols' => ['id', 'create_ts', 'author_id', 'author_name', 'title', 'slug'],
 					'sql' => "
 						select 
 							`p`.`id`
 							,`p`.`create_ts`
 							,`p`.`author_id` 
 							,`u`.`display_name` as `author_name` 
+							,`p`.`graph_img`
 							,`p`.`title` 
-							,`p`.`slug` 
-							,`p`.`body` 
+							,`p`.`summary`
+							,`p`.`slug`
 						from 
 							`posts` `p` 
 							left join `users` `u` on `u`.`id` = `p`.`author_id`

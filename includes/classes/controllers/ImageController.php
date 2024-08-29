@@ -111,7 +111,7 @@ class ImageController extends ModelController{
 		}
 
 		$this->response->setData([
-			'path' => $GLOBALS['config']->base_url.'assets/images/'.basename($target_file),
+			'path' => 'assets/images/'.basename($target_file),
 			'image' => $this->model_instance->getColumns()
 		]);
 	}
