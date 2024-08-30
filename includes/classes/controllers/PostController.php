@@ -1,6 +1,7 @@
 <?php
 
 require APP_ROOT."/includes/functions/mdToHTML.php";
+require APP_ROOT."/includes/functions/getBaseURL.php";
 
 class PostController extends ModelController{
 
@@ -53,14 +54,8 @@ class PostController extends ModelController{
 		if(!$return_raw_md){
 			$post['body'] = mdToHTML($post['body']);
 
-			if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$protocol = 'https://';
-			}else {
-				$protocol = 'http://';
-			}
-
 			if(!empty($post['graph_img']) && strpos($post['graph_img'], 'assets/') === 0){
-				$post['graph_img'] = $protocol . $_SERVER['HTTP_HOST'] . $GLOBALS['config']->base_url . $post['graph_img'];
+				$post['graph_img'] = getBaseURL() . $post['graph_img'];
 			}
 		}
 

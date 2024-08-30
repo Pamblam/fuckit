@@ -3,13 +3,17 @@
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
 require APP_ROOT."/includes/functions/checkAppFilePerms.php";
 require APP_ROOT."/includes/functions/mdToHTML.php";
+require APP_ROOT."/includes/functions/getBaseURL.php";
 
 $missing_perms = checkAppFilePerms();
+$meta_tags = [];
 
 if(empty($missing_perms) && !empty($config) && !empty($pdo)){
-	$post_image = @$GLOBALS['config']->img;
-	$post_title = @$GLOBALS['config']->title;
-	$post_summary = @$GLOBALS['config']->desc;
+
+	$meta_tags['og:type'] = 'website';
+	if(!empty($GLOBALS['config']->img)) $meta_tags['og:image'] = $GLOBALS['config']->img;
+	if(!empty($GLOBALS['config']->title)) $meta_tags['og:title'] = $GLOBALS['config']->title;
+	if(!empty($GLOBALS['config']->desc)) $meta_tags['og:description'] = $GLOBALS['config']->desc;
 
 	$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
 	$index = strpos($url, $config->base_url);
@@ -24,19 +28,23 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 		}
 		if(!empty($post)){
 			$html = mdToHTML($post->get('body'));
-			$post_title = $post->get('title');
-			$post_summary = $post->get('summary');
-			$post_image = $post->get('graph_img');
 
-			if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-				$protocol = 'https://';
-			}else {
-				$protocol = 'http://';
-			}
+			$meta_tags['og:type'] = 'article';
+			$meta_tags['og:image'] = $post->get('graph_img');
+			$meta_tags['og:title'] = $post->get('title');
+			$meta_tags['og:description'] = $post->get('summary');
 
-			if(!empty($post_image) && strpos($post_image, 'assets/') === 0){
-				$post_image = $protocol . $_SERVER['HTTP_HOST'] . $GLOBALS['config']->base_url . $post_image;
+			if(!empty($meta_tags['og:image']) && strpos($meta_tags['og:image'], 'assets/') === 0){
+				$meta_tags['og:image'] = getBaseURL() . $meta_tags['og:image'];
 			}
+		}
+	}
+
+	if(!empty($meta_tags['og:image'])){
+		list($og_img_width, $og_img_height) = getimagesize($meta_tags['og:image']);
+		if(!empty($og_img_width) && !empty($og_img_height)){
+			$meta_tags['og:image:width'] = $og_img_width;
+			$meta_tags['og:image:height'] = $og_img_height;
 		}
 	}
 }
@@ -45,23 +53,25 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		
 		<title><?php echo empty($config) || empty($config->title) ? "Fuckit" : $config->title; ?></title>
+
 		<?php if(empty($missing_perms) && !empty($config) && !empty($pdo)): ?>
 			<link href="<?php echo $config->base_url; ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<?php endif; ?>
-		<?php if(!empty($post_title)): ?>
-			<meta property="og:title" content="<?php echo addcslashes($post_title, '"\\/'); ?>" />
-		<?php endif; ?>
-		<?php if(!empty($post_summary)): ?>
-			<meta name="description" content="<?php echo addcslashes($post_summary, '"\\/'); ?>" />
-			<meta property="og:description" content="<?php echo addcslashes($post_summary, '"\\/'); ?>" />
-		<?php endif; ?>
-		<?php if(!empty($post_image)): ?>
-			<meta property="og:image" content="<?php echo $post_image; ?>" />
-		<?php endif; ?>
+
+		<?php foreach($meta_tags as $property=>$content): ?>
+			<meta property="<?php echo $property; ?>" content="<?php echo addcslashes($content, '"'); ?>" />
+			<?php if('og:description' === $property): ?>
+				<meta name="description" content="<?php echo addcslashes($content, '"'); ?>" />
+			<?php endif; ?>
+		<?php endforeach; ?>
+
 	</head>
 	<body>
-		<?php if(!empty($missing_perms) || empty($config) || empty($pdo)): $phpuser = posix_getpwuid(posix_geteuid())['name']; ?>
+
+		<?php if(!empty($missing_perms) || empty($config) || empty($pdo)): ?>
+
 			<div style="width:90vw; margin:1em auto; font-family:'Helvetica Neue','Noto Sans','Liberation Sans',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'">
 				<h1>Fuckit</h1>
 				<p>Fuckit cannot access the either the database or the config file. From the command line, please run:</p>
@@ -69,10 +79,14 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 					<?php foreach($missing_perms as $err) echo $err['solution']." && \\<br>"; ?>
 					npm run setup</code>
 			</div>
+
 		<?php else: ?>
+
 			<div id='app_container'><?php if(!empty($html)) echo $html; ?></div>
 			<script src="<?php echo $config->base_url; ?>assets/js/bootstrap.bundle.min.js"></script>
 			<script src="<?php echo $config->base_url; ?>assets/js/main.js"></script>
+
 		<?php endif; ?>
+
 	</body>
 </html>
