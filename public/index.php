@@ -12,7 +12,7 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 
 	$meta_tags['og:type'] = 'website';
 	if(!empty($GLOBALS['config']->img)) $meta_tags['og:image'] = $GLOBALS['config']->img;
-	if(!empty($GLOBALS['config']->title)) $meta_tags['og:title'] = $GLOBALS['config']->title;
+	if(!empty($GLOBALS['config']->title)) $meta_tags['og:site_name'] = $GLOBALS['config']->title;
 	if(!empty($GLOBALS['config']->desc)) $meta_tags['og:description'] = $GLOBALS['config']->desc;
 
 	$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
