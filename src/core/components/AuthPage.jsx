@@ -3,13 +3,13 @@
  * Wrapper component that shows either it's children, or the login page if the user is not logged in.
  */
 
-import React from 'react';
+import {useContext} from 'react';
 
 import { LoginForm } from '#components/LoginForm';
 import { AppStateContext } from '#App';
 
 export function AuthPage({children}){
-	const {session, userSession} = React.useContext(AppStateContext);
+	const {session, userSession} = useContext(AppStateContext);
 	const [sessionState] = session;
 
 	let component;

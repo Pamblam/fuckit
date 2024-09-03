@@ -3,7 +3,7 @@
  * The entry point for the app.
  */
 
-import React from 'react';
+import {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
 
@@ -20,7 +20,7 @@ import {Post} from '#views/Post';
 (async function main(){
 	const rootDiv = document.getElementById('app_container');
 	const reactRoot = ReactDOM.createRoot(rootDiv);
-	reactRoot.render(<React.StrictMode>
+	reactRoot.render(<StrictMode>
 			<Router basename={config.base_url}>
 				<Routes>
 					<Route path="/" element={<App />}>
@@ -34,5 +34,5 @@ import {Post} from '#views/Post';
 					</Route>
 				</Routes>
 			</Router>
-		</React.StrictMode>);
+		</StrictMode>);
 })();

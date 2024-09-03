@@ -3,16 +3,16 @@
  * The navigation bar at the top of the page, with branding.
  */
 
-import React from 'react';
+import {useRef, useCallback} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router';
 
 export function Navbar(){
 	const navigate = useNavigate();
-	let inputRef = React.useRef();
+	let inputRef = useRef();
 
-	let setInputRef = React.useCallback(node=>{
+	let setInputRef = useCallback(node=>{
 		if(node){
 			inputRef.current = node;
 		}

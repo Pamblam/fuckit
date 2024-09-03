@@ -3,7 +3,7 @@
  * Page that shows the search results.
  */
 
-import React from 'react';
+
 import { useParams } from "react-router-dom";
 
 import { PostsSummary } from '#components/PostsSummary';

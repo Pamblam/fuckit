@@ -5,7 +5,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import { APIRequest } from '#modules/APIRequest';
@@ -13,9 +13,9 @@ import { APIRequest } from '#modules/APIRequest';
 export function SidebarPosts(){
 
 	const navigate = useNavigate();
-	let [results, setResults] = React.useState([]);
-	let [page, setPage] = React.useState(1);
-	let [totalPages, setTotalPages] = React.useState(0);
+	let [results, setResults] = useState([]);
+	let [page, setPage] = useState(1);
+	let [totalPages, setTotalPages] = useState(0);
 
 	const getRows = async ()=>{
 		let res = await new APIRequest('Pagination').get({query:'all_posts_summary', page, order_by_col:'create_ts', order_dir:'desc', page_size:5});
@@ -25,7 +25,7 @@ export function SidebarPosts(){
 		}
 	};
 
-	React.useEffect(()=>{
+	useEffect(()=>{
 		getRows();
 	}, [page]);
 

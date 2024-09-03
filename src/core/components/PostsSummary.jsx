@@ -5,7 +5,7 @@
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 
 import { APIRequest } from '#modules/APIRequest';
@@ -13,9 +13,9 @@ import { APIRequest } from '#modules/APIRequest';
 export function PostsSummary({searchQuery='', noResultsText='', tags=[]}){
 
 	const navigate = useNavigate();
-	let [results, setResults] = React.useState([]);
-	let [page, setPage] = React.useState(1);
-	let [totalPages, setTotalPages] = React.useState(0);
+	let [results, setResults] = useState([]);
+	let [page, setPage] = useState(1);
+	let [totalPages, setTotalPages] = useState(0);
 
 	const getRows = async ()=>{
 		let res;
@@ -30,7 +30,7 @@ export function PostsSummary({searchQuery='', noResultsText='', tags=[]}){
 		}
 	};
 
-	React.useEffect(()=>{
+	useEffect(()=>{
 		getRows();
 	}, [page, searchQuery]);
 

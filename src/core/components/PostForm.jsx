@@ -3,7 +3,7 @@
  * The form that is used to edit or create a new post.
  */
 
-import React from 'react';
+import {useContext, useState, useRef, useEffect, useCallback} from 'react';
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
@@ -13,26 +13,26 @@ import { FI } from '#modules/FI';
 import { AppStateContext } from '#App';
 
 export function PostForm({slugOrId}){
-	const {userSession} = React.useContext(AppStateContext);
+	const {userSession} = useContext(AppStateContext);
 	const navigate = useNavigate();
-	const [errorMessage, setErrorMessage] = React.useState();
-	const [successMessage, setSuccessMessage] = React.useState();
-	const [postData, setPostData] = React.useState({});
+	const [errorMessage, setErrorMessage] = useState();
+	const [successMessage, setSuccessMessage] = useState();
+	const [postData, setPostData] = useState({});
 
-	const new_post_title_ref = React.useRef();
-	const new_post_summary_ref = React.useRef();
-	const new_post_tags_ref = React.useRef();
-	const textarea_ref = React.useRef();
-	const preview_tab_ref = React.useRef();
-	const new_post_preview_ref = React.useRef();
-	const img_btn_ref = React.useRef();
-	const fi_instance_ref = React.useRef();
-	const graph_img_ref = React.useRef();
-	const new_post_publish_ref = React.useRef();
-	const post_id_ref = React.useRef();
-	const submitting_ref = React.useRef(false);
+	const new_post_title_ref = useRef();
+	const new_post_summary_ref = useRef();
+	const new_post_tags_ref = useRef();
+	const textarea_ref = useRef();
+	const preview_tab_ref = useRef();
+	const new_post_preview_ref = useRef();
+	const img_btn_ref = useRef();
+	const fi_instance_ref = useRef();
+	const graph_img_ref = useRef();
+	const new_post_publish_ref = useRef();
+	const post_id_ref = useRef();
+	const submitting_ref = useRef(false);
 
-	React.useEffect(()=>{
+	useEffect(()=>{
 		if(Object.keys(postData).length){
 			post_id_ref.current = postData.post.id;
 			graph_img_ref.current = postData.post.graph_img;
@@ -44,7 +44,7 @@ export function PostForm({slugOrId}){
 		}
 	}, [postData]);
 
-	React.useEffect(()=>{
+	useEffect(()=>{
         if(slugOrId) (async ()=>{
             let res;
             if(/^\d+$/.test(slugOrId)){
@@ -121,35 +121,35 @@ export function PostForm({slugOrId}){
 		submitting_ref.current = false;
 	};
 
-	const set_new_post_title_ref = React.useCallback(node=>{
+	const set_new_post_title_ref = useCallback(node=>{
 		if (node){
 			new_post_title_ref.current = node;
 			if(postData.post) new_post_title_ref.current.value = postData.post.title;
 		} 
 	});
 
-	const set_new_post_summary_ref = React.useCallback(node=>{
+	const set_new_post_summary_ref = useCallback(node=>{
 		if (node){
 			new_post_summary_ref.current = node; 
 			if(postData.post) new_post_summary_ref.current.value = postData.post.summary;
 		} 
 	});
 
-	const set_new_post_tags_ref = React.useCallback(node=>{
+	const set_new_post_tags_ref = useCallback(node=>{
 		if (node){
 			new_post_tags_ref.current = node; 
 			if(postData.post) new_post_tags_ref.current.value = postData.post.tags;
 		} 
 	});
 
-	const set_new_post_publish_ref = React.useCallback(node=>{
+	const set_new_post_publish_ref = useCallback(node=>{
 		if (node){
 			new_post_publish_ref.current = node; 
 			if(postData.post) new_post_publish_ref.current.checked = postData.post.published === 1;
 		}
 	});
 
-	const set_img_btn_ref = React.useCallback(node=>{
+	const set_img_btn_ref = useCallback(node=>{
 		if (img_btn_ref.current) {
 			fi_instance_ref.current.destroy();
 		}
@@ -203,7 +203,7 @@ export function PostForm({slugOrId}){
 		}
 	});
 
-	const set_textarea_ref = React.useCallback(node=>{
+	const set_textarea_ref = useCallback(node=>{
 		if (textarea_ref.current) {
 			textarea_ref.current.removeEventListener('input', autoExpandTextarea);
 		}
@@ -226,7 +226,7 @@ export function PostForm({slugOrId}){
 		else setErrorMessage('Unable to process markdown');
 	};
 
-	const set_preview_tab_ref = React.useCallback(node=>{
+	const set_preview_tab_ref = useCallback(node=>{
 		if (set_preview_tab_ref.current) {
 			preview_tab_ref.current.removeEventListener('show.bs.tab', getMDPreview);
 		}
@@ -236,7 +236,7 @@ export function PostForm({slugOrId}){
 		}
 	});
 
-	const set_new_post_preview_ref = React.useCallback(node=>{
+	const set_new_post_preview_ref = useCallback(node=>{
 		if (node) new_post_preview_ref.current = node;
 	});
 

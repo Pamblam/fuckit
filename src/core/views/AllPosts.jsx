@@ -3,7 +3,7 @@
  * The admin page that displays all the posts.
  */
 
-import React from 'react';
+import {useContext, useState} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faXmark, faLink, faPenToSquare, faTrash } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -14,8 +14,8 @@ import { APIRequest } from '#modules/APIRequest';
 import { AppStateContext } from '#App';
 
 export function AllPosts(){
-	const {userSession} = React.useContext(AppStateContext);
-	const [loading, setLoading] = React.useState(false);
+	const {userSession} = useContext(AppStateContext);
+	const [loading, setLoading] = useState(false);
 
 	const confirmAndDeletePost = async record => {
 		if(confirm(`Are you sure you want to delete post #${record.id}? (${record.title})`)){

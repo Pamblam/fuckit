@@ -4,7 +4,6 @@
  * The wrapper component for all the administration pages, includes sidebar, breadcrumbs
  */
 
-import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from "react-router-dom";

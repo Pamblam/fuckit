@@ -3,7 +3,7 @@
  * The page that displays a post.
  */
 
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
@@ -14,9 +14,9 @@ import { SidebarPosts } from '#components/SidebarPosts';
 export function Post(){
     const navigate = useNavigate();
     const { slugOrId } = useParams();
-    const [post, setPost] = React.useState();
+    const [post, setPost] = useState();
 
-    React.useEffect(()=>{
+    useEffect(()=>{
         if(slugOrId) (async ()=>{
             let res;
             if(/^\d+$/.test(slugOrId)){

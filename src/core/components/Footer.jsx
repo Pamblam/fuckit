@@ -3,7 +3,7 @@
  * Shows a simple footer component with links.
  */
 
-import React from 'react';
+import {useContext} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,7 @@ import { AppStateContext } from '#App';
 
 export function Footer(){
 	const navigate = useNavigate();
-	const {session, userSession} = React.useContext(AppStateContext);
+	const {session, userSession} = useContext(AppStateContext);
 	const [sessionState, setSessionState] = session;
 
 	let footer_link = '';

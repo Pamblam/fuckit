@@ -3,18 +3,18 @@
  * Login form component. 
  */
 
-import React from 'react';
+import {useContext, useRef} from 'react';
 
 import { AppStateContext } from '#App';
 
 export function LoginForm(){
-	const {session, userSession} = React.useContext(AppStateContext);
+	const {session, userSession} = useContext(AppStateContext);
 	const [,setSessionState] = session;
 
-	let username_input = React.useRef();
-	let password_input = React.useRef();
-	let error_div = React.useRef();
-	let form = React.useRef();
+	let username_input = useRef();
+	let password_input = useRef();
+	let error_div = useRef();
+	let form = useRef();
 
 	const doLogin = async e => {
 		e.preventDefault();

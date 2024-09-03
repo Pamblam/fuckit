@@ -3,7 +3,7 @@
  * A paginated, AJAX sourced data table component.
  */
 
-import React from 'react';
+import {useState, useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCaretUp, faCaretDown, faAnglesLeft, faAnglesRight } from '@fortawesome/free-solid-svg-icons';
 
@@ -11,13 +11,13 @@ import { APIRequest } from '#modules/APIRequest';
 
 export function ServerTable({columns, order_col, order_dir, query}){
 
-	let [rows, setRows] = React.useState([]);
-	let [orderByCol, setOrderByCol] = React.useState(order_col ? order_col : columns[0].col);
-	let [orderDir, setOrderDir] = React.useState(order_dir ? order_dir : 'asc');
-	let [page, setPage] = React.useState(1);
-	let [totalRecords, setTotalRecords] = React.useState(0);
-	let [totalPages, setTotalPages] = React.useState(0);
-	let [searchTerm, setSearchTerm] = React.useState('');
+	let [rows, setRows] = useState([]);
+	let [orderByCol, setOrderByCol] = useState(order_col ? order_col : columns[0].col);
+	let [orderDir, setOrderDir] = useState(order_dir ? order_dir : 'asc');
+	let [page, setPage] = useState(1);
+	let [totalRecords, setTotalRecords] = useState(0);
+	let [totalPages, setTotalPages] = useState(0);
+	let [searchTerm, setSearchTerm] = useState('');
 
 	const getRows = async ()=>{
 		let res = await new APIRequest('Pagination').get({query, page, order_by_col:orderByCol, order_dir:orderDir, page_size:25, search_term:searchTerm});
@@ -46,7 +46,7 @@ export function ServerTable({columns, order_col, order_dir, query}){
 		}
 	};
 
-	React.useEffect(()=>{
+	useEffect(()=>{
 		getRows();
 	}, [page, orderByCol, orderDir, searchTerm]);
 
