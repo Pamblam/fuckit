@@ -77,6 +77,10 @@ foreach($system_files as $file){
 		exit(1);
 	}
 
+	if (!file_exists(dirname(APP_ROOT."/".$file))) {
+		mkdir(dirname(APP_ROOT."/".$file), 0777, true);
+	}
+
 	$result = file_put_contents(
 		APP_ROOT."/".$file, 
 		file_get_contents($NEW_VERSION_BASE."/".$file)
