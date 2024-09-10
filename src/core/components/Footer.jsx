@@ -7,12 +7,12 @@ import {useContext} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
-import { useNavigate } from "react-router-dom";
 
+import {useNavHelper} from '#hooks/useNavHelper';
 import { AppStateContext } from '#App';
 
 export function Footer(){
-	const navigate = useNavigate();
+	const navigate = useNavHelper();
 	const {session, userSession} = useContext(AppStateContext);
 	const [sessionState, setSessionState] = session;
 

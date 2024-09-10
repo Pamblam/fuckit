@@ -6,13 +6,13 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faAnglesLeft } from '@fortawesome/free-solid-svg-icons';
 import {useState, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
 
+import {useNavHelper} from '#hooks/useNavHelper';
 import { APIRequest } from '#modules/APIRequest';
 
 export function PostsSummary({searchQuery='', noResultsText='', tags=[]}){
 
-	const navigate = useNavigate();
+	const navigate = useNavHelper();
 	let [results, setResults] = useState([]);
 	let [page, setPage] = useState(1);
 	let [totalPages, setTotalPages] = useState(0);
@@ -72,7 +72,7 @@ export function PostsSummary({searchQuery='', noResultsText='', tags=[]}){
 
 	return (<div className='text-center'>
 		{results.map(post=>{
-			return (<div key={post.id} style={{cursor:'pointer', backgroundImage: `url(${encodeURI(post.graph_img)})`, backgroundSize: 'cover', backgroundPosition: 'center'}} className="list-group-item m-3 text-center" onClick={e=>{e.preventDefault(); navigate(`/post/${post.slug}`); }}>
+			return (<div key={post.id} style={{cursor:'pointer', backgroundImage: `url(${encodeURI(post.graph_img)})`, backgroundSize: 'cover', backgroundPosition: 'center'}} className="list-group-item m-3 text-center" onClick={e=>navigate(e, `/post/${post.slug}`)}>
 				<div style={{backgroundColor: 'rgba(255,255,255,.5)', padding: '1em'}}>
 					<h4 className='mb-0 text-center'>{post.title}</h4>
 					{!!post.summary && (<p className='m-0'>{post.summary}</p>)}

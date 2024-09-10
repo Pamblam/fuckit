@@ -1,6 +1,6 @@
 {
     "name": "fuckit",
-    "version": "1.2.11",
+    "version": "1.2.12",
     "description": "Fuckit Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
@@ -59,9 +59,11 @@
         "#components/PostsSummary": "./src/core/components/PostsSummary.jsx",
         "#components/ServerTable": "./src/core/components/ServerTable.jsx",
         "#components/SidebarPosts": "./src/core/components/SidebarPosts.jsx",
+        "#hooks/useNavHelper": "./src/core/hooks/useNavHelper.js",
         "#main": "./src/core/main.jsx",
         "#modules/APIRequest": "./src/core/modules/APIRequest.js",
         "#modules/FI": "./src/core/modules/FI.js",
+        "#modules/FINavigate": "./src/core/modules/FINavigate.js",
         "#modules/UserSession": "./src/core/modules/UserSession.js",
         "#views/AllPosts": "./src/core/views/AllPosts.jsx",
         "#views/EditPost": "./src/core/views/EditPost.jsx",

@@ -41,6 +41,11 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 	}
 
 	if(!empty($meta_tags['og:image'])){
+
+		if(strpos($meta_tags['og:image'], getBaseURL()) !== 0){
+			$meta_tags['og:image'] = getBaseURL() . ltrim($meta_tags['og:image'], '/');
+		}
+
 		list($og_img_width, $og_img_height) = getimagesize($meta_tags['og:image']);
 		if(!empty($og_img_width) && !empty($og_img_height)){
 			$meta_tags['og:image:width'] = $og_img_width;

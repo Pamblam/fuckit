@@ -7,5 +7,5 @@ function getBaseURL(){
 		$protocol = 'http://';
 	}
 
-	return $protocol . $_SERVER['HTTP_HOST'] . $GLOBALS['config']->base_url;
+	return $protocol . $_SERVER['HTTP_HOST'] . rtrim($GLOBALS['config']->base_url, '/') . '/';
 }

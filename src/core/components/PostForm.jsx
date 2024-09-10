@@ -4,17 +4,17 @@
  */
 
 import {useContext, useState, useRef, useEffect, useCallback} from 'react';
-import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage, faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
+import {useNavHelper} from '#hooks/useNavHelper';
 import { APIRequest } from '#modules/APIRequest';
 import { FI } from '#modules/FI';
 import { AppStateContext } from '#App';
 
 export function PostForm({slugOrId}){
 	const {userSession} = useContext(AppStateContext);
-	const navigate = useNavigate();
+	const navigate = useNavHelper();
 	const [errorMessage, setErrorMessage] = useState();
 	const [successMessage, setSuccessMessage] = useState();
 	const [postData, setPostData] = useState({});
@@ -61,6 +61,7 @@ export function PostForm({slugOrId}){
 
 	const autoExpandTextarea = function(e){
 		if(e) e.stopPropagation();
+		let sy = scrollY;
 		this.setAttribute('rows', 1);
 		var cs = getComputedStyle(this);
 		var paddingTop = +cs.paddingTop.substr(0, cs.paddingTop.length-2);
@@ -68,6 +69,7 @@ export function PostForm({slugOrId}){
 		var lineHeight = +cs.lineHeight.substr(0, cs.lineHeight.length-2);
 		var rows = (this.scrollHeight - (paddingTop + paddingBottom)) / lineHeight;
 		this.setAttribute('rows', rows);
+		scrollTo({top: sy, behavior:'instant'});
 	};
 
 	const onSumbit = async e=>{

@@ -6,13 +6,14 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faAnglesRight, faClockRotateLeft } from '@fortawesome/free-solid-svg-icons';
 import {useState, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
 
 import { APIRequest } from '#modules/APIRequest';
+import {useNavHelper} from '#hooks/useNavHelper';
 
 export function SidebarPosts(){
 
-	const navigate = useNavigate();
+	const navigate = useNavHelper();
+
 	let [results, setResults] = useState([]);
 	let [page, setPage] = useState(1);
 	let [totalPages, setTotalPages] = useState(0);
@@ -40,7 +41,7 @@ export function SidebarPosts(){
 		</div>
 		<ul className="list-group list-group-flush">
 			{results.map(post=>{
-				return (<li key={post.id} style={{cursor:'pointer'}} className="list-group-item" onClick={e=>{e.preventDefault(); navigate(`/post/${post.slug}`); }}>
+				return (<li key={post.id} style={{cursor:'pointer'}} className="list-group-item" onClick={e=>navigate(e, `/post/${post.slug}`)}>
 					<div><b className='mb-0'>{post.title}</b></div>
 					<small>{post.summary}</small>
 				</li>);

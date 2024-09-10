@@ -4,15 +4,15 @@
  */
 
 import {useState, useEffect} from 'react';
-import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
+import {useNavHelper} from '#hooks/useNavHelper';
 import { APIRequest } from '#modules/APIRequest';
 import { AuthPage } from '#components/AuthPage';
 import { SidebarPosts } from '#components/SidebarPosts';
 
 export function Post(){
-    const navigate = useNavigate();
+    const navigate = useNavHelper();
     const { slugOrId } = useParams();
     const [post, setPost] = useState();
 
