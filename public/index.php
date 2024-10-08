@@ -4,11 +4,14 @@ require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
 require APP_ROOT."/includes/functions/checkAppFilePerms.php";
 require APP_ROOT."/includes/functions/mdToHTML.php";
 require APP_ROOT."/includes/functions/getBaseURL.php";
+require APP_ROOT."/includes/functions/is404.php";
 
 $missing_perms = checkAppFilePerms();
 $meta_tags = [];
 
 if(empty($missing_perms) && !empty($config) && !empty($pdo)){
+
+	if(is404()) http_response_code(404);
 
 	$meta_tags['og:type'] = 'website';
 	if(!empty($GLOBALS['config']->img)) $meta_tags['og:image'] = $GLOBALS['config']->img;
