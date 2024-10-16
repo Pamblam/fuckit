@@ -12,27 +12,26 @@ class UserSession{
 		this.server_auth_time = null;
 
 		// Set Session properties
-		this.props = {
-			last_checked: null,
-			id: null,
-			username: null,
-			display_name: null,
-			token: null
-		};
+		this.props = [
+			'id',
+			'last_checked', 
+			'username',
+			'display_name',
+			'token'
+		];
 
 		this.validateServerPromise = null;
-		this.loadFromStorage();
 	}
 
 	async isExpired(){
 		// token is valid for only six hours
 		let now = new Date().getTime();
-		return !this.props.last_checked || this.props.last_checked >= now - (1000 * 60 * 60 * 6);
+		return !this.get('last_checked') || this.get('last_checked') >= now - (1000 * 60 * 60 * 6);
 	}
 
 	async logout(){
 		let res = await new APIRequest('Session', this).delete();
-		Object.keys(this.props).forEach(key=>{
+		this.props.forEach(key=>{
 			this.set(key, null);
 		});
 	}
@@ -63,17 +62,17 @@ class UserSession{
 
 	// Check if user is currently logged in, without asking the server
 	isLoggedIn(){
-		return this.props.last_checked && this.props.id;
+		return this.get('last_checked') && this.get('id');
 	}
 
 	// If there is a current session older than 5 minutes, validate it with the server
 	validateSession(){
 		if(this.validateServerPromise) return this.validateServerPromise;
 		this.validateServerPromise = new Promise(async done=>{
-			if(this.props.token){
+			if(this.get('token')){
 				let now = new Date().getTime();
 				let five_minutes_ago = now - (1000 * 60 * 5);	
-				if(this.props.last_checked && (this.props.last_checked > five_minutes_ago)){
+				if(this.get('last_checked') && (this.get('last_checked') > five_minutes_ago)){
 					done(true);
 				}else{
 					let res = await new APIRequest('Session', this).get();
@@ -98,18 +97,8 @@ class UserSession{
 		return this.validateServerPromise;
 	}
 
-	loadFromStorage(){
-		Object.keys(this.props).forEach(prop=>{
-			let val = localStorage.getItem(`session.${prop}`);
-			this.set(prop, val || null);
-		});
-		this.props.id = +this.props.id;
-		this.props.last_checked = +this.props.last_checked;
-	}
-
 	set(prop, val){
-		if(this.props.hasOwnProperty(prop)){
-			this.props[prop] = val;
+		if(this.props.includes(prop)){
 			if(val === null){
 				localStorage.removeItem(`session.${prop}`);
 			}else{
@@ -121,9 +110,9 @@ class UserSession{
 	}
 
 	get(prop){
-		if(this.props.hasOwnProperty(prop)){
-			return this.props[prop];
-		}
+		let val = localStorage.getItem(`session.${prop}`);
+		if(!val) return;
+		return ['id', 'last_checked'].includes(prop) ? +val : val;
 	}
 }
 
