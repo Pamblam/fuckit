@@ -83,6 +83,9 @@ class SessionController extends ModelController{
 				$this->response->setError("Unable to save session. Is DB Writable?", 400)->send();
 			}
 
+			// Only allow one active session per user
+			$this->model_instance->closeOtherUserSessions();
+
 			$this->response->setHeader("x-auth-token: $new_token");
 			$this->response->setData([
 				'LoggedIn' => false,
