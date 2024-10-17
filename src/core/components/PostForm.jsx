@@ -32,6 +32,42 @@ export function PostForm({slugOrId}){
 	const post_id_ref = useRef();
 	const submitting_ref = useRef(false);
 
+	// the last position of the cursor in the textarea.
+	const cursorPosition = useRef(-1);
+	const trackCursorPosition = e=>{
+		if(!textarea_ref.current) cursorPosition.current = -1;
+		cursorPosition.current = textarea_ref.current.selectionStart;
+	};
+
+	// To track the currently focused element
+	// Mainly needed when clicking on the the add image button 
+	// to determine if the previously focused element was the textarea 
+	const currentFocus = useRef([]);
+	const focusedElement = {
+		set(ele){
+			if(this.current() === ele) return;
+			currentFocus.current.unshift(ele);
+			if(currentFocus.current.length > 2){
+				currentFocus.current.pop();
+			}
+		},
+		current(){
+			if(!currentFocus.current.length) return false;
+			return currentFocus.current[0];
+		},
+		previous(){
+			if(currentFocus.current.length < 2) return false;
+			return currentFocus.current[1];
+		}
+	};
+
+	// Track the currently focused element
+	useEffect(()=>{
+		let fn = e=>focusedElement.set(e.target);
+		addEventListener('focusin', fn);
+		return ()=>removeEventListener('focusin', fn);
+	}, []);
+
 	useEffect(()=>{
 		if(Object.keys(postData).length){
 			post_id_ref.current = postData.post.id;
@@ -106,7 +142,7 @@ export function PostForm({slugOrId}){
 			await new APIRequest('Post', userSession).post(props);
 
 		if(res.has_error){
-			setSuccessMessage(null);
+			setSuccessMessage(undefined);
 			setErrorMessage(res.message);
 		}else{
 			if(res?.data?.Post?.id) post_id_ref.current = res.data.Post.id;
@@ -116,7 +152,7 @@ export function PostForm({slugOrId}){
 			pd.post = res.data.Post;
 			pd.tags = res.data.Tags;
 			setPostData(pd);
-			setErrorMessage(null);
+			setErrorMessage(undefined);
 			setSuccessMessage(message);
 		}
 
@@ -152,57 +188,71 @@ export function PostForm({slugOrId}){
 	});
 
 	const set_img_btn_ref = useCallback(node=>{
+		if (!node) return;
+
 		if (img_btn_ref.current) {
 			fi_instance_ref.current.destroy();
 		}
-		if (node) {
-			img_btn_ref.current = node;
-			fi_instance_ref.current = new FI({
-				button: node,
-				accept: ["png", "jpg", "jpeg", "gif"],
-				multi: false
-			});
-			fi_instance_ref.current.register_callback(async function(){
-				let files = fi_instance_ref.current.get_files();
-				if(!files || !files.length) return;
-				let file = files[0];
-				fi_instance_ref.current.clear_files();
-				
-				let res = {};
-				try{
-					res = await new APIRequest('Image', userSession).post({img: file});
-				}catch(e){
-					res = {
-						has_error: true,
-						message: "Unable to upload file. Please check that it does not exceed the size restrictions."
-					};
-				}
-				
-				if(res.has_error){
-					setErrorMessage(res.message);
-					return;
-				}else{
-					setErrorMessage(null);
-				}
+		img_btn_ref.current = node;
+		
+		fi_instance_ref.current = new FI({
+			button: node,
+			accept: ["png", "jpg", "jpeg", "gif"],
+			multi: false
+		});
+		
+		fi_instance_ref.current.register_callback(async function(){
 
-				if(!graph_img_ref.current){
-					graph_img_ref.current = res.data.path;
-				}
+			let files = fi_instance_ref.current.get_files();
+			if(!files || !files.length) return;
+			let file = files[0];
+			fi_instance_ref.current.clear_files();
+			
+			let res = {};
+			try{
+				res = await new APIRequest('Image', userSession).post({img: file});
+			}catch(e){
+				res = {
+					has_error: true,
+					message: "Unable to upload file. Please check that it does not exceed the size restrictions."
+				};
+			}
 
-				let img_md = `![](${encodeURI(res.data.path)})`;
-				let lines = textarea_ref.current.value.split("\n");
+			if(res.has_error){
+				setErrorMessage(res.message);
+				return;
+			}else{
+				setErrorMessage(undefined);
+			}
+
+			if(!graph_img_ref.current){
+				graph_img_ref.current = res.data.path;
+			}
+
+			let img_md = `![](${encodeURI(res.data.path)})`;
+
+			let md_text = textarea_ref.current.value;
+
+			// put the markdwn at the current position, if the textarea was previously in focus.
+			if(focusedElement.previous() === textarea_ref.current && cursorPosition.current !== -1){
+				let chars = md_text.split('');
+				chars.splice(cursorPosition.current-1, 0, img_md);
+				md_text = chars.join('');
+			}else{
+				let lines = md_text.split("\n");
 				if(!lines.at(-1).trim()) lines[lines.length-1] = img_md;
 				else lines.push(img_md);
-				textarea_ref.current.value = lines.join("\n");
-				autoExpandTextarea.call(textarea_ref.current);
+				md_text = lines.join("\n");
+			}
 
-				let text = textarea_ref.current.value;
-				new_post_preview_ref.current.innerHTML = '<p>Loading...</p>';
-				res = await new APIRequest('ParseMD').get({md: text});
-				if(!res.has_error) new_post_preview_ref.current.innerHTML = res.data.html;
-				else setErrorMessage('Unable to process markdown');
-			});
-		}
+			textarea_ref.current.value = md_text;
+			autoExpandTextarea.call(textarea_ref.current);
+
+			new_post_preview_ref.current.innerHTML = '<p>Loading...</p>';
+			res = await new APIRequest('ParseMD').get({md: md_text});
+			if(!res.has_error) new_post_preview_ref.current.innerHTML = res.data.html;
+			else setErrorMessage('Unable to process markdown');
+		});
 	});
 
 	const set_textarea_ref = useCallback(node=>{
@@ -244,8 +294,8 @@ export function PostForm({slugOrId}){
 
 	return (<form onSubmit={onSumbit}>
 
-			{successMessage && (<div className='alert alert-success alert-dismissible'><span dangerouslySetInnerHTML={{__html: successMessage}}></span><button type="button" className="btn-close" onClick={e=>{e.preventDefault(); setSuccessMessage(null);}}></button></div>)}
-			{errorMessage && (<div className='alert alert-danger alert-dismissible'>{errorMessage}<button type="button" className="btn-close" onClick={e=>{e.preventDefault(); setErrorMessage(null);}}></button></div>)}
+			{successMessage && (<div className='alert alert-success alert-dismissible'><span dangerouslySetInnerHTML={{__html: successMessage}}></span><button type="button" className="btn-close" onClick={e=>{e.preventDefault(); setSuccessMessage(undefined);}}></button></div>)}
+			{errorMessage && (<div className='alert alert-danger alert-dismissible'>{errorMessage}<button type="button" className="btn-close" onClick={e=>{e.preventDefault(); setErrorMessage(undefined);}}></button></div>)}
 
 			<div className="mb-3">
 				<label className="form-label">Post Title</label>
@@ -260,7 +310,7 @@ export function PostForm({slugOrId}){
 			</div>
 
 			<div className="clearfix">
-				<button className="btn btn-primary float-end" ref={set_img_btn_ref}><FontAwesomeIcon icon={faImage} /> Insert Image</button>
+				<button type="button" className="btn btn-primary float-end" ref={set_img_btn_ref}><FontAwesomeIcon icon={faImage} /> Insert Image</button>
 				<ul className="nav nav-tabs" style={{borderBottom: 'none'}}>
 					<li className="nav-item">
 						<a className="nav-link active" data-bs-toggle="tab" href="#new_post_compose">Compose</a>
@@ -272,7 +322,7 @@ export function PostForm({slugOrId}){
 			</div>
 			<div className="tab-content mb-3">
 				<div className="tab-pane container active px-0 pt-3" id="new_post_compose">
-					<textarea data-lpignore="true" ref={set_textarea_ref} className="form-control"></textarea>
+					<textarea data-lpignore="true" ref={set_textarea_ref} className="form-control" onKeyDown={trackCursorPosition} onClick={trackCursorPosition}></textarea>
 					<div className="form-text">Compose your post using Markdown.</div>
 				</div>
 				<div className="tab-pane container fade px-0 pt-3" id="new_post_preview" ref={set_new_post_preview_ref}>
