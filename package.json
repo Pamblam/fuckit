@@ -1,7 +1,7 @@
 {
     "name": "fuckit",
-    "version": "1.3.3",
-    "description": "Fuckit Simple PHP/ReactJS CMS",
+    "version": "1.3.5",
+    "description": "Fuckit is a Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",

@@ -147,6 +147,11 @@ export function PostForm({slugOrId}){
 		}else{
 			if(res?.data?.Post?.id) post_id_ref.current = res.data.Post.id;
 			let link = location.href.replace(/(\/new_post|\/edit_post\/[^\/]*)\/?/, `/post/${res.data.Post.slug}`);
+			let path = location.href.split('#').shift().split('?').shift();
+			if(/new_post\/?$/.test(path)){
+				path = path.replace(/new_post\/?$/, `edit_post/${res.data.Post.slug}`)
+				window.history.replaceState(null, "New Page Title", "/pathname/goes/here")
+			}
 			let message = `${verbiage1} ${verbiage2} at ${time}<br><small>${verbiage1} ${verbiage3}: <a href='${link}' target=_blank>${link}</a></small>`;
 			let pd = Object.assign({}, postData);
 			pd.post = res.data.Post;

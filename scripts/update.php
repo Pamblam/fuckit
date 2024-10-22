@@ -53,6 +53,7 @@ $system_files = array_filter($system_files, function($path){
 		'.git',
 		'src/themes',
 		'public/assets/js/main.js',
+		'public/assets/images',
 		'config',
 		'database',
 		'node_modules',

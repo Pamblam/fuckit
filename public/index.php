@@ -82,7 +82,7 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 
 			<div style="width:90vw; margin:1em auto; font-family:'Helvetica Neue','Noto Sans','Liberation Sans',Arial,sans-serif,'Apple Color Emoji','Segoe UI Emoji','Segoe UI Symbol','Noto Color Emoji'">
 				<h1>Fuckit</h1>
-				<p>Fuckit cannot access the either the database or the config file. From the command line, please run:</p>
+				<p>Fuckit cannot access either the database or the config file. From the command line, please run:</p>
 				<code>cd <?php echo APP_ROOT; ?> && \<br>
 					<?php foreach($missing_perms as $err) echo $err['solution']." && \\<br>"; ?>
 					npm run setup</code>
