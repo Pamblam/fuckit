@@ -40,7 +40,7 @@ function fi_print_og_tags(){
 	}
 
 	if(!empty($meta_tags['og:image'])){
-		if(strpos($meta_tags['og:image'], fi_get_base_url()) !== false){
+		if(!filter_var($meta_tags['og:image'], FILTER_VALIDATE_URL)){
 			$meta_tags['og:image'] = fi_get_base_url() . ltrim($meta_tags['og:image'], '/');
 		}
 
@@ -49,9 +49,7 @@ function fi_print_og_tags(){
 
 		if($url_parts['host'] === $_SERVER['SERVER_ADDR'] || $url_parts['host'] === $_SERVER['HTTP_HOST']){
 			$path = '/' . trim($GLOBALS['config']->base_url, '/');
-			if(strpos($url_parts['path'], $path) === 0){
-				$relative_path = substr($url_parts['path'], strlen($path));
-
+			if(strpos($url_parts['path'], $path) === false){
 				list($og_img_width, $og_img_height) = getimagesize(str_replace('//','/',APP_ROOT.'/public/'.$relative_path));
 				if(!empty($og_img_width) && !empty($og_img_height)){
 					$meta_tags['og:image:width'] = $og_img_width;
