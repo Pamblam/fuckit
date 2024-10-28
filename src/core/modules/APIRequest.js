@@ -3,7 +3,7 @@
  * Class to handle all AJAX requests.
  */
 
-import config from '#config';
+import config from '#config/server';
 
 export class APIRequest {
 

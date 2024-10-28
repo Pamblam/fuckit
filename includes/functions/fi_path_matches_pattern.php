@@ -8,7 +8,7 @@
  * @param string $path
  * @return bool
  */
-function pathMatchesPattern($pattern, $path){
+function fi_path_matches_pattern($pattern, $path){
     $pattern_parts = explode('/', $pattern);
     $path_parts = explode('/', $path);
     if(count($path_parts) > count($pattern_parts)) return false;

@@ -4,7 +4,7 @@
  * Parse the app's main.js file to get a list of javascript-handled routes
  * @return Array
  */
-function getJSRoutes(){
+function fi_get_js_routes(){
 	global $config;
 
 	// Get the possible Javascript-created paths

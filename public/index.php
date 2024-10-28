@@ -1,60 +1,16 @@
 <?php
 
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
-require APP_ROOT."/includes/functions/checkAppFilePerms.php";
-require APP_ROOT."/includes/functions/mdToHTML.php";
-require APP_ROOT."/includes/functions/getBaseURL.php";
-require APP_ROOT."/includes/functions/is404.php";
+require APP_ROOT."/includes/functions/fi_check_file_app_permissions.php";
+require APP_ROOT."/includes/functions/fi_md_to_html.php";
+require APP_ROOT."/includes/functions/fi_get_base_url.php";
+require APP_ROOT."/includes/functions/fi_is_404.php";
+require APP_ROOT."/includes/functions/fi_print_og_tags.php";
 
-$missing_perms = checkAppFilePerms();
-$meta_tags = [];
+$missing_perms = fi_check_file_app_permissions();
 
 if(empty($missing_perms) && !empty($config) && !empty($pdo)){
-
-	if(is404()) http_response_code(404);
-
-	$meta_tags['og:type'] = 'website';
-	if(!empty($GLOBALS['config']->img)) $meta_tags['og:image'] = $GLOBALS['config']->img;
-	if(!empty($GLOBALS['config']->title)) $meta_tags['og:site_name'] = $GLOBALS['config']->title;
-	if(!empty($GLOBALS['config']->desc)) $meta_tags['og:description'] = $GLOBALS['config']->desc;
-
-	$url = $_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']; 
-	$index = strpos($url, $config->base_url);
-	$relative_url = substr($url, $index + strlen($config->base_url));
-	$url_parts = explode('/', $relative_url);
-	if(count($url_parts) === 2 && $url_parts[0] === 'post'){
-		$slugOrId = $url_parts[1];
-		if(is_numeric($slugOrId)){
-			$post = Post::fromID($pdo, $slugOrId);
-		}else{
-			$post = Post::fromColumn($pdo, 'slug', $slugOrId);
-		}
-		if(!empty($post)){
-			$html = mdToHTML($post->get('body'));
-
-			$meta_tags['og:type'] = 'article';
-			$meta_tags['og:image'] = $post->get('graph_img');
-			$meta_tags['og:title'] = $post->get('title');
-			$meta_tags['og:description'] = $post->get('summary');
-
-			if(!empty($meta_tags['og:image']) && strpos($meta_tags['og:image'], 'assets/') === 0){
-				$meta_tags['og:image'] = getBaseURL() . $meta_tags['og:image'];
-			}
-		}
-	}
-
-	if(!empty($meta_tags['og:image'])){
-
-		if(strpos($meta_tags['og:image'], getBaseURL()) !== 0){
-			$meta_tags['og:image'] = getBaseURL() . ltrim($meta_tags['og:image'], '/');
-		}
-
-		list($og_img_width, $og_img_height) = getimagesize($meta_tags['og:image']);
-		if(!empty($og_img_width) && !empty($og_img_height)){
-			$meta_tags['og:image:width'] = $og_img_width;
-			$meta_tags['og:image:height'] = $og_img_height;
-		}
-	}
+	if(fi_is_404()) http_response_code(404);
 }
 ?><!doctype html>
 <html lang="en">
@@ -68,12 +24,7 @@ if(empty($missing_perms) && !empty($config) && !empty($pdo)){
 			<link href="<?php echo $config->base_url; ?>assets/css/bootstrap.min.css" rel="stylesheet">
 		<?php endif; ?>
 
-		<?php foreach($meta_tags as $property=>$content): ?>
-			<meta property="<?php echo $property; ?>" content="<?php echo addcslashes($content, '"'); ?>" />
-			<?php if('og:description' === $property): ?>
-				<meta name="description" content="<?php echo addcslashes($content, '"'); ?>" />
-			<?php endif; ?>
-		<?php endforeach; ?>
+		<?php fi_print_og_tags(); ?>
 
 	</head>
 	<body>

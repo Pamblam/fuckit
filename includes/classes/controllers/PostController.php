@@ -1,7 +1,7 @@
 <?php
 
-require APP_ROOT."/includes/functions/mdToHTML.php";
-require APP_ROOT."/includes/functions/getBaseURL.php";
+require APP_ROOT."/includes/functions/fi_md_to_html.php";
+require APP_ROOT."/includes/functions/fi_get_base_url.php";
 
 class PostController extends ModelController{
 
@@ -52,10 +52,10 @@ class PostController extends ModelController{
 
 		$post = $this->model_instance->getColumns();
 		if(!$return_raw_md){
-			$post['body'] = mdToHTML($post['body']);
+			$post['body'] = fi_md_to_html($post['body']);
 
 			if(!empty($post['graph_img']) && strpos($post['graph_img'], 'assets/') === 0){
-				$post['graph_img'] = getBaseURL() . $post['graph_img'];
+				$post['graph_img'] = fi_get_base_url() . $post['graph_img'];
 			}
 		}
 

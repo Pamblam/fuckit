@@ -7,7 +7,7 @@
  * @param array $reqd_perms - Permissions to check for, an array which may include 'r', 'w', 'e'
  * @return string[][] - An array containing arrays of error and solution strings
  */
-function ensurePermissions($path, $reqd_perms=[]){
+function fi_ensure_permissions($path, $reqd_perms=[]){
 
 	// The results to be returned
 	$results = [];

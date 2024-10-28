@@ -6,7 +6,7 @@
  */
 
  require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
- require realpath(dirname(dirname(__FILE__)))."/includes/functions/ensurePermissions.php";
+ require realpath(dirname(dirname(__FILE__)))."/includes/functions/fi_ensure_permissions.php";
 
 // Make sure we have a connection to SQL
 if(empty($pdo)){
@@ -23,7 +23,7 @@ if(empty($argv[1])){
 $NEW_VERSION_BASE = $argv[1];
 
 // Ensure that the new version exists and that we have read access to it
-$repo_perms = @ensurePermissions($NEW_VERSION_BASE, ['r', 'e']);
+$repo_perms = @fi_ensure_permissions($NEW_VERSION_BASE, ['r', 'e']);
 if(!empty($repo_perms)){
 	foreach($repo_perms as $perm){
 		echo "Error: {$perm['error']}\n";
@@ -69,7 +69,7 @@ $system_files = array_filter($system_files, function($path){
 foreach($system_files as $file){
 
 	// Ensure we can read the new file
-	$perms = @ensurePermissions($NEW_VERSION_BASE."/".$file, ['r']);
+	$perms = @fi_ensure_permissions($NEW_VERSION_BASE."/".$file, ['r']);
 	if(!empty($perms)){
 		foreach($repo_perms as $perm){
 			echo "Error: {$perm['error']}\n";

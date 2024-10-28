@@ -17,7 +17,10 @@ if(empty($config)){
 $src_dir = APP_ROOT."/src/";
 $core_dir = $src_dir."core/";
 
-$imports = ['#config'=>'./config/config.json'];
+$imports = [
+	'#config/server'=>'./config/server.json', 
+	'#config/app'=>'./config/app.json'
+];
 
 $core_files = recursiveScandir($core_dir);
 for($i=0; $i<count((array) $core_files); $i++){

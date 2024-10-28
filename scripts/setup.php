@@ -6,14 +6,14 @@
 
 clearstatcache();
 require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
-require APP_ROOT."/includes/functions/file_upload_max_size.php";
-require APP_ROOT."/includes/functions/checkAppFilePerms.php";
+require APP_ROOT."/includes/functions/fi_file_upload_max_size.php";
+require APP_ROOT."/includes/functions/fi_check_file_app_permissions.php";
 
 echo "\n\nInstalling Fuckit\n";
 echo "=================\n";
 
 echo "Checking file permissions...\n";
-$missing_perms = checkAppFilePerms();
+$missing_perms = fi_check_file_app_permissions();
 if(!empty($missing_perms)){
 	echo "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!\n";
 	echo "!! Unable to access required system files. Please run the following: !!\n";
@@ -27,7 +27,8 @@ echo "Permissions OK!\n";
 echo "Setting up database\n";
 
 $rebuilding_database = true;
-$rebuilding_config = true;
+$rebuilding_server_config = true;
+$rebuilding_app_config = true;
 $config_default_base_url = '/';
 $config_defualt_max_file_size = 8000000;
 
@@ -106,59 +107,95 @@ if($rebuilding_database){
 	}
 }
 
-if(file_exists($config_file)){
-	echo "Config file exists.\n";
-	$rebuild_resp = promptUser("Do you want to reinstall the config file? (y/n):");
+if(file_exists($server_config_file)){
+	echo "Server config file exists.\n";
+	$rebuild_resp = promptUser("Do you want to reinstall the server config file? (y/n):");
 	while($rebuild_resp !== 'y' && $rebuild_resp !== 'n'){
 		echo "Invalid response\n";
-		$rebuild_resp = promptUser("Do you want to reinstall the config file? (y/n):");
+		$rebuild_resp = promptUser("Do you want to reinstall the server config file? (y/n):");
 	}
-	if($rebuild_resp === 'n') $rebuilding_config = false;
+	if($rebuild_resp === 'n') $rebuilding_server_config = false;
 
-	if($rebuilding_config){
+	if($rebuilding_server_config){
 
 		try{
-			$cfg = @file_get_contents($config_file);
+			$cfg = @file_get_contents($server_config_file);
 			$cfg = @json_decode($cfg);
 			if(!empty($cfg) && !empty($cfg->base_url)) $config_default_base_url = $cfg->base_url;
 			if(!empty($cfg) && !empty($cfg->max_upload_size)) $config_defualt_max_file_size = $cfg->max_upload_size;
 		}catch(Exception $e){}
 
 		echo "Truncating config.\n";
-		$fp = fopen($config_file, "w");
+		$fp = fopen($server_config_file, "w");
 		if(false === $fp){
-			echo "Can't open config file. Ensure PHP has correct permissions and ownership.\n";
+			echo "Can't open server config file. Ensure PHP has correct permissions and ownership.\n";
 			exit(1);
 		}
 		fclose($fp);
 	}
 }
 
-if($rebuilding_config){
-	$config_obj = [];
+if($rebuilding_server_config){
+	$server_config_obj = [];
 
 	// Set the base URL
 	echo "Setting the relative URL to the `public` directory of the app.\n";
 	echo "If the app is hosted in a subdirectory (eg: localhost/fuckit/public/) then the relative URL would be anything after your domain (eg: /fuckit/public/).\n";
 	$base_url = promptUser("Enter the app's base URL (default $config_default_base_url):");
 	if(empty($base_url)) $base_url = $config_default_base_url;
-	$config_obj['base_url'] = $base_url;
-	$config_obj['max_upload_size'] = getMaxFileSize($config_defualt_max_file_size);
+	$server_config_obj['base_url'] = $base_url;
+	$server_config_obj['max_upload_size'] = getMaxFileSize($config_defualt_max_file_size);
 
+	$res = @file_put_contents($server_config_file, json_encode($server_config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+	if(false === $res){
+		echo "Can't create server config file. Ensure PHP has correct permissions and ownership.\n";
+		exit(1);
+	}
+}
+
+if(file_exists($app_config_file)){
+	echo "App config file exists.\n";
+	$rebuild_resp = promptUser("Do you want to reinstall the app config file? (y/n):");
+	while($rebuild_resp !== 'y' && $rebuild_resp !== 'n'){
+		echo "Invalid response\n";
+		$rebuild_resp = promptUser("Do you want to reinstall the app config file? (y/n):");
+	}
+	if($rebuild_resp === 'n') $rebuilding_app_config = false;
+
+	if($rebuilding_app_config){
+
+		try{
+			$cfg = @file_get_contents($app_config_file);
+			$cfg = @json_decode($cfg);
+			if(!empty($cfg) && !empty($cfg->base_url)) $config_default_base_url = $cfg->base_url;
+			if(!empty($cfg) && !empty($cfg->max_upload_size)) $config_defualt_max_file_size = $cfg->max_upload_size;
+		}catch(Exception $e){}
+
+		echo "Truncating config.\n";
+		$fp = fopen($app_config_file, "w");
+		if(false === $fp){
+			echo "Can't open app config file. Ensure PHP has correct permissions and ownership.\n";
+			exit(1);
+		}
+		fclose($fp);
+	}
+}
+
+if($rebuilding_app_config){
+	// Set the base URL
 	$app_title = promptUser("Enter the app's title (default Fuckit):");
 	if(empty($app_title)) $app_title = "Title";
-	$config_obj['title'] = $app_title;
+	$app_config_obj['title'] = $app_title;
 
 	$app_desc = promptUser("Enter a short description for the app:");
-	if(!empty($app_desc)) $config_obj['desc'] = $app_desc;
+	if(!empty($app_desc)) $app_config_obj['desc'] = $app_desc;
 
 	$app_img = promptUser("Enter an image URL for your app's SEO:");
-	if(!empty($app_img) && filter_var($app_img, FILTER_VALIDATE_URL)) $config_obj['img'] = $app_img;
+	if(!empty($app_img) && filter_var($app_img, FILTER_VALIDATE_URL)) $app_config_obj['img'] = $app_img;
 
-
-	$res = @file_put_contents($config_file, json_encode($config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+	$res = @file_put_contents($app_config_file, json_encode($app_config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 	if(false === $res){
-		echo "Can't create config file. Ensure PHP has correct permissions and ownership.\n";
+		echo "Can't create app config file. Ensure PHP has correct permissions and ownership.\n";
 		exit(1);
 	}
 }
@@ -168,7 +205,7 @@ exit(0);
 
 function getMaxFileSize($config_defualt_max_file_size){
 
-	$ini_max_file_size = file_upload_max_size();
+	$ini_max_file_size = fi_file_upload_max_size();
 	if($config_defualt_max_file_size > $ini_max_file_size){
 		$config_defualt_max_file_size = $ini_max_file_size;
 	}

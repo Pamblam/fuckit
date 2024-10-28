@@ -1,12 +1,12 @@
 <?php
-require APP_ROOT."/includes/functions/getJSRoutes.php";
-require APP_ROOT."/includes/functions/pathMatchesPattern.php";
+require APP_ROOT."/includes/functions/fi_get_js_routes.php";
+require APP_ROOT."/includes/functions/fi_path_matches_pattern.php";
 
 /**
  * Check if the requested path is an actual file or a route that is handled on the front-end
  * @return bool
  */
-function is404(){
+function fi_is_404(){
 
 	// Get the actual requested URL
 	if (isset($_SERVER['HTTPS']) && ($_SERVER['HTTPS'] == 'on' || $_SERVER['HTTPS'] == 1) || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
@@ -17,7 +17,7 @@ function is404(){
 	$actual_link = "$protocol$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
 
 	// Get the app's base URL
-	$base_url = getBaseURL();
+	$base_url = fi_get_base_url();
 	
 	// The URL should always start with the app's base URL
 	if(strpos($actual_link, $base_url) !== 0){
@@ -43,9 +43,9 @@ function is404(){
 
 	// If the file is not a file that exists, check if it is a JS path
 	if(!$file_found){
-		$matching_js_routes = getJSRoutes();
+		$matching_js_routes = fi_get_js_routes();
 		foreach($matching_js_routes as $pattern){
-			if(pathMatchesPattern($pattern, '/'.$path)){
+			if(fi_path_matches_pattern($pattern, '/'.$path)){
 				return false;
 			}
 		}

@@ -1,5 +1,5 @@
 <?php
-require APP_ROOT."/includes/functions/mdToHTML.php";
+require APP_ROOT."/includes/functions/fi_md_to_html.php";
 
 class ParseMDController extends Controller{
 
@@ -13,7 +13,7 @@ class ParseMDController extends Controller{
 		}
 
 		$this->response->setData([
-			'html' => mdToHTML($_GET['md'])
+			'html' => fi_md_to_html($_GET['md'])
 		]);
 	}
 

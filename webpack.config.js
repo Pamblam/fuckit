@@ -4,7 +4,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 
 let theme = null;
 try{
-	let config_path = path.resolve(__dirname, 'config', 'config.json');
+	let config_path = path.resolve(__dirname, 'config', 'app.json');
 	let config = JSON.parse(fs.readFileSync(config_path, 'utf8'));
 	if(config?.theme && fs.existsSync(path.resolve(__dirname, 'src', 'themes', config.theme, 'main.jsx'))){
 		theme = config?.theme;

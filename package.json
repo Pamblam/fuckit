@@ -1,6 +1,6 @@
 {
     "name": "fuckit",
-    "version": "1.3.6",
+    "version": "1.4.1",
     "description": "Fuckit is a Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
@@ -47,7 +47,8 @@
         "react-router-dom": "^6.3.0"
     },
     "imports": {
-        "#config": "./config/config.json",
+        "#config/server": "./config/server.json",
+        "#config/app": "./config/app.json",
         "#App": "./src/core/App.jsx",
         "#components/AdminPage": "./src/core/components/AdminPage.jsx",
         "#components/AuthPage": "./src/core/components/AuthPage.jsx",
