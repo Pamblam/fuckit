@@ -1,6 +1,6 @@
 {
     "name": "fuckit",
-    "version": "1.4.1",
+    "version": "1.4.2",
     "description": "Fuckit is a Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
