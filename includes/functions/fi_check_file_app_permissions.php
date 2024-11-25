@@ -15,6 +15,18 @@ function fi_check_file_app_permissions(){
 		$db_file_perms = fi_ensure_permissions(APP_ROOT."/database/fuckit.db", ['r','w']);
 	}
 
+	// Ensure we have write access to the package.json directory
+	$package_file_perms = fi_ensure_permissions(APP_ROOT."/package.json", ['r','w', 'e']);
+	$packagelock_file_perms = fi_ensure_permissions(APP_ROOT."/package-lock.json", ['r','w', 'e']);
+	$nm_packagelock_file_perms = fi_ensure_permissions(APP_ROOT."/node_modules/.package-lock.json", ['r','w', 'e']);
+
+	// Ensure we have write access to the assets directory
+	$public_path_perms = fi_ensure_permissions(APP_ROOT."/public", ['r','w', 'e']);
+	$asset_path_perms = fi_ensure_permissions(APP_ROOT."/public/assets", ['r','w', 'e']);
+	$js_path_perms = fi_ensure_permissions(APP_ROOT."/public/assets/js", ['r','w', 'e']);
+	$main_path_perms = fi_ensure_permissions(APP_ROOT."/public/assets/js/main.js", ['r','w']);
+	$main_map_path_perms = fi_ensure_permissions(APP_ROOT."/public/assets/js/main.js.map", ['r','w']);
+
 	// Ensure we have write access to the config directory
 	$config_path_perms = fi_ensure_permissions(APP_ROOT."/config", ['r','w', 'e']);
 
@@ -44,6 +56,14 @@ function fi_check_file_app_permissions(){
 		$server_config_file_perms, 
 		$app_config_file_perms,
 		$src_path_perms, 
-		$theme_path_perms
+		$theme_path_perms,
+		$package_file_perms,
+		$public_path_perms,
+		$asset_path_perms,
+		$js_path_perms,
+		$main_path_perms,
+		$main_map_path_perms,
+		$packagelock_file_perms,
+		$nm_packagelock_file_perms
 	);
 }

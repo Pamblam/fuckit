@@ -21,7 +21,6 @@ Mama said cookies are the devil, so Fuckit avoids those, too. Authentication is 
 
  - Clone the app to your server: `git clone git@github.com:Pamblam/fuckit.git`
  - Point Apache to serve straight from the `public` directory of the app.
- - Run the set up script: `npm run setup`
 
 ## Managing Content
 
@@ -43,7 +42,6 @@ Here' what you need to know when creating a new post
 Aside from content management, Fuckit uses CLI scripts for all administration tasks. All of which are set as `npm` scripts.
 
  - `npm run build`: Changes the import aliases to point to files in your theme directoy (if any) and runs Webpack to build the Javascript and transpile the React.
- - `npm run setup`: This creates the database file and config file if they're missing, and gives you the option to update/reset them if not.
  - `npm run create_user`: If you want to have multiple users creating content, you can add another one with this script.
  - `npm run edit_user <username or id>`: Conveiniencce script to edit a user based on their ID or username.
  - `npm run set_theme <theme directory>`: This sets the theme in the config file after running some checks. After running this successfully, you'll still need to rebuild the app with `npm run build`.

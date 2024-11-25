@@ -25,7 +25,7 @@ export function AllPosts(){
 		}
 	};
 
-	let crumbs = [{title:"Home", path:"/"},{title:"All Posts",path:'/admin'}];
+	let crumbs = [{title:"Home", path:"/"},{title:"Admin",path:'/admin'}];
 
 	let columns = [
 		{col: 'create_ts', display: 'Created', sortable:true, render(v){ 

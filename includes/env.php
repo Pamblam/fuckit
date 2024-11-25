@@ -1,8 +1,5 @@
 <?php
 
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-
 define('APP_ROOT', realpath(dirname(dirname(__FILE__))));
 
 $config = null;
@@ -13,10 +10,13 @@ $app_config_file = APP_ROOT."/config/app.json";
 $db_file = APP_ROOT.'/database/fuckit.db';
 
 if(file_exists($server_config_file) && file_exists($app_config_file)){
-	$config = (object) array_merge(
-		json_decode(file_get_contents($server_config_file), true),
-		json_decode(file_get_contents($app_config_file), true)
-	);
+	$server_config_contents = file_get_contents($server_config_file);
+	$app_config_contents = file_get_contents($app_config_file);
+	$app_config = empty($app_config_contents) ? [] : @json_decode($app_config_contents, true);
+	$server_config = empty($server_config_contents) ? [] : @json_decode($server_config_contents, true);
+	if(!empty($app_config) && !empty($server_config)){
+		$config = (object) @array_merge($server_config, $app_config);
+	}
 }
 
 if(file_exists($db_file)){

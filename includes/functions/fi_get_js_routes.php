@@ -13,7 +13,7 @@ function fi_get_js_routes(){
 	if(!empty($config->theme) && file_exists(APP_ROOT.'/src/themes/'.$config->theme.'/main.jsx')){
 		$main_jsx_path = APP_ROOT.'/src/themes/'.$config->theme.'/main.jsx';
 	}
-
+	
 	$router_raw = file_get_contents($main_jsx_path);
 	$last_route_idx = 0;
 	while(true){
@@ -27,7 +27,7 @@ function fi_get_js_routes(){
 
 	$js_paths = array_filter($js_paths, function($path){
 		return $path !== '/' && $path !== '*';
-	});
+	}); 
 
 	return $js_paths;
 }

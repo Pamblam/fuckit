@@ -18,7 +18,7 @@ function fi_is_404(){
 
 	// Get the app's base URL
 	$base_url = fi_get_base_url();
-	
+
 	// The URL should always start with the app's base URL
 	if(strpos($actual_link, $base_url) !== 0){
 		return true;

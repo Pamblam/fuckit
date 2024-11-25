@@ -1,6 +1,6 @@
 {
     "name": "fuckit",
-    "version": "1.4.2",
+    "version": "1.5.0",
     "description": "Fuckit is a Simple PHP/ReactJS CMS",
     "private": true,
     "scripts": {
@@ -50,6 +50,8 @@
         "#config/server": "./config/server.json",
         "#config/app": "./config/app.json",
         "#App": "./src/core/App.jsx",
+        "#assets/css/bootstrap.min": "./src/core/assets/css/bootstrap.min.css",
+        "#assets/js/bootstrap.bundle.min": "./src/core/assets/js/bootstrap.bundle.min.js",
         "#components/AdminPage": "./src/core/components/AdminPage.jsx",
         "#components/AuthPage": "./src/core/components/AuthPage.jsx",
         "#components/Breadcrumbs": "./src/core/components/Breadcrumbs.jsx",
@@ -61,6 +63,8 @@
         "#components/ServerTable": "./src/core/components/ServerTable.jsx",
         "#components/SidebarPosts": "./src/core/components/SidebarPosts.jsx",
         "#hooks/useNavHelper": "./src/core/hooks/useNavHelper.js",
+        "#index": "./src/core/index.php",
+        "#installer/installer": "./src/core/installer/installer.php",
         "#main": "./src/core/main.jsx",
         "#modules/APIRequest": "./src/core/modules/APIRequest.js",
         "#modules/FI": "./src/core/modules/FI.js",
@@ -71,6 +75,7 @@
         "#views/NewPost": "./src/core/views/NewPost.jsx",
         "#views/NotFound": "./src/core/views/NotFound.jsx",
         "#views/Post": "./src/core/views/Post.jsx",
-        "#views/Search": "./src/core/views/Search.jsx"
+        "#views/Search": "./src/core/views/Search.jsx",
+        "#views/Settings": "./src/core/views/Settings.jsx"
     }
 }

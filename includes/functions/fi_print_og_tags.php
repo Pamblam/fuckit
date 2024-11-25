@@ -49,7 +49,7 @@ function fi_print_og_tags(){
 
 		if($url_parts['host'] === $_SERVER['SERVER_ADDR'] || $url_parts['host'] === $_SERVER['HTTP_HOST']){
 			$path = '/' . trim($GLOBALS['config']->base_url, '/');
-			if(strpos($url_parts['path'], $path) === false){
+			if(strpos($url_parts['path'], $path) !== false){
 				$relative_path = substr($url_parts['path'], strlen($path));
 				list($og_img_width, $og_img_height) = getimagesize(str_replace('//','/',APP_ROOT.'/public/'.$relative_path));
 				if(!empty($og_img_width) && !empty($og_img_height)){
