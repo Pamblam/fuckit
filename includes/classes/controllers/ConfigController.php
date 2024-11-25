@@ -71,4 +71,24 @@ class ConfigController extends Controller{
 			if($res->exit_status !== 0) $this->response->setError($res->stderr, 500)->send();
 		}
 	}
+
+	public function rebuild(){
+		$user = $this->getUser();
+
+		// Validate the request
+		if(empty($user)){
+			$this->response->setError("Not logged in", 401)->send();
+		}
+		
+		require_once(APP_ROOT.'/includes/functions/fi_run_cmd.php');
+		$cmds = [
+			"npm i",
+			"php -q ./scripts/map_imports.php",
+			"webpack"
+		];
+		foreach($cmds as $cmd){
+			$res = fi_run_cmd($cmd, null, APP_ROOT);
+			if($res->exit_status !== 0) $this->response->setError($res->stderr, 500)->send();
+		}
+	}
 }

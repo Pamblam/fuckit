@@ -5,7 +5,7 @@
  */
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCaretRight } from '@fortawesome/free-solid-svg-icons';
+import { faCaretRight, faGear, faFileCirclePlus, faFileLines } from '@fortawesome/free-solid-svg-icons';
 
 import {useNavHelper} from '#hooks/useNavHelper';
 import { Breadcrumbs } from '#components/Breadcrumbs';
@@ -16,9 +16,9 @@ export function AdminPage({children, crumbs}){
 
 	let activePage = crumbs.at(-1);
 	let adminLinks = [
-		{title: "All Posts", path: "/admin"},
-		{title: "New Post", path: "/new_post"},
-		{title: "Settings", path: "/settings"},
+		{title: "All Posts", path: "/admin",  icon:faFileLines},
+		{title: "New Post", path: "/new_post", icon:faFileCirclePlus},
+		{title: "Settings", path: "/settings", icon:faGear}
 	];
 
 	return (<AuthPage>
@@ -27,9 +27,10 @@ export function AdminPage({children, crumbs}){
 				<nav className="nav flex-column">
 					{adminLinks.map((link, key)=>{
 						if(link.path === activePage.path){
-							return (<a key={key} className="nav-link active" aria-current="page" href="#" onClick={e=>e.preventDefault()}><FontAwesomeIcon icon={faCaretRight} /> {link.title}</a>);
+							return (<a key={key} className="btn btn-primary mb-2" aria-current="page" href="#" onClick={e=>e.preventDefault()}><FontAwesomeIcon icon={faCaretRight} /> {link.title}</a>);
 						}else{
-							return (<a key={key} className="nav-link" href="#" onClick={e=>navigate(e, link.path)}>{link.title}</a>);
+							let icon = link.icon ? <FontAwesomeIcon icon={link.icon} /> : <>t</>;
+							return (<a key={key} className="btn btn-primary mb-2" href="#" onClick={e=>navigate(e, link.path)}>{icon} {link.title}</a>);
 						}
 					})}
 				</nav>

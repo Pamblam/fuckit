@@ -7,7 +7,7 @@ import {useContext, useState, useRef, useCallback, useEffect} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import server_config from '#config/server';
 import app_config from '#config/app';
-import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
+import { faCircleCheck, faGear } from '@fortawesome/free-solid-svg-icons';
 
 import { AdminPage } from '#components/AdminPage';
 import { APIRequest } from '#modules/APIRequest';
@@ -88,10 +88,19 @@ export function Settings(){
 			setErrorMessage(res.message);
 		}else{
 			setSuccessMessage(res.message);
+			window.location.reload(true);
 		}
 	};
 
-	let crumbs = [{title:"Home", path:"/"},{title:"Admin",path:'/admin'},{title:"Settings",path:'/config'}];
+	const rebuildOnly = async (e) => {
+		e.preventDefault();
+		setLoading(true);
+		let res = await new APIRequest('Config/rebuild', userSession).post();
+		setLoading(false);
+		window.location.reload(true);
+	};
+
+	let crumbs = [{title:"Home", path:"/"},{title:"Admin",path:'/admin'},{title:"Settings",path:'/settings'}];
 	return loading ? <p>Loading...</p> : (<AdminPage crumbs={crumbs}>
 		
 		<form onSubmit={onSubmit}>
@@ -140,7 +149,8 @@ export function Settings(){
 				<div className="form-text">Choose from one of the installed themes...</div>
 			</div>
 
-			<button className="mb-3 btn btn-primary" type='submit'><FontAwesomeIcon icon={faCircleCheck} /> Save</button>
+			<button className="mb-3 btn btn-primary me-1" type='submit'><FontAwesomeIcon icon={faCircleCheck} /> Save & Rebuild</button>
+			<button className="mb-3 btn btn-secondary"><FontAwesomeIcon icon={faGear} onClick={rebuildOnly} /> Rebuild Only</button>
 		</form>
 	</AdminPage>);
 } 
