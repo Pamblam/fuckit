@@ -16,7 +16,7 @@
 			if(!empty($missing_perms)){
 				echo "<p>Fuckit requires permissions adjutments. From the command line, please run:</p>";
 				foreach($missing_perms as $err) echo '<code>'.$err['solution'].";</code><br>"; 
-				echo "<button onclick='window.location.reload()'>Continue</button>";
+				echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 				$has_errors = true;
 				exit;
 			}else{
@@ -32,7 +32,7 @@
 				}catch(Exception $e){
 					echo "<p>Fuckit could not create the database file. From the command line, please run:</p>";
 					echo '<code>touch '.$db_file."</code><br>";
-					echo "<button onclick='window.location.reload()'>Continue</button>";
+					echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 					$has_errors = true;
 					exit;
 				}
@@ -43,7 +43,7 @@
 					$sql = @file_get_contents(APP_ROOT."/database/sql/$table.sql");
 					if(false === $sql){
 						echo "<p>Can't scan the sql file ($table.sql). Ensure PHP has proper permissions to read it.</p>";
-						echo "<button onclick='window.location.reload()'>Continue</button>";
+						echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 						$has_errors = true;
 						exit;
 					}
@@ -55,7 +55,7 @@
 							echo "<p>Created table <code>$table</code></p>";
 						}catch(PDOException $e){
 							echo "<p>($table.sql) Error: ".$e->getMessage()."</p>";
-							echo "<button onclick='window.location.reload()'>Continue</button>";
+							echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 							$has_errors = true;
 							exit;
 						}
@@ -114,14 +114,14 @@
 			if(!file_exists($app_config_file)){
 				echo "<p>App config file doesn't exit 🚫. From the command line, please run:</p>";
 				echo '<code>touch '.$app_config_file.";</code><br>";
-				echo "<button onclick='window.location.reload()'>Continue</button>";
+				echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 				$has_errors = true;
 				exit;
 			}
 			if(!file_exists($server_config_file)){
 				echo "<p>Server config file doesn't exit 🚫. From the command line, please run:</p>";
 				echo '<code>touch '.$server_config_file.";</code><br>";
-				echo "<button onclick='window.location.reload()'>Continue</button>";
+				echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 				$has_errors = true;
 				exit;
 			}
@@ -242,7 +242,7 @@
 				}
 				echo "</ul>";
 
-				echo "<button onclick='window.location.reload()'>Continue</button>";
+				echo "<button onclick='window.location = window.location.href;'>Continue</button>";
 			}
 
 			?>
