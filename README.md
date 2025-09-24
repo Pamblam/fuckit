@@ -1,7 +1,8 @@
 <p align="center">
 	<img src="milton.png" />
-	A modern, portable, light-weight CMS built on PHP, SQLite, and React.
 </p>
+
+A modern, portable, light-weight CMS built on PHP, SQLite, and React.
 
  - Built as an SPA.
  - Built-in SEO/OpenGraph tags.
