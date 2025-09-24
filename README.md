@@ -2,6 +2,8 @@
 	<img src="milton.png" />
 </p>
 
+# Milton CMS
+
 A modern, portable, light-weight CMS built on PHP, SQLite, and React.
 
  - Built as an SPA.
