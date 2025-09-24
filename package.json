@@ -14,15 +14,15 @@
     },
     "repository": {
         "type": "git",
-        "url": "git+https://github.com/Pamblam/fuckit.git"
+        "url": "git+https://github.com/Pamblam/milton-cms.git"
     },
     "keywords": [],
     "author": "Robert Parham",
     "license": "ISC",
     "bugs": {
-        "url": "https://github.com/Pamblam/fuckit/issues"
+        "url": "https://github.com/Pamblam/milton-cms/issues"
     },
-    "homepage": "https://github.com/Pamblam/fuckit#readme",
+    "homepage": "https://github.com/Pamblam/milton-cms#readme",
     "devDependencies": {
         "webpack": "^5.88.2",
         "webpack-cli": "^5.1.4"
