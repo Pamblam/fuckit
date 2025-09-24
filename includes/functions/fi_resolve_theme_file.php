@@ -11,7 +11,7 @@
 function fi_resolve_theme_file($file){
 	$file = ltrim($file, '/');
 	if(!empty($GLOBALS['config']) && !empty($GLOBALS['config']->theme)){
-		$theme_file = APP_ROOT."/src/".$GLOBALS['config']->theme.'/'.$file;
+		$theme_file = APP_ROOT."/src/themes/".$GLOBALS['config']->theme.'/'.$file;
 		if(file_exists($theme_file)) return $theme_file;
 	}
 

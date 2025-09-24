@@ -1,7 +1,7 @@
 {
     "name": "fuckit",
-    "version": "1.5.2",
-    "description": "Fuckit is a Simple PHP/ReactJS CMS",
+    "version": "1.5.3",
+    "description": "Fuckit is a powerful, lightweight content management system written in PHP and ReactJS.",
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
