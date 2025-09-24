@@ -7,7 +7,7 @@ $pdo = null;
 
 $server_config_file = APP_ROOT."/config/server.json";
 $app_config_file = APP_ROOT."/config/app.json";
-$db_file = APP_ROOT.'/database/fuckit.db';
+$db_file = APP_ROOT.'/database/milton.db';
 
 if(file_exists($server_config_file) && file_exists($app_config_file)){
 	$server_config_contents = file_get_contents($server_config_file);

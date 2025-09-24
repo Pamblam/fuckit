@@ -1,7 +1,7 @@
 {
-    "name": "fuckit",
-    "version": "1.5.3",
-    "description": "Fuckit is a powerful, lightweight content management system written in PHP and ReactJS.",
+    "name": "milton-cms",
+    "version": "1.6.0",
+    "description": "Milton CMS is a powerful, light-weight content management system designed as a single-page application and written in PHP and ReactJS.",
     "private": true,
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
@@ -51,6 +51,8 @@
         "#config/app": "./config/app.json",
         "#App": "./src/core/App.jsx",
         "#assets/css/bootstrap.min": "./src/core/assets/css/bootstrap.min.css",
+        "#assets/css/core": "./src/core/assets/css/core.css",
+        "#assets/img/milton": "./src/core/assets/img/milton.png",
         "#assets/js/bootstrap.bundle.min": "./src/core/assets/js/bootstrap.bundle.min.js",
         "#components/AdminPage": "./src/core/components/AdminPage.jsx",
         "#components/AuthPage": "./src/core/components/AuthPage.jsx",

@@ -32,7 +32,7 @@ export function Footer(){
 	return (<nav className="navbar bg-light">
 		<div className="container-fluid">
 			<span className="navbar-text text-center w-100 small">
-				<FontAwesomeIcon icon={faCode} /> Fuckit CMS {footer_link}
+				<span className='milton'><FontAwesomeIcon icon={faCode} /> Milton CMS</span> {footer_link}
 			</span>
 		</div>
 	</nav>);

@@ -6,7 +6,6 @@
 import {useRef, useCallback} from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCode, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
-
 import {useNavHelper} from '#hooks/useNavHelper';
 
 export function Navbar(){
@@ -21,8 +20,8 @@ export function Navbar(){
 
 	return (<nav className="navbar navbar-expand-lg bg-light mb-4">
 		<div className="container-fluid">
-			<a className="navbar-brand" href="#" onClick={e=>navigate(e, '/')}>
-				<FontAwesomeIcon icon={faCode} /> Fuckit
+			<a className="navbar-brand milton" href="#" onClick={e=>navigate(e, '/')}>
+				<FontAwesomeIcon icon={faCode} /> Milton CMS
 			</a>
 			<button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 				<span className="navbar-toggler-icon" />

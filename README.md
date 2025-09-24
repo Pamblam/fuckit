@@ -1,9 +1,10 @@
-# Fuckit
-
-A modern, portable, lightweight CMS built on PHP, SQLite, and React. 
+<p align="center">
+	<img src="milton.png" />
+	A modern, portable, light-weight CMS built on PHP, SQLite, and React.
+</p>
 
  - Built as an SPA.
- - Built in SEO/OpenGraph tags.
+ - Built-in SEO/OpenGraph tags.
  - Write posts in Markdown.
  - Utilizes CLI scripts for admin tasks.
  - Built for Apache and Unix/Linux.
@@ -11,11 +12,11 @@ A modern, portable, lightweight CMS built on PHP, SQLite, and React.
 
 ## Philosphy
 
-Fuckit is the Vim of content management systems. Nothing is WYSWYG. If you need a drag-and-drop form builder, Wordpress is great. If you enjoy coding and are comfortable with the command line, you stand to benefit from the simplicity and speed of something more modern.
+Milton CMS is the Vim of content management systems. Nothing is WYSWYG. If you need a drag-and-drop form builder, Wordpress is great. If you enjoy coding and are comfortable with the command line, you stand to benefit from the simplicity and speed of something more modern.
 
-It's 2024 for fuck sake. A huge drawback of most CMSs is they they're not SPA. Fuckit literally only has a single `index.php` file to serve the browser. If you navigate directly to a post, PHP will throw some open graph tags into the header before serving it, but React's router takes care of everything else.
+A huge drawback of most CMSs is they they're not SPA. Milton CMS literally only has a single `index.php` file to serve the browser. If you navigate directly to a post, PHP will throw some open graph tags into the header before serving it, but React's router takes care of everything else.
 
-Mama said cookies are the devil, so Fuckit avoids those, too. Authentication is done via token that is saved ina  database and is saved in LocalStorage. It is passed along with every request that requires authentication via an Authentication header. The token is matched against your user-agent and IP address and is updated with every request for, frankly, a much more secure interface than any CMS needs.
+Mama said cookies are the devil, so Milton CMS avoids those, too. Authentication is done via token that is saved ina  database and is saved in LocalStorage. It is passed along with every request that requires authentication via an Authentication header. The token is matched against your user-agent and IP address and is updated with every request for, frankly, a much more secure interface than any CMS needs.
 
 ## Installing
 
@@ -39,13 +40,13 @@ Here' what you need to know when creating a new post
 
 ## Site Admin Scripts
 
-Aside from content management, Fuckit uses CLI scripts for all administration tasks. All of which are set as `npm` scripts.
+Aside from content management, Milton CMS uses CLI scripts for all administration tasks. All of which are set as `npm` scripts.
 
  - `npm run build`: Changes the import aliases to point to files in your theme directoy (if any) and runs Webpack to build the Javascript and transpile the React.
  - `npm run create_user`: If you want to have multiple users creating content, you can add another one with this script.
  - `npm run edit_user <username or id>`: Conveiniencce script to edit a user based on their ID or username.
  - `npm run set_theme <theme directory>`: This sets the theme in the config file after running some checks. After running this successfully, you'll still need to rebuild the app with `npm run build`.
- - `npm run update <path to new version>`: Update the existing Fuckit instance to a new version whie retaining all content and themes. See the *Updating Fuckit* section below.
+ - `npm run update <path to new version>`: Update the existing Milton CMS instance to a new version whie retaining all content and themes. See the *Updating Milton CMS* section below.
 
 ## Themeing and customizing
 
@@ -60,29 +61,29 @@ Copy the `main.jsx` file from the `core` directory to the root of your theme. Cr
  - Upload the files and run the setup script. The script will tell you if you need to make changes to file permissions.
  - Configure Apache to allow .htaccess changes in the web root, including mod_rewrite.
 
-## Updating Fuckit
+## Updating Milton CMS
 
-These steps will update your Fuckit install while maintaining all content and themes.
+These steps will update your Milton CMS install while maintaining all content and themes.
  
-  1. Clone the new software alongside your existing install, eg, if you're in the parent directory that contains your existing Fuckit instance Run: `git clone git@github.com:Pamblam/fuckit.git ./fuckit_update` - Now you should have a `fuckit` and a `fuckit_new` directory in your working directory.
-  2. It's a good idea to make a backup of your existing copy: `cp -R fuckit fuckit_backup`
-  3. Move into the existing copy that you want to update and run the install script, passing it the path to the updated copy as the first argument, eg: `cd fuckit && npm run update ../fuckit_update`
+  1. Clone the new software alongside your existing install, eg, if you're in the parent directory that contains your existing Milton CMS instance Run: `git clone git@github.com:Pamblam/fuckit.git ./milton_update` - Now you should have a `milton` and a `milton_new` directory in your working directory.
+  2. It's a good idea to make a backup of your existing copy: `cp -R milton milton_backup`
+  3. Move into the existing copy that you want to update and run the install script, passing it the path to the updated copy as the first argument, eg: `cd milton && npm run update ../milton_update`
   4. If all went as planned, you can now run the build script: `npm run build`
-  5. Check it out in the browser to make sure it all looks good. If so, go ahead and delete your updated copy: `rm -rf ../fuckit_update`
+  5. Check it out in the browser to make sure it all looks good. If so, go ahead and delete your updated copy: `rm -rf ../milton_update`
 
 ## Version Controlling
 
-Since Fuckit uses SQLite and is fully self-contained, you can use Git to backup and version control your Fuckit website, as long as your database file doesn't exceed your Git server's max file size.
+Since Milton CMS uses SQLite and is fully self-contained, you can use Git to backup and version control your Milton CMS website, as long as your database file doesn't exceed your Git server's max file size.
 
 To version control your website with Git:
 
  - Remove the `.git` directory: `rm -rf .git`
  - Remove the following lines from the `.gitignore` file:
-   - database/fuckit.db
+   - database/milton.db
    - public/assets/images/*
    - !public/assets/images/.gitkeep
  - Create your repo and add/commit/push.
 
 ## License
 
-The current version of Fuckit includes a WTF Public License. The *Do What The Fuck You Want To* Public License ([WTFPL](http://www.wtfpl.net/about/)) is a free software license.
+Milton CMS includes an MIT License.

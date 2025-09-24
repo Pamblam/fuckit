@@ -7,6 +7,7 @@ require APP_ROOT."/includes/functions/fi_is_404.php";
 require APP_ROOT."/includes/functions/fi_resolve_theme_file.php";
 require APP_ROOT."/includes/functions/fi_check_tables.php";
 require APP_ROOT."/includes/functions/fi_check_missing_user.php";
+require APP_ROOT."/includes/functions/fi_browser_installer.php";
 
 $missing_perms = fi_check_file_app_permissions();
 $missing_tables = fi_check_tables();

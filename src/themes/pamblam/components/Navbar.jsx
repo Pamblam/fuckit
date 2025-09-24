@@ -22,7 +22,7 @@ export function Navbar(){
 	return (<nav className="navbar navbar-expand-lg bg-light mb-4">
 		<div className="container-fluid">
 			<a className="navbar-brand" href="#" onClick={e=>navigate(e, '/')}>
-				<FontAwesomeIcon icon={faCode} /> Fuckit
+				<FontAwesomeIcon icon={faCode} /> Milton CMS
 			</a>
 			<ul className="navbar-nav">
 				<li className="nav-item">

@@ -11,8 +11,8 @@ import { PostsSummary } from '#components/PostsSummary';
 
 export function Home(){
 	return (<div>
-		<h1><FontAwesomeIcon icon={faCode} /> Fuckit - Pamblam Theme</h1>
-		<p>A simple PHP, SQLite, and ReactJS CMS for programmers.</p>
+		<h1><FontAwesomeIcon icon={faCode} /> Milton CMS - Pamblam Theme</h1>
+		<p>A modern, portable, light-weight CMS built on PHP, SQLite, and React.</p>
 		<PostsSummary />
 	</div>);
 }

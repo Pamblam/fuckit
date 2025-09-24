@@ -33,13 +33,13 @@ if(!empty($repo_perms)){
 }
 
 if(!is_dir($NEW_VERSION_BASE)){
-	echo "Invalid Fuckit repo indicated - not a directory\n";
+	echo "Invalid Milton CMS repo indicated - not a directory\n";
 	exit(1);
 }
 
 
 if(!file_exists($NEW_VERSION_BASE."/package.json")){
-	echo "Invalid Fuckit repo indicated - missing package.json\n";
+	echo "Invalid Milton CMS repo indicated - missing package.json\n";
 	exit(1);
 }
 
@@ -212,7 +212,7 @@ foreach($new_config['scripts'] as $dep=>$ver){
 	$old_config['scripts'][$dep] = $ver;
 }
 
-$old_config['fuckit-version'] = $new_config['version'];
+$old_config['milton-version'] = $new_config['version'];
 
 $result = file_put_contents(
 	APP_ROOT."/package.json", 

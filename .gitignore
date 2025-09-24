@@ -1,7 +1,7 @@
 node_modules
 package-lock.json
 **/.DS_Store
-database/fuckit.db
+database/milton.db
 config/server.json
 config/app.json
 public/assets/js/main.js

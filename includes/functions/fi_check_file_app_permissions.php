@@ -11,8 +11,8 @@ function fi_check_file_app_permissions(){
 
 	// Ensure that we have read and write permission on the db file, if it exists
 	$db_file_perms = [];
-	if(file_exists(APP_ROOT."/database/fuckit.db")){
-		$db_file_perms = fi_ensure_permissions(APP_ROOT."/database/fuckit.db", ['r','w']);
+	if(file_exists(APP_ROOT."/database/milton.db")){
+		$db_file_perms = fi_ensure_permissions(APP_ROOT."/database/milton.db", ['r','w']);
 	}
 
 	// Ensure we have write access to the package.json directory

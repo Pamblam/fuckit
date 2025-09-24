@@ -6,8 +6,10 @@ require APP_ROOT."/includes/functions/fi_md_to_html.php";
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<title><?php echo empty($config->title) ? "Fuckit" : $config->title; ?></title>
+		<title><?php echo empty($config->title) ? "Milton CMS" : $config->title; ?></title>
 		<link href="<?php echo $config->base_url; ?>assets/css/bootstrap.min.css" rel="stylesheet">
+		<link href="<?php echo $config->base_url; ?>assets/css/core.css" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Leckerli+One&display=swap" rel="stylesheet">
 		<?php fi_print_og_tags(); ?>
 	</head>
 	<body>
