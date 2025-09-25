@@ -4,12 +4,9 @@
     "description": "Milton CMS is a powerful, light-weight content management system designed as a single-page application and written in PHP and ReactJS.",
     "private": true,
     "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
         "build": "php -q ./scripts/map_imports.php && webpack",
-        "setup": "npm i && php -q ./scripts/setup.php && npm run build",
         "create_user": "php -q ./scripts/create_user.php",
         "edit_user": "php -q ./scripts/edit_user.php",
-        "set_theme": "php -q ./scripts/set_theme.php",
         "update": "php -q ./scripts/update.php"
     },
     "repository": {
