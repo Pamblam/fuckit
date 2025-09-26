@@ -1,6 +1,4 @@
 <?php
-require APP_ROOT."/includes/functions/fi_get_js_routes.php";
-require APP_ROOT."/includes/functions/fi_path_matches_pattern.php";
 
 /**
  * Check if the requested path is an actual file or a route that is handled on the front-end

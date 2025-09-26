@@ -14,7 +14,7 @@ echo "=================\n";
 // resetting the exiting database, if there is one
 $db_file = APP_ROOT."/database/milton.db";
 if(!file_exists($db_file)){
-	echo "Database does not exist. Run `npm run setup` first.\n";
+	echo "Database does not exist. Install the app first.\n";
 	exit(1);
 }
 

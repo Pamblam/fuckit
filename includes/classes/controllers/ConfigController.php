@@ -34,13 +34,12 @@ class ConfigController extends Controller{
 			$this->response->setError("Missing max filesize", 400)->send();
 		}
 
-		$current_theme = empty($GLOBALS['config']) || empty($GLOBALS['config']->theme) ? 'core' : $GLOBALS['config']->theme;
 		$base_url = empty($GLOBALS['config']) || empty($GLOBALS['config']->base_url) ? '/' : $GLOBALS['config']->base_url;
+		
+		$app_config_obj = json_decode(file_get_contents($GLOBALS['app_config_file']), true);
+		$app_config_obj['title'] = $_POST['title'];
+		$app_config_obj['desc'] = $_POST['desc'];
 
-		$app_config_obj = [
-			'title' => $_POST['title'],
-			'desc' => $_POST['desc']
-		];
 		if(!empty($_POST['img'])) $app_config_obj['img'] = $_POST['img'];
 		if(!empty($_POST['theme'])) $app_config_obj['theme'] = $_POST['theme'];
 		if($app_config_obj['theme'] === 'core') unset($app_config_obj['theme']);
@@ -50,25 +49,19 @@ class ConfigController extends Controller{
 			$this->response->setError("Can't create app config file. Ensure PHP has correct permissions and ownership.", 500)->send();
 		}
 
-		$server_config_obj = [
-			'base_url' => $base_url,
-			'max_upload_size' => $_POST['max_upload_size']
-		];
+		$server_config_obj = json_decode(file_get_contents($GLOBALS['server_config_file']), true);
+		$server_config_obj['base_url'] = $base_url;
+		$server_config_obj['max_upload_size'] = $_POST['max_upload_size'];
 
 		$res = @file_put_contents($GLOBALS['server_config_file'], json_encode($server_config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 		if(false === $res){
 			$this->response->setError("Can't create server config file. Ensure PHP has correct permissions and ownership.", 500)->send();
 		}
 
-		require_once(APP_ROOT.'/includes/functions/fi_run_cmd.php');
-		$cmds = [
-			"npm i",
-			"php -q ./scripts/map_imports.php",
-			"webpack"
-		];
-		foreach($cmds as $cmd){
-			$res = fi_run_cmd($cmd, null, APP_ROOT);
-			if($res->exit_status !== 0) $this->response->setError($res->stderr, 500)->send();
+		try{
+			self::build();
+		}catch(Exception $e){
+			$this->response->setError($e->getMessage(), 500)->send();
 		}
 	}
 
@@ -79,16 +72,24 @@ class ConfigController extends Controller{
 		if(empty($user)){
 			$this->response->setError("Not logged in", 401)->send();
 		}
-		
-		require_once(APP_ROOT.'/includes/functions/fi_run_cmd.php');
-		$cmds = [
-			"npm i",
-			"php -q ./scripts/map_imports.php",
-			"webpack"
-		];
-		foreach($cmds as $cmd){
-			$res = fi_run_cmd($cmd, null, APP_ROOT);
-			if($res->exit_status !== 0) $this->response->setError($res->stderr, 500)->send();
+
+		try{
+			self::build();
+		}catch(Exception $e){
+			$this->response->setError($e->getMessage(), 500)->send();
 		}
+	}
+
+	private static function build(){
+		if(empty($GLOBALS['config']->node_path)){
+			throw new Exception("Unable to build: No node path set.");
+		}
+		$path_parts = explode('/', $GLOBALS['config']->node_path);
+		array_pop($path_parts);
+		$path = implode("/", $path_parts);
+		$envPath = '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:'.$path;
+		$cmd = 'cd ' . escapeshellarg(APP_ROOT) . ' && PATH=' . $envPath . ' npm run build';
+		$res = fi_run_cmd($cmd, null, APP_ROOT);
+		if($res->exit_status !== 0) throw new Exception($res->stderr." $cmd");
 	}
 }

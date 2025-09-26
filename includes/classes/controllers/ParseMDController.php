@@ -1,5 +1,4 @@
 <?php
-require APP_ROOT."/includes/functions/fi_md_to_html.php";
 
 class ParseMDController extends Controller{
 

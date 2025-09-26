@@ -1,8 +1,5 @@
 <?php
 
-require APP_ROOT."/includes/functions/fi_md_to_html.php";
-require APP_ROOT."/includes/functions/fi_get_base_url.php";
-
 class PostController extends ModelController{
 
 	public function __construct($pdo, $response, $id=null) {

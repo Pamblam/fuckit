@@ -1,7 +1,5 @@
 <?php
 
-include "fi_ensure_permissions.php";
-
 function fi_check_file_app_permissions(){
 	// Ensure we have read access to the SQL files db
 	$sql_path_perms = fi_ensure_permissions(APP_ROOT."/database/sql", ['r','e']);

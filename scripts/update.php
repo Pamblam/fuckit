@@ -6,7 +6,6 @@
  */
 
  require realpath(dirname(dirname(__FILE__)))."/includes/env.php";
- require realpath(dirname(dirname(__FILE__)))."/includes/functions/fi_ensure_permissions.php";
 
 // Make sure we have a connection to SQL
 if(empty($pdo)){

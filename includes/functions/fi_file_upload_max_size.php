@@ -1,7 +1,5 @@
 <?php
 
-require realpath(dirname(__FILE__))."/fi_parse_size.php";
-
 // Returns a file size limit in bytes based on the PHP upload_max_filesize
 // and post_max_size
 function fi_file_upload_max_size() {

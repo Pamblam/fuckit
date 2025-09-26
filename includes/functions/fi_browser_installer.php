@@ -1,7 +1,20 @@
 <?php
 
-function fi_browser_installer($missing_perms, $db_file, $missing_tables, $post, $app_config_file, $server_config_file, $missing_user){
+function fi_browser_installer($missing_perms, $db_file, $missing_tables, $post, $app_config_file, $server_config_file, $missing_user, $missing_deps, $missing_node_modules){
 	$has_errors = false;
+
+	// Ensure Node Modules exist
+	echo "<h4>Checking Node Modules...</h4>";
+	if($missing_node_modules){
+		echo "<p>Please install node dependencies. From the command line, please run:</p>";
+		echo "<textarea id='code-textarea' readonly rows='3'>cd ".APP_ROOT.";\nnpm install;\n</textarea>";
+		echo "<button onclick='navigator.clipboard.writeText(document.getElementById(`code-textarea`).value).then(e=>{this.innerHTML=`Text copied!`;setTimeout(()=>this.innerHTML=`Copy to Clipboard`,2000)})'>Copy to Clipboard</button>";
+		echo "<button onclick='window.location = window.location.href;'>Continue Installation</button>";
+		$has_errors = true;
+		return;
+	}else{
+		echo "<p>Node Modules look good 👌</p>";
+	}
 
 	// Ensure all filesystem permissions are OK!
 	echo "<h4>Checking Permissions...</h4>";
@@ -209,11 +222,10 @@ function fi_browser_installer($missing_perms, $db_file, $missing_tables, $post, 
 	$cfg = false;
 	try{
 		$cfg = @file_get_contents($server_config_file);
-		$cfg = @json_decode($cfg);
+		$cfg = @json_decode($cfg, true);
 	}catch(Exception $e){ $cfg=false; }
 	if(empty($cfg)){
 		$has_errors = true;
-		require APP_ROOT."/includes/functions/fi_file_upload_max_size.php";
 		echo "<p>Server is not configured 🚫.</p>";
 		echo "<form method='POST'>";
 		if(!empty($form_errors)) echo '<ul><li>🚫 ' . implode('</li><li>🚫 ', $form_errors) . '</li></ul>';
@@ -221,19 +233,55 @@ function fi_browser_installer($missing_perms, $db_file, $missing_tables, $post, 
 		echo "<label>Max Upload File Size:</label><input type='number' name='max_filesize' placeholder='Max Upload File Size' value=\"".fi_file_upload_max_size()."\" /><br>";
 		echo "<button type='submit' name='create_server_config' value=1>Create Server Config</button>";
 		echo "</form>";
+		return;
 	}else{
 		echo "<p>Server Config look good 👌</p>";
 	}
 
+	// Server config
+	$form_errors = [];
+	if(isset($post['save_deps'])){
+		foreach($post['dep'] as $dep=>$path){
+			$cfg[$dep."_path"] = $path;
+		}
+		try{
+			if(empty($form_errors)){
+				$res = @file_put_contents($server_config_file, json_encode($cfg, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
+				if(false === $res){
+					$form_errors[] = "Can't create server config file. Ensure PHP has correct permissions and ownership.";
+				}
+			}
+			$missing_deps = fi_check_missing_deps();
+		}catch(PDOException $e){
+			$form_errors[] = $e->getMessage();
+		}
+	}
+
+	// Check missing dependencies
+	if(!empty($missing_deps)){
+		echo "<p>Dependencies not found 🚫.</p>";
+		echo "<form method='POST'>";
+		if(!empty($form_errors)) echo '<ul><li>🚫 ' . implode('</li><li>🚫 ', $form_errors) . '</li></ul>';
+		foreach($missing_deps as $dep){
+			echo "<label>Path to <code>$dep</code>:</label><input name='dep[$dep]' /><br>";
+		}
+		echo "<button type='submit' name='save_deps' value=1>Save Dependencies</button>";
+		echo "</form>";
+		return;
+	}
+
 	// Build the app
 	if(!$has_errors){
+
+		$path_parts = explode('/', $cfg['node_path']);
+		array_pop($path_parts);
+		$path = implode("/", $path_parts);
+
+		$envPath = '/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:'.$path;
+		$cmd = 'cd ' . escapeshellarg(APP_ROOT) . ' && PATH=' . $envPath . ' npm run build';
+
 		echo "<h4>Checking Configuration...</h4><ul>";
-		require_once(APP_ROOT.'/includes/functions/fi_run_cmd.php');
-		$cmds = [
-			"Installing dependencies" => "npm i",
-			"Mapping imports" => "php -q ./scripts/map_imports.php",
-			"Building" => "webpack"
-		];
+		$cmds = ['Build' => $cmd];
 		foreach($cmds as $desc=>$cmd){
 			$res = fi_run_cmd($cmd, null, APP_ROOT);
 			if($res->exit_status == 0){
@@ -247,8 +295,8 @@ function fi_browser_installer($missing_perms, $db_file, $missing_tables, $post, 
 		echo "</ul>";
 
 		if($has_errors){
-			echo "<p>Unable to install, please run this manually in the command line:</p>";
-			echo "<textarea id='code-textarea' readonly rows='4'>cd ".APP_ROOT.";\nnpm i;\nphp -q ./scripts/map_imports.php && webpack;\n</textarea>";
+			echo "<p>Unable to build, please run this manually in the command line:</p>";
+			echo "<textarea id='code-textarea' readonly rows='4'>cd ".APP_ROOT.";\nnpm run build;\n</textarea>";
 			echo "<button onclick='navigator.clipboard.writeText(document.getElementById(`code-textarea`).value).then(e=>{this.innerHTML=`Text copied!`;setTimeout(()=>this.innerHTML=`Copy to Clipboard`,2000)})'>Copy to Clipboard</button>";
 			echo "<button onclick='window.location = window.location.href;'>Continue Installation</button>";
 			return;

@@ -10,7 +10,7 @@ echo "\n\nMapping theme imports\n";
 echo "=================\n";
 
 if(empty($config)){
-	echo "Config not found. Run `npm run setup`.\n";
+	echo "Config not found. Install the app first.\n";
 	exit;
 }
 

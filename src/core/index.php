@@ -1,7 +1,4 @@
-<?php
-require APP_ROOT."/includes/functions/fi_print_og_tags.php";
-require APP_ROOT."/includes/functions/fi_md_to_html.php";
-?><!doctype html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8">

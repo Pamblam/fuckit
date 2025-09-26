@@ -49,7 +49,9 @@
 					$_POST, 
 					$app_config_file, 
 					$server_config_file,
-					$missing_user
+					$missing_user,
+					$missing_deps,
+					$missing_node_modules
 				); 
 			?>
 		</div>

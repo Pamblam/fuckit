@@ -23,6 +23,10 @@ if(file_exists($db_file)){
 	$pdo = new PDO('sqlite:'.$db_file);
 }
 
+foreach (glob(APP_ROOT.'/includes/functions/*.php') as $file) {
+    require $file;
+}
+
 spl_autoload_register(function ($class) {
 	$class_paths = [
 		'/includes/classes/',
