@@ -46,6 +46,16 @@ export function Settings(){
 		if (node) app_maxfilesize_ref.current = node;
 	});
 
+	const app_nodepath_ref = useRef();
+	const set_new_app_nodepath_ref = useCallback(node=>{
+		if (node) app_nodepath_ref.current = node;
+	});
+
+	const app_gtag_ref = useRef();
+	const set_new_app_gtag_ref = useCallback(node=>{
+		if (node) app_gtag_ref.current = node;
+	});
+
 	const app_theme_ref = useRef();
 	const set_new_theme_ref = useCallback(node=>{
 		if (node) app_theme_ref.current = node;
@@ -80,7 +90,9 @@ export function Settings(){
 			desc: app_desc_ref.current.value,
 			max_upload_size: +app_maxfilesize_ref.current.value,
 			theme: app_theme_ref.current.value,
-			img: app_img_ref.current?.value
+			img: app_img_ref.current?.value,
+			node_path: app_nodepath_ref.current?.value,
+			ga_tag: app_gtag_ref.current?.value
 		});
 		setLoading(false);
 
@@ -127,6 +139,12 @@ export function Settings(){
 			</div>
 
 			<div className="mb-3">
+				<label className="form-label">Node Path</label>
+				<input data-lpignore="true" type="text" className="form-control" defaultValue={config?.node_path||''} ref={set_new_app_nodepath_ref} />
+				<div className="form-text">Absolute path to the Node binary.</div>
+			</div>
+
+			<div className="mb-3">
 				<label className="form-label">Max Upload Filesize</label>
 				<input data-lpignore="true" type="text" className="form-control" defaultValue={config?.max_upload_size||''} ref={set_new_app_maxfilesize_ref} />
 				<div className="form-text">Maximum upload file size.</div>
@@ -136,6 +154,12 @@ export function Settings(){
 				<label className="form-label">Open Graph Image URL</label>
 				<input data-lpignore="true" type="text" className="form-control" defaultValue={config?.img||''} ref={set_new_app_img_ref} />
 				<div className="form-text">The image that is shown when the blog is shared on social media.</div>
+			</div>
+
+			<div className="mb-3">
+				<label className="form-label">Google Analytics Measurement ID</label>
+				<input data-lpignore="true" type="text" className="form-control" defaultValue={config?.ga_tag||''} ref={set_new_app_gtag_ref} />
+				<div className="form-text">G-XXXXXXX string to use for Google Analytics.</div>
 			</div>
 
 			<div className="mb-3">

@@ -39,6 +39,7 @@ class ConfigController extends Controller{
 		$app_config_obj = json_decode(file_get_contents($GLOBALS['app_config_file']), true);
 		$app_config_obj['title'] = $_POST['title'];
 		$app_config_obj['desc'] = $_POST['desc'];
+		$app_config_obj['ga_tag'] = $_POST['ga_tag'];
 
 		if(!empty($_POST['img'])) $app_config_obj['img'] = $_POST['img'];
 		if(!empty($_POST['theme'])) $app_config_obj['theme'] = $_POST['theme'];
@@ -52,6 +53,8 @@ class ConfigController extends Controller{
 		$server_config_obj = json_decode(file_get_contents($GLOBALS['server_config_file']), true);
 		$server_config_obj['base_url'] = $base_url;
 		$server_config_obj['max_upload_size'] = $_POST['max_upload_size'];
+		$server_config_obj['node_path'] = $_POST['node_path'];
+		$GLOBALS['config']->node_path = $_POST['node_path'];
 
 		$res = @file_put_contents($GLOBALS['server_config_file'], json_encode($server_config_obj, JSON_PRETTY_PRINT|JSON_UNESCAPED_SLASHES));
 		if(false === $res){

@@ -1,6 +1,6 @@
 {
     "name": "milton-cms",
-    "version": "1.6.0",
+    "version": "1.7.0",
     "description": "Milton CMS is a powerful, light-weight content management system designed as a single-page application and written in PHP and ReactJS.",
     "private": true,
     "scripts": {
@@ -35,13 +35,16 @@
         "@fortawesome/react-fontawesome": "^0.2.0",
         "babel-loader": "^9.1.3",
         "css-loader": "^6.8.1",
+        "i": "^0.3.7",
+        "npm": "^11.6.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
+        "react-ga4": "^2.1.0",
+        "react-router-dom": "^6.3.0",
         "style-loader": "^3.3.3",
         "text-clipper": "^2.2.0",
         "url-loader": "^4.1.1",
-        "uuidv4": "^6.2.13",
-        "react-router-dom": "^6.3.0"
+        "uuidv4": "^6.2.13"
     },
     "imports": {
         "#config/server": "./config/server.json",
@@ -52,6 +55,7 @@
         "#assets/img/milton": "./src/core/assets/img/milton.png",
         "#assets/js/bootstrap.bundle.min": "./src/core/assets/js/bootstrap.bundle.min.js",
         "#components/AdminPage": "./src/core/components/AdminPage.jsx",
+        "#components/AnalyticsListener": "./src/core/components/AnalyticsListener.jsx",
         "#components/AuthPage": "./src/core/components/AuthPage.jsx",
         "#components/Breadcrumbs": "./src/core/components/Breadcrumbs.jsx",
         "#components/Footer": "./src/core/components/Footer.jsx",

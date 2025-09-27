@@ -6,9 +6,11 @@
 import {StrictMode} from 'react';
 import ReactDOM from 'react-dom/client';
 import {BrowserRouter as Router, Route, Routes} from "react-router-dom";
+import ReactGA from "react-ga4";
 
 import {App} from '#App';
 import config from '#config/server';
+import app_config from '#config/app';
 import {Home} from '#views/Home';
 import {AllPosts} from '#views/AllPosts';
 import {NewPost} from '#views/NewPost';
@@ -18,12 +20,19 @@ import {NotFound} from '#views/NotFound';
 import {Post} from '#views/Post';
 import {CustomPage} from '#views/CustomPage';
 import {Settings} from '#views/Settings';
+import {AnalyticsListener} from '#components/AnalyticsListener';
 
 (async function main(){
 	const rootDiv = document.getElementById('app_container');
 	const reactRoot = ReactDOM.createRoot(rootDiv);
+
+	if(app_config?.ga_tag){
+		ReactGA.initialize(app_config?.ga_tag);
+	}
+
 	reactRoot.render(<StrictMode>
 			<Router basename={config.base_url}>
+				<AnalyticsListener />
 				<Routes>
 					<Route path="/" element={<App />}>
 						<Route path="/" element={<Home />} />
